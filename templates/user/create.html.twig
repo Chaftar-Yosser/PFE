@@ -1,0 +1,8 @@
+{% extends 'template.html.twig' %}
+
+{% block body %}
+    <div class="col-lg-8 align-center">
+        <h1>Create new user</h1>
+        {{  include ('user/form.html.twig', { button: 'Créer'}) }}
+    </div>
+{% endblock %}

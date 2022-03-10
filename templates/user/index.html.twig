@@ -1,0 +1,84 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}les users{% endblock %}
+
+{% block body %}
+    <div class="container text-center mt-4">
+        <h1>voir nos users</h1>
+    </div>
+
+    <section class="content">
+        <div class="container">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">User Table</h3>
+
+{#                        <div class="box-tools">#}
+{#                            <div class="input-group input-group-sm" style="width: 150px;">#}
+{#                                <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">#}
+
+{#                                <div class="input-group-btn">#}
+{#                                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Fullname</th>
+                                    <th>Firstname</th>
+                                    <th>Lastname</th>
+                                    <th>Role</th>
+                                    <th>Email</th>
+                                    <th>Password</th>
+                                    <th>Image</th>
+                                    <th>
+                                        <a  class="btn btn-block btn-success" href={{ path("create_user") }}>Créer</a>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for user in users %}
+                                <tr>
+                                    <td>{{ user.id }}</td>
+                                    <td>{{ user.fullname}}</td>
+                                    <td>{{ user.firstname}}</td>
+                                    <td>{{ user.lastname}}</td>
+                                    <td>
+                                        {% for role in user.role  %}
+                                            {{ role }}
+                                        {% endfor %}
+                                    </td>
+                                    <td>{{ user.email}}</td>
+                                    <td>{{ user.password}}</td>
+                                    <td>{{ user.image}}</td>
+                                    <td >
+                                        <a  class="btn btn-block btn-info" href={{ path("edit_user", {"id": user.id}) }}> Editer </a>
+                                        <a  class="btn btn-block btn-danger" onclick="return confirm('Etes vous sur ???');" href={{ path("delete_user", {"id": user.id}) }} > Supprimer </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+    </section>
+{% endblock %}

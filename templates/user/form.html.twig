@@ -1,0 +1,25 @@
+{{ form_start(form) }}
+
+<div class="form-group">
+    {{ form_row(form.lastname) }}
+</div>
+<div class="form-group">
+    {{ form_row(form.firstname) }}
+</div>
+<div class="form-group">
+    {{ form_row(form.fullname) }}
+</div>
+<div class="form-group">
+    {{ form_row(form.role) }}
+</div>
+<div class="form-group">
+    {{ form_row(form.email) }}
+</div>
+<div class="form-group">
+    {{ form_row(form.password) }}
+</div>
+<div class="form-group">
+    {{ form_row(form.image) }}
+</div>
+<input type="submit" class="btn btn-primary" value="{{ button }}"/>
+{{ form_end(form) }}

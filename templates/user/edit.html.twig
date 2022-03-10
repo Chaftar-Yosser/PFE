@@ -1,0 +1,7 @@
+{% extends 'template.html.twig' %}
+
+{% block body %}
+    <div class="container mt-4">
+    <h1>Editer les users</h1>
+    {{  include ('user/form.html.twig', { button: 'Editer'}) }}
+{% endblock %}
