@@ -6,10 +6,12 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -34,9 +36,14 @@ class UserController extends AbstractController
      * @Route("/" , name="user_index")
      * @return Response
      */
-    public function index(): Response
-    {
-        $users = $this->repository->findAll();
+    public function index(  PaginatorInterface $paginator , Request $request): Response
+    {   //pagination
+        $users = $paginator->paginate(
+            $this->repository->findAll(), /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            3 /*limit per page*/
+        );
+
         return $this->render('user/index.html.twig',[
             'users' => $users,
         ]);
@@ -44,12 +51,13 @@ class UserController extends AbstractController
 
     /**
      * @param Request $request
-     * @param $slugger
+     * @param SluggerInterface $slugger
+     * @param UserPasswordHasherInterface $passwordHasher
      * @return Response
      * @package App\Controller
      * @Route("/create" ,name="create_user")
      */
-    public function createUser(Request $request, SluggerInterface $slugger)
+    public function createUser(Request $request, SluggerInterface $slugger, UserPasswordHasherInterface $passwordHasher)
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -57,9 +65,14 @@ class UserController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
+            //set password hasher
+            $hashedPassword = $passwordHasher->hashPassword($user,$user->getPassword());
+            $user->setPassword($hashedPassword);
+
             $user = $form->getData();
             $image = $form->get('image')->getData();
             if ($image) {
+                //set image
                 $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $image->guessExtension();
@@ -100,7 +113,7 @@ class UserController extends AbstractController
         $originalImage = $user->getImage();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-
+        $oldImage = $user->getImage();
         if($form->isSubmitted() && $form->isValid())
         {
             $image = $form->get('image')->getData();
@@ -115,7 +128,7 @@ class UserController extends AbstractController
                         $newFilename
                     );
                     //delete old image
-                    if($originalImage)
+                    if($originalImage && file_exists($this->getParameter('image_directory')."/".$originalImage))
                         unlink($this->getParameter('image_directory')."/".$originalImage);
                 } catch (FileException $e) {
                     $this->addFlash('error', 'Image cannot be saved.');
@@ -131,7 +144,8 @@ class UserController extends AbstractController
 
         return $this->render('user/edit.html.twig', [
             'user' =>$user,
-            'form' =>$form->createView()
+            'form' =>$form->createView(),
+            'oldImage' =>$oldImage,
         ]);
     }
 

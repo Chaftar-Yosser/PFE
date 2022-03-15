@@ -30,19 +30,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $password;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(min:2,max: 30)]
     private $fullname;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
+    #[Assert\Length(min:2,max: 30)]
     private $firstname;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $lastname;
     #[Assert\NotBlank]
+    #[Assert\Length(min:2,max: 30)]
+    private $lastname;
 
-    #[ORM\Column(type: 'string', length: 255,nullable: true )]
-    #[Assert\Image(minWidth: 200, maxWidth: 400, maxHeight: 400,
-        minHeight: 200 , allowLandscape: false , allowPortrait: true)]
+
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Image( maxWidth: 400, maxHeight: 400,
+         allowLandscape: true , allowPortrait: true)]
     private $image;
 
     public function getId(): ?int

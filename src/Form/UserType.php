@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,22 +24,45 @@ class UserType extends AbstractType
 
         $file = $user && $user->getImage() ? new File($user->getImage(), false) : null ;
         $builder
-            ->add('fullname',TextType::class)
-            ->add('firstname',TextType::class)
-            ->add('lastname',TextType::class)
-            ->add('email',EmailType::class)
-            ->add('password',PasswordType::class)
+//            ->add('fullname',TextType::class)
+            ->add('firstname',TextType::class, [
+                'attr' => [
+                    'class' => "form-control ",
+                ],
+                'label' => 'Prénom',
+            ])
+            ->add('lastname',TextType::class, [
+                'attr' => [
+                    'class' => "form-control ",
+                ],
+                'label' => 'Nom',
+            ])
+            ->add('email',EmailType::class, [
+                'attr' => [
+                    'class' => "form-control ",
+                ]
+            ])
+            ->add('password',PasswordType::class, [
+                'attr' => [
+                    'class' => "form-control ",
+                ],
+                'label' => 'Mot de passe',
+            ])
             ->add('image',FileType::class,[
                 "data" => $file
             ])
             ->add('role',ChoiceType::class,[
+                'attr' => [
+                    'class' => "form-control select2",
+                ],
                 'choices' =>[
                     'Développeur' => 'ROLE_DEV',
-                    'Rh' => 'ROLE_RH'
+                    'Rh' => 'ROLE_RH',
+                    'admin' =>'ROLE_ADMIN'
                 ],
-                'expanded' => true,
+                'expanded' => false,
                 'multiple' => true,
-                'label' => 'role'
+                'label' => 'Rôle'
             ])
         ;
     }
