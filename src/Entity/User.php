@@ -29,7 +29,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank]
     private $password;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(min:2,max: 30)]
     private $fullname;
 
@@ -45,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Image( maxWidth: 400, maxHeight: 400,
+    #[Assert\Image( maxWidth: 4000, maxHeight: 4000,
          allowLandscape: true , allowPortrait: true)]
     private $image;
 

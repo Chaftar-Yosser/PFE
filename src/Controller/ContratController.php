@@ -7,7 +7,9 @@ use App\Form\ContratType;
 use App\Repository\ContratRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,6 +34,7 @@ class ContratController extends AbstractController
 
     /**
      * @Route("/" , name="contrat_index")
+     * @IsGranted("ROLE_ADMIN") or IsGranted("ROLE_RH")
      * @return Response
      */
     public function index(PaginatorInterface $paginator , Request $request): Response
@@ -54,6 +57,11 @@ class ContratController extends AbstractController
      */
     public function createContrat(Request $request)
     {
+        //controle d'acces
+        if (!$this->isGranted("ROLE_RH")){
+            throw new AccessDeniedException();
+        }
+
         $contrat = new Contrat();
         $form = $this->createForm(ContratType::class, $contrat, [
             'create' =>true
@@ -80,7 +88,13 @@ class ContratController extends AbstractController
      * @package App\Controller
      * @Route("/edit/{id}" ,name="edit_contrat")
      */
-    public function edit(Request $request, Contrat $contrat){
+    public function edit(Request $request, Contrat $contrat)
+    {
+        //controle d'acces
+        if (!$this->isGranted("ROLE_RH")){
+            throw new AccessDeniedException();
+        }
+
         $form = $this->createForm(ContratType::class, $contrat, [
             'create' => false
         ]);
@@ -104,8 +118,13 @@ class ContratController extends AbstractController
      * @param Contrat $contrat
      *
      */
-    public function delete(Contrat $contrat , Request $request)
+    public function delete(Contrat $contrat)
     {
+        //controle d'acces
+        if (!$this->isGranted("ROLE_RH")){
+            throw new AccessDeniedException();
+        }
+
         $this->em->remove($contrat);
         $this->em->flush();
         $this->addFlash('success' , 'contrat supprimé avec succés');

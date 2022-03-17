@@ -7,10 +7,13 @@ use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -34,16 +37,16 @@ class UserController extends AbstractController
 
     /**
      * @Route("/" , name="user_index")
+     * @IsGranted("ROLE_ADMIN")
      * @return Response
      */
-    public function index(  PaginatorInterface $paginator , Request $request): Response
+    public function index(  PaginatorInterface $paginator , Request $request , Session  $session , UserRepository $userRepository): Response
     {   //pagination
         $users = $paginator->paginate(
             $this->repository->findAll(), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             3 /*limit per page*/
         );
-
         return $this->render('user/index.html.twig',[
             'users' => $users,
         ]);
@@ -59,6 +62,11 @@ class UserController extends AbstractController
      */
     public function createUser(Request $request, SluggerInterface $slugger, UserPasswordHasherInterface $passwordHasher)
     {
+        //controle d'acces
+        if (!$this->isGranted("ROLE_ADMIN")){
+            throw new AccessDeniedException();
+        }
+
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -95,6 +103,7 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/create.html.twig', [
+            'user' =>$user,
             'form' => $form->createView()
         ]);
     }
@@ -103,19 +112,28 @@ class UserController extends AbstractController
     /**
      * @param User $user
      * @param Request $request
-     * @param $slugger
+     * @param SluggerInterface $slugger
      * @return Response
+     * @IsGranted("ROLE_ADMIN")
      * @package App\Controller
      * @Route("/edit/{id}" ,name="edit_user")
      */
-    public function edit(User $user , Request $request, SluggerInterface $slugger)
+    public function edit(User $user , Request $request, SluggerInterface $slugger ,  UserPasswordHasherInterface $passwordHasher)
     {
+        //controle d'acces
+        if (!$this->isGranted("ROLE_ADMIN") ){
+            throw new AccessDeniedException();
+        }
+
         $originalImage = $user->getImage();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         $oldImage = $user->getImage();
         if($form->isSubmitted() && $form->isValid())
         {
+            $hashedPassword = $passwordHasher->hashPassword($user,$user->getPassword());
+            $user->setPassword($hashedPassword);
+
             $image = $form->get('image')->getData();
             if ($image) {
                 $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
@@ -152,9 +170,9 @@ class UserController extends AbstractController
     /**
      * @Route("/delete/{id}", name="delete_user")
      * @param User $user
-     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function delete(User $user , Request $request)
+    public function delete(User $user)
     {
         $this->em->remove($user);
         $this->em->flush();

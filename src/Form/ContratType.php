@@ -43,7 +43,11 @@ class ContratType extends AbstractType
                         'class' => "form-control ",
                     ]
             ])
-            ->add('date_debut',DateType::class);
+            ->add('date_debut',DateType::class,[
+//                'attr' => [
+//                    'class' => "form-control ",
+//                ]
+            ]);
 
         if (!$options['create']){
             $builder->add('date_fin',DateType::class);
