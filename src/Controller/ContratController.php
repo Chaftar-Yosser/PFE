@@ -59,7 +59,7 @@ class ContratController extends AbstractController
     {
         //controle d'acces
         if (!$this->isGranted("ROLE_RH")){
-            throw new AccessDeniedException();
+            throw new AccessDeniedException('Need ROLE_RH!');
         }
 
         $contrat = new Contrat();

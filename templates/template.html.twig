@@ -268,9 +268,6 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                  <img src="{{ asset ('images/' ~ app.user.image) }}" class="user-image" alt="User Image">
                                  <span class="hidden-xs">{{ app.user.lastname }}</span>
-{#                                    {% for role in user.role  %}#}
-{#                                     {{ app.user.role }}#}
-{#                                    {% endfor %}#}
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
@@ -331,6 +328,10 @@
                     <div class="pull-left info">
                         <p>{{ app.user.lastname }}</p>
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                            {#   just ena n7ab naaref chkoun connectée#}
+                            {% for role in app.user.role  %}
+                                {{ role }}
+                            {% endfor %}
                     </div>
                 </div>
                 <!-- search form -->
