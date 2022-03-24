@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -48,6 +50,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Image( maxWidth: 4000, maxHeight: 4000,
          allowLandscape: true , allowPortrait: true)]
     private $image;
+
+    #[ORM\ManyToMany(targetEntity: Tasks::class, inversedBy: 'users')]
+    private $Tasks;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Contrat::class)]
+    private $contrats;
+
+
+    public function __construct()
+    {
+        $this->Tasks = new ArrayCollection();
+        $this->contrats = new ArrayCollection();
+
+    }
 
     public function getId(): ?int
     {
@@ -161,4 +177,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Tasks>
+     */
+    public function getTasks(): Collection
+    {
+        return $this->Tasks;
+    }
+
+    public function addTask(Tasks $task): self
+    {
+        if (!$this->Tasks->contains($task)) {
+            $this->Tasks[] = $task;
+        }
+
+        return $this;
+    }
+
+    public function removeTask(Tasks $task): self
+    {
+        $this->Tasks->removeElement($task);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Contrat>
+     */
+    public function getContrats(): Collection
+    {
+        return $this->contrats;
+    }
+
+    public function addContrat(Contrat $contrat): self
+    {
+        if (!$this->contrats->contains($contrat)) {
+            $this->contrats[] = $contrat;
+            $contrat->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContrat(Contrat $contrat): self
+    {
+        if ($this->contrats->removeElement($contrat)) {
+            // set the owning side to null (unless already changed)
+            if ($contrat->getUser() === $this) {
+                $contrat->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

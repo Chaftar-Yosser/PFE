@@ -349,7 +349,7 @@
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">MAIN NAVIGATION</li>
-                    <li class="active treeview menu-open">
+                    <li class="treeview menu-open">
                         <a href="#">
                             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                             <span class="pull-right-container">
@@ -377,7 +377,7 @@
                     </li>
                 </ul>
                 {% endif %}
-                {% if is_granted( 'ROLE_RH') or is_granted( 'ROLE_ADMIN') %}
+{#                {% if is_granted('ROLE_RH') or is_granted('ROLE_ADMIN') %}#}
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="treeview active">
                         <a href="#">
@@ -391,7 +391,7 @@
                         </ul>
                     </li>
                 </ul>
-                {% endif %}
+
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="treeview active">
                         <a href="#">
@@ -405,7 +405,7 @@
                         </ul>
                     </li>
                 </ul>
-                {% if is_granted('ROLE_ADMIN') %}
+{#                {% if is_granted('ROLE_ADMIN') %}#}
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="treeview active">
                         <a href="#">
@@ -419,7 +419,7 @@
                         </ul>
                     </li>
                 </ul>
-                {% endif %}
+{#                {% endif %}#}
             </section>
             <!-- /.sidebar -->
         </aside>

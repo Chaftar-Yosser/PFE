@@ -24,14 +24,22 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>tâches</th>
                                 <th>Status</th>
+                                <th>Users</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for task in tasks %}
                                 <tr>
+                                    <td>{{ task.id }}</td>
                                     <td>{{ task.taskname }}</td>
                                     <td>{{ task.status}}</td>
+                                    <td>
+                                        {% for user in task.users  %}
+                                            {{ user.lastName }}
+                                        {% endfor %}
+                                    </td>
                                 </tr>
                             {% endfor %}
                             </tbody>

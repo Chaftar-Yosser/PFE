@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Contrat;
+use App\Entity\User;
 use App\Form\ContratType;
 use App\Repository\ContratRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,13 +35,20 @@ class ContratController extends AbstractController
 
     /**
      * @Route("/" , name="contrat_index")
-     * @IsGranted("ROLE_ADMIN") or IsGranted("ROLE_RH")
      * @return Response
      */
     public function index(PaginatorInterface $paginator , Request $request): Response
     {
+        // affichage des contrats pour l'utilisateur courant
+        $user = $this->getUser();
+        if ($this->isGranted('ROLE_ADMIN')){
+            $contrat = $this->repository->findAll();
+        }else{
+            $contrat = $this->repository->findBy(["user" => $user]);
+        }
+        // pagination
         $contrat = $paginator->paginate(
-            $this->repository->findAll(), /* query NOT result */
+            $contrat, /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             3 /*limit per page*/
         );
@@ -59,7 +67,8 @@ class ContratController extends AbstractController
     {
         //controle d'acces
         if (!$this->isGranted("ROLE_RH")){
-            throw new AccessDeniedException('Need ROLE_RH!');
+//            throw new AccessDeniedException('Need ROLE_RH!');
+            return $this->render('pages/404.html.twig');
         }
 
         $contrat = new Contrat();
@@ -92,7 +101,7 @@ class ContratController extends AbstractController
     {
         //controle d'acces
         if (!$this->isGranted("ROLE_RH")){
-            throw new AccessDeniedException();
+            return $this->render('pages/404.html.twig');
         }
 
         $form = $this->createForm(ContratType::class, $contrat, [
@@ -122,7 +131,7 @@ class ContratController extends AbstractController
     {
         //controle d'acces
         if (!$this->isGranted("ROLE_RH")){
-            throw new AccessDeniedException();
+            return $this->render('pages/404.html.twig');
         }
 
         $this->em->remove($contrat);

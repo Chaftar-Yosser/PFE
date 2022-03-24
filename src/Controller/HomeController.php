@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/" , name="home")
+     * @Route("/" , name="home_index")
      * @IsGranted("ROLE_USER")
      * @return Response
      */
@@ -18,5 +18,10 @@ class HomeController extends AbstractController
     public function index(): Response
     {
         return $this->render('pages/home.html.twig');
+    }
+
+    public function notfound(): Response
+    {
+        return $this->render('pages/404.html.twig');
     }
 }

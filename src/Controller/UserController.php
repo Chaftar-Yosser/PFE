@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Contrat;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
@@ -36,9 +37,11 @@ class UserController extends AbstractController
 
     /**
      * @Route("/" , name="user_index")
-     * @IsGranted("ROLE_ADMIN")
+     *
      * @return Response
      */
+
+    //@IsGranted("ROLE_ADMIN")
     public function index(  PaginatorInterface $paginator , Request $request ,UserRepository $userRepository): Response
     {   //pagination
         $users = $paginator->paginate(

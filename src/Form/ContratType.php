@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Contrat;
 use App\Entity\TypeContrat;
+use App\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -19,6 +20,7 @@ class ContratType extends AbstractType
         $builder
             ->add('status',ChoiceType::class,[
                 'choices' =>[
+                    '' => '' ,
                     'En Cours' => 'En Cours',
                     'Résilié' => 'Résilié'
                 ],
@@ -28,6 +30,7 @@ class ContratType extends AbstractType
             ])
             ->add('duree',ChoiceType::class,[
                 'choices' =>[
+                    '' => '' ,
                     '1 à 6 mois' => '1 à 6 mois',
                     '7 à 12 mois' => '7 à 12 mois',
                     '13 mois et +' => '13 mois et +'
@@ -42,6 +45,13 @@ class ContratType extends AbstractType
                     'attr' => [
                         'class' => "form-control ",
                     ]
+            ])
+            ->add('user', EntityType::class, [
+                'class' =>  User::class,
+                'choice_label' => 'lastname',
+                'attr' => [
+                    'class' => "form-control ",
+                ]
             ])
             ->add('date_debut',DateType::class,[
 //                'attr' => [
