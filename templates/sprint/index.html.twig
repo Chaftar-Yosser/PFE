@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container text-center mt-4">
-        <h1>voir liste des sprints</h1>
+        <h1>voir liste des sprints </h1>
     </div>
 
 
@@ -56,7 +56,7 @@
                                         <a  class="btn btn-danger" onclick="return confirm('Etes vous sur ???');"
                                             href={{ path("delete_sprint", {"id": sprint.id}) }} > Supprimer
                                         </a>
-                                        <a  class="btn btn-warning"  href={{ path("project_tasks", {"id": sprint.id}) }} >Tâches</a>
+                                        <a  class="btn btn-warning"  href={{ path("sprint_tasks", {"id": sprint.id}) }} >Tâches</a>
                                     </td>
                                 </tr>
                             {% endfor %}

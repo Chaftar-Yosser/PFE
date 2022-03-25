@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Tasks;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Tasks|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,22 +20,31 @@ class TasksRepository extends ServiceEntityRepository
         parent::__construct($registry, Tasks::class);
     }
 
-    // /**
-    //  * @return Tasks[] Returns an array of Tasks objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getTasksByUserAndSprint($user, $sprint)
+    {
+        $qb = $this->createQueryBuilder("tasks");
+        $qb->andWhere($qb->expr()->eq("tasks.sprint", ":sprint"))
+            ->setParameter("sprint", $sprint);
+        $qb->join("tasks.users", "users");
+        $qb->andWhere($qb->expr()->eq("users", ":user"))
+            ->setParameter("user", $user);
+        return $qb->getQuery()->getResult();
+    }
+
+
+    public function getTasks()
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
+            ->select("t")
+            ->join('t.Projects', 'p')
+            ->orderBy('p.name', 'ASC')
+//            ->join('t.sprint', 's')
+//            ->orderBy('s.name', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Tasks

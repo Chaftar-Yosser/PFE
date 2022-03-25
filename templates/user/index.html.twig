@@ -27,15 +27,11 @@
                     <div class="box-header">
                         <h3 class="box-title">User Table</h3>
 
-{#                        <div class="box-tools">#}
-{#                            <div class="input-group input-group-sm" style="width: 150px;">#}
-{#                                <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">#}
-
-{#                                <div class="input-group-btn">#}
-{#                                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
+                        <div class="box-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <input id="myInput" type="text" placeholder="Search..">
+                            </div>
+                        </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body table-responsive no-padding">
@@ -54,34 +50,32 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody>
-
-                            {% for user in users %}
-                                <tr>
-                                    <td>{{ user.id }}</td>
-                                    {#      <td>{{ user.fullname}}</td>#}
-                                    <td>{{ user.firstname}}</td>
-                                    <td>{{ user.lastname}}</td>
-                                    <td>
-                                        {% for role in user.role  %}
-                                            {{ role }}
-                                        {% endfor %}
-                                    </td>
-                                    <td>{{ user.email}}</td>
-                                    <td><img src="{{ asset('images/'~user.image) }}" style="height: 100px; width: 100px"></td>
-                                    <td >
-                                        <a  class="btn btn-info" href={{ path("edit_user", {"id": user.id}) }}, style="display: inline-block"> Editer </a>
-                                        <a  class="btn btn-danger" onclick="return confirm('Etes vous sur ???');" href={{ path("delete_user", {"id": user.id}) }} > Supprimer </a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
+                            <tbody id="myTable">
+                                {% for user in users %}
+                                    <tr>
+                                        <td>{{ user.id }}</td>
+                                        {#      <td>{{ user.fullname}}</td>#}
+                                        <td>{{ user.firstname}}</td>
+                                        <td>{{ user.lastname}}</td>
+                                        <td>
+                                            {% for role in user.role  %}
+                                                {{ role }}
+                                            {% endfor %}
+                                        </td>
+                                        <td>{{ user.email}}</td>
+                                        <td><img src="{{ asset('images/'~user.image) }}" style="height: 100px; width: 100px"></td>
+                                        <td >
+                                            <a  class="btn btn-info" href={{ path("edit_user", {"id": user.id}) }}, style="display: inline-block"> Editer </a>
+                                            <a  class="btn btn-danger" onclick="return confirm('Etes vous sur ???');" href={{ path("delete_user", {"id": user.id}) }} > Supprimer </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
 
                         <div class="navigation d-flex text-center justify-content-center">
                             {{ knp_pagination_render(users) }}
                         </div>
-
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -89,4 +83,16 @@
             </div>
         </div>
     </section>
+
+    <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+
 {% endblock %}

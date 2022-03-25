@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Projects;
+use App\Entity\Sprint;
 use App\Entity\Tasks;
 use App\Entity\User;
 use App\Form\TasksType;
@@ -38,20 +39,14 @@ class TaskController extends AbstractController
     /**
      * @Route("/" , name="task_index")
      * @param Request $request
+     * @param PaginatorInterface $paginator
      * @return Response
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        // affichage des tâches du projet pour l'utilisateur courant
-        $user = $this->getUser();
-        if ($this->isGranted('ROLE_ADMIN')){
-            $tasks = $this->repository->findAll();
-        }else{
-            $tasks = $user->getTasks();
-        }
         // pagination
         $Tasks = $paginator->paginate(
-            $tasks, /* query NOT result */
+            $tasks = $this->repository->getTasks(), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             3 /*limit per page*/
         );
@@ -60,18 +55,33 @@ class TaskController extends AbstractController
         ]);
     }
 
+//    /**
+//     * @Route("/project/{id}", name="project_tasks")
+//     * @param Projects $projects
+//     * @return Response
+//     */
+//    public function showProjectTasks(Projects $projects): Response
+//    {
+//        $taskRepository = $this->em->getRepository(Tasks::class);
+//        $tasks = $taskRepository->findBy(["Projects" => $projects]);
+//        return $this->render('task/projectTasks.html.twig', [
+//            'project' => $projects,
+//            'tasks' => $tasks,
+//        ]);
+//    }
     /**
-     * @Route("/project/{id}", name="project_tasks")
-     * @param Projects $projects
+     * @Route("/sprint-tasks/{id}", name="sprint_tasks")
+     * @param Sprint $sprint
      * @return Response
      */
-    public function showProjectTasks(Projects $projects): Response
+    public function showSprintTasks(Sprint $sprint): Response
     {
-
+        $user = $this->getUser();
         $taskRepository = $this->em->getRepository(Tasks::class);
-        $tasks = $taskRepository->findBy(["Projects" => $projects]);
+        // affichage des tâches selon les sprints pour l'utilisateur courant
+        $tasks = $taskRepository->getTasksByUserAndSprint($user, $sprint);
         return $this->render('task/projectTasks.html.twig', [
-            'project' => $projects,
+            'sprint' => $sprint,
             'tasks' => $tasks,
         ]);
     }
@@ -89,8 +99,6 @@ class TaskController extends AbstractController
         if (!$this->isGranted("ROLE_ADMIN")){
             throw new AccessDeniedException('Need ROLE_ADMIN!');
         }
-
-
 
         $Tasks = new Tasks();
         $form = $this->createForm(TasksType::class, $Tasks);
@@ -132,7 +140,7 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             //todo: check persistence
-            //mazelet fama mochkell : tnazem tziid ayy w tbadell le
+            //mazelet fama mochkell : tnajem tziid ayy w modification le
             /** @var User $user */
             foreach ($form['users']->getData()->getValues() as $user) {
                 $user->addTask($Tasks);
@@ -169,7 +177,4 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('task_index');
     }
 
-    private function getDoctrine()
-    {
-    }
 }
