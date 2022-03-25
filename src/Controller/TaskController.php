@@ -55,20 +55,6 @@ class TaskController extends AbstractController
         ]);
     }
 
-//    /**
-//     * @Route("/project/{id}", name="project_tasks")
-//     * @param Projects $projects
-//     * @return Response
-//     */
-//    public function showProjectTasks(Projects $projects): Response
-//    {
-//        $taskRepository = $this->em->getRepository(Tasks::class);
-//        $tasks = $taskRepository->findBy(["Projects" => $projects]);
-//        return $this->render('task/projectTasks.html.twig', [
-//            'project' => $projects,
-//            'tasks' => $tasks,
-//        ]);
-//    }
     /**
      * @Route("/sprint-tasks/{id}", name="sprint_tasks")
      * @param Sprint $sprint
@@ -80,7 +66,7 @@ class TaskController extends AbstractController
         $taskRepository = $this->em->getRepository(Tasks::class);
         // affichage des tâches selon les sprints pour l'utilisateur courant
         $tasks = $taskRepository->getTasksByUserAndSprint($user, $sprint);
-        return $this->render('task/projectTasks.html.twig', [
+        return $this->render('task/sprintTasks.html.twig', [
             'sprint' => $sprint,
             'tasks' => $tasks,
         ]);

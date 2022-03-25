@@ -22,6 +22,11 @@
                 <div class="box box-primary">
                     <div class="box-header">
                         <h3 class="box-title">sprint Table</h3>
+                        <div class="box-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <input id="myInput" type="text" placeholder="Search..">
+                            </div>
+                        </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body table-responsive no-padding">
@@ -36,37 +41,35 @@
                                 <th>date_debut</th>
                                 <th>date_fin</th>
                                 <th>
-                                        <a  class="btn btn-success" href={{ path("create_sprint") }}>Créer</a>
+                                    <a  class="btn btn-success" href={{ path("create_sprint") }}>Créer</a>
                                 </th>
                             </tr>
                             </thead>
-                            <tbody>
-
-                            {% for sprint in Sprint %}
-                                <tr>
-                                    <td>{{ sprint.id }}</td>
-                                    <td>{{ sprint.name}}</td>
-                                    <td>{{ sprint.project.name}}</td>
-                                    <td>{{ sprint.duree}}</td>
-                                    <td>{{ sprint.status}}</td>
-                                    <td>{{ sprint.startDate|date('d/m/Y')}}</td>
-                                    <td>{{ sprint.endDate|date('d/m/Y')}}</td>
-                                    <td >
-                                        <a  class="btn btn-info" href={{ path("edit_sprint", {"id": sprint.id}) }}, style="display: inline-block"> Editer </a>
-                                        <a  class="btn btn-danger" onclick="return confirm('Etes vous sur ???');"
-                                            href={{ path("delete_sprint", {"id": sprint.id}) }} > Supprimer
-                                        </a>
-                                        <a  class="btn btn-warning"  href={{ path("sprint_tasks", {"id": sprint.id}) }} >Tâches</a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
+                            <tbody id="myTable">
+                                {% for sprint in Sprint %}
+                                    <tr>
+                                        <td>{{ sprint.id }}</td>
+                                        <td>{{ sprint.name}}</td>
+                                        <td>{{ sprint.project.name}}</td>
+                                        <td>{{ sprint.duree}}</td>
+                                        <td>{{ sprint.status}}</td>
+                                        <td>{{ sprint.startDate|date('d/m/Y')}}</td>
+                                        <td>{{ sprint.endDate|date('d/m/Y')}}</td>
+                                        <td >
+                                            <a  class="btn btn-info" href={{ path("edit_sprint", {"id": sprint.id}) }}, style="display: inline-block"> Editer </a>
+                                            <a  class="btn btn-danger" onclick="return confirm('Etes vous sur ???');"
+                                                href={{ path("delete_sprint", {"id": sprint.id}) }} > Supprimer
+                                            </a>
+                                            <a  class="btn btn-warning"  href={{ path("sprint_tasks", {"id": sprint.id}) }} >Tâches</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
 
                         <div class="navigation d-flex text-center justify-content-center">
                             {{ knp_pagination_render(Sprint) }}
                         </div>
-
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -74,4 +77,16 @@
             </div>
         </div>
     </section>
+
+    <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+
 {% endblock %}
