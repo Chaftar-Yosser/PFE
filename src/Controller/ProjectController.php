@@ -60,6 +60,10 @@ class ProjectController extends AbstractController
      */
     public function createProject(Request $request)
     {
+        if (!$this->isGranted("ROLE_ADMIN")){
+            return $this->render('pages/404.html.twig');
+        }
+
         $Project = new Projects();
         $form = $this->createForm(ProjectType::class, $Project);
         $form->handleRequest($request);
@@ -86,6 +90,10 @@ class ProjectController extends AbstractController
      */
     public function editProject(Request $request, Projects $Project)
     {
+        if (!$this->isGranted("ROLE_ADMIN")){
+            return $this->render('pages/404.html.twig');
+        }
+
         $form = $this->createForm(ProjectType::class, $Project);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
@@ -110,6 +118,10 @@ class ProjectController extends AbstractController
      */
     public function deleteProject(Projects $Project)
     {
+        if (!$this->isGranted("ROLE_ADMIN")){
+            return $this->render('pages/404.html.twig');
+        }
+
         $this->em->remove($Project);
         $this->em->flush();
         $this->addFlash('success' , 'projet supprimé avec succés');

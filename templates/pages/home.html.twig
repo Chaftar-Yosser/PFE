@@ -1,6 +1,142 @@
 {% extends 'template.html.twig' %}
+  {% block stylesheets %}
+      <style>
+          .strike {
+              text-decoration: line-through;
+              color: #DBA7E2;
+          }
+      </style>
+  {% endblock %}
+
 {% block body %}
-<div class="container mt-4">
-    <h1>helllllllo {{ app.user.lastname }}</h1>
-</div>
+{#<div class="container mt-4">#}
+{#    <h1>helllllllo {{ app.user.lastname }}</h1>#}
+{#</div>#}
+
+        <section class="content">
+            <div class="row">
+                <div class="col-md-3">
+                        <!-- TO DO List -->
+                        <div class="box box-primary">
+                            <div class="box-header">
+                                <i class="ion ion-clipboard"></i>
+                                <h3 class="box-title">To Do List</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
+                                <ul id="todo-list">
+                                    {% for task in events %}
+                                        <li>
+                                            <!-- checkbox -->
+                                            <input type="checkbox" class="task-checkbox" value="" id="{{ task.id }}">
+                                            <!-- todo text -->
+                                            <span class="text" data-id="{{ task.id }}">{{ task.taskName }}</span>
+                                            <!-- Emphasis label -->
+                                            <small class="label label-default"><i class="fa fa-clock-o"></i>{{ task.duree }}</small>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="box box-primary">
+                        <h2>Calendrier</h2>
+                        <div class="box-body no-padding">
+                            <!-- THE CALENDAR -->
+                            <div id="calendar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {% endblock %}
+        {% block js %}
+    <script src="{{ asset('bundles/bower_components/jquery-ui/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('bundles/dist/js/pages/dashboard.js') }}"></script>
+
+    <script>
+
+        // Add a "checked" symbol when clicking on a list item
+        var events = document.querySelector('ul');
+        $(".task-checkbox").change(function () {
+            let taskId = $(this).attr("id");
+            let taskSpan = $("span[data-id="+taskId+"]");
+            taskSpan.toggleClass('strike');
+            //if checked add class to span
+
+                //en ajax modifier le statut du task
+                $.ajax({
+                    url:        '/task/ajax',
+                    type:       'POST',
+                    data:       {
+                        id: taskId,
+                        close: $(this).is(":checked") ? 1 : 0
+                    },
+                    dataType:   'json',
+                    async:      true,
+
+                    success: function() {}
+
+                });
+
+        });
+
+
+        $(function () {
+
+            /* initialize the external events
+             -----------------------------------------------------------------*/
+            function init_events(ele) {
+                ele.each(function () {
+
+                    // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+                    // it doesn't need to have a start or end
+                    var eventObject = {
+                        title: $.trim($(this).text()) // use the element's text as the event title
+                    }
+
+                    // store the Event Object in the DOM element so we can get to it later
+                    $(this).data('eventObject', eventObject)
+
+                })
+            }
+
+            init_events($('#external-events div.external-event'))
+
+            /* initialize the calendar
+             -----------------------------------------------------------------*/
+            //Date for the calendar events (dummy data)
+            var date = new Date()
+            var d    = date.getDate(),
+                m    = date.getMonth(),
+                y    = date.getFullYear()
+            $('#calendar').fullCalendar({
+                header    : {
+                    left  : 'prev,next today',
+                    center: 'title',
+                    right : 'month,agendaWeek,agendaDay'
+                },
+                locale : 'fr',//ne fonctionne pas
+                timeZone : 'Tunisie',
+                buttonText: {
+                    today: 'today',
+                    month: 'month',
+                    week : 'week',
+                    day  : 'day'
+                },
+                //Random default events
+                events    :  {{ data|raw  }},
+                editable  : true,
+                eventResizableFromStart: true,
+
+            });
+            $('#calendar').on('eventChange', (e) => {
+                console.log(e)
+            });
+
+        })
+    </script>
 {% endblock %}

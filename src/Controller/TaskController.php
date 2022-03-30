@@ -14,6 +14,7 @@ use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -72,6 +73,19 @@ class TaskController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/ajax" , name="ajax")
+     */
+    public function ajaxAction(Request $request) {
+
+        if ($request->isXmlHttpRequest() || $request->request->get('id')) {
+            $task = $this->repository->find($request->request->get('id'));
+            $task->setStatus($request->request->get('close') ? Tasks::STATUS_TERMINE : Tasks::STATUS_ENCOURS );
+            $this->em->persist($task);
+            $this->em->flush();
+            return new JsonResponse("success");
+        }
+    }
 
     /**
      * @param Request $request
@@ -83,7 +97,7 @@ class TaskController extends AbstractController
     public function create(Request $request)
     {
         if (!$this->isGranted("ROLE_ADMIN")){
-            throw new AccessDeniedException('Need ROLE_ADMIN!');
+            return $this->render('pages/404.html.twig');
         }
 
         $Tasks = new Tasks();
@@ -119,7 +133,7 @@ class TaskController extends AbstractController
     public function edit(Request $request, Tasks $Tasks)
     {
         if (!$this->isGranted("ROLE_ADMIN")){
-            throw new AccessDeniedException('Need ROLE_ADMIN!');
+            return $this->render('pages/404.html.twig');
         }
 
         $form = $this->createForm(TasksType::class, $Tasks);
@@ -154,7 +168,7 @@ class TaskController extends AbstractController
     public function delete(Tasks $Tasks)
     {
         if (!$this->isGranted("ROLE_ADMIN")){
-            throw new AccessDeniedException('Need ROLE_ADMIN!');
+            return $this->render('pages/404.html.twig');
         }
 
         $this->em->remove($Tasks);

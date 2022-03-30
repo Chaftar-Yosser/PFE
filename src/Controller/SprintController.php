@@ -8,6 +8,7 @@ use App\Form\SprintType;
 use App\Repository\SprintRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,11 +51,16 @@ class SprintController extends AbstractController
     /**
      * @param Request $request
      * @return Response
+     * @IsGranted("ROLE_ADMIN")
      * @package App\Controller
      * @Route("/create" ,name="create_sprint")
      */
     public function createsprint(Request $request)
     {
+        if (!$this->isGranted("ROLE_ADMIN")){
+            return $this->render('pages/404.html.twig');
+        }
+
         $sprint = new Sprint();
         $form = $this->createForm(SprintType::class, $sprint);
         $form->handleRequest($request);
@@ -75,11 +81,16 @@ class SprintController extends AbstractController
      * @param Request $request
      * @param Sprint $sprint
      * @return Response
+     * @IsGranted("ROLE_ADMIN")
      * @package App\Controller
      * @Route("/edit/{id}" ,name="edit_sprint")
      */
     public function editsprint(Request $request, Sprint $sprint)
     {
+        if (!$this->isGranted("ROLE_ADMIN")){
+            return $this->render('pages/404.html.twig');
+        }
+
         $form = $this->createForm(SprintType::class, $sprint);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
@@ -99,9 +110,14 @@ class SprintController extends AbstractController
     /**
      * @Route("/delete/{id}", name="delete_sprint")
      * @param Sprint $sprint
+     * @IsGranted("ROLE_ADMIN")
      */
     public function deletesprint(Sprint $sprint)
     {
+        if (!$this->isGranted("ROLE_ADMIN")){
+            return $this->render('pages/404.html.twig');
+        }
+
         $this->em->remove($sprint);
         $this->em->flush();
         $this->addFlash('success' , 'sprint supprimé avec succés');

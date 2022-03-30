@@ -24,8 +24,20 @@ class TasksType extends AbstractType
                     'class' => "form-control ",
                 ]
             ])
-            ->add('date_fin',DateType::class)
-            ->add('date_debut',DateType::class)
+            ->add('date_fin',DateType::class,[
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => "form-control ",
+                ],
+
+            ])
+            ->add('date_debut',DateType::class,[
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => "form-control ",
+                ],
+
+            ])
             ->add('duree',ChoiceType::class,[
                 'attr' => [
                     'class' => "form-control ",

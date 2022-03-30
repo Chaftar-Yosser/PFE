@@ -20,7 +20,13 @@ class ProjectType extends AbstractType
                     'class' => "form-control ",
                 ]
             ])
-            ->add('date_debut',DateType::class)
+            ->add('date_debut',DateType::class,[
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => "form-control ",
+                ],
+
+            ])
             ->add('duree',ChoiceType::class,[
                 'attr' => [
                     'class' => "form-control ",
@@ -47,7 +53,13 @@ class ProjectType extends AbstractType
             ])
         ;
 //        if (!$options['create']){
-            $builder->add('date_fin',DateType::class);
+            $builder->add('date_fin',DateType::class,[
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => "form-control ",
+                ],
+
+            ]);
 //        }
 
     }

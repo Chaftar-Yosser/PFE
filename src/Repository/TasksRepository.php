@@ -38,8 +38,6 @@ class TasksRepository extends ServiceEntityRepository
             ->select("t")
             ->join('t.Projects', 'p')
             ->orderBy('p.name', 'ASC')
-//            ->join('t.sprint', 's')
-//            ->orderBy('s.name', 'ASC')
             ->getQuery()
             ->getResult()
         ;

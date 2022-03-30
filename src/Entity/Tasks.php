@@ -10,6 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: TasksRepository::class)]
 class Tasks
 {
+    const STATUS_ENCOURS="En Cours";
+    const STATUS_PAUSE="En Pause";
+    const STATUS_TERMINE="Terminé";
+
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]

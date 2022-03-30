@@ -54,13 +54,21 @@ class ContratType extends AbstractType
                 ]
             ])
             ->add('date_debut',DateType::class,[
-//                'attr' => [
-//                    'class' => "form-control ",
-//                ]
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => "form-control ",
+                ],
+
             ]);
 
         if (!$options['create']){
-            $builder->add('date_fin',DateType::class);
+            $builder->add('date_fin',DateType::class,[
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => "form-control ",
+                ],
+
+            ]);
             //            test sur affichage de date fin dans edit ctt
         }
 

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Contrat;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
@@ -59,6 +58,7 @@ class UserController extends AbstractController
      * @param SluggerInterface $slugger
      * @param UserPasswordHasherInterface $passwordHasher
      * @return Response
+     * @IsGranted("ROLE_ADMIN")
      * @package App\Controller
      * @Route("/create" ,name="create_user")
      */
@@ -66,7 +66,7 @@ class UserController extends AbstractController
     {
         //controle d'acces
         if (!$this->isGranted("ROLE_ADMIN")){
-            throw new AccessDeniedException();
+            return $this->render('pages/404.html.twig');
         }
 
         $user = new User();
@@ -123,8 +123,8 @@ class UserController extends AbstractController
     public function edit(User $user , Request $request, SluggerInterface $slugger ,  UserPasswordHasherInterface $passwordHasher)
     {
         //controle d'acces
-        if (!$this->isGranted("ROLE_ADMIN") ){
-            throw new AccessDeniedException();
+        if (!$this->isGranted("ROLE_ADMIN")){
+            return $this->render('pages/404.html.twig');
         }
 
         $originalImage = $user->getImage();
@@ -172,6 +172,7 @@ class UserController extends AbstractController
     /**
      * @Route("/delete/{id}", name="delete_user")
      * @param User $user
+     * @IsGranted("ROLE_ADMIN")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function delete(User $user)

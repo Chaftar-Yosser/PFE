@@ -22,8 +22,20 @@ class SprintType extends AbstractType
                     'class' => "form-control ",
                 ]
             ])
-            ->add('startDate',DateType::class)
-            ->add('endDate',DateType::class)
+            ->add('startDate',DateType::class,[
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => "form-control ",
+                ],
+
+            ])
+            ->add('endDate',DateType::class,[
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => "form-control ",
+                ],
+
+            ])
             ->add('duree',ChoiceType::class,[
                 'attr' => [
                     'class' => "form-control ",
