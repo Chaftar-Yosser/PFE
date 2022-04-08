@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Projects;
+use App\Entity\Search;
 use App\Entity\Sprint;
 use App\Entity\Tasks;
 use App\Entity\User;
+use App\Form\SearchType;
 use App\Form\TasksType;
 use App\Repository\TasksRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
@@ -45,14 +48,22 @@ class TaskController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
+
+        // filter
+        $search = new Search();
+        $form = $this->createForm(SearchType::class,$search);
+        $form->handleRequest($request);
+
         // pagination
         $Tasks = $paginator->paginate(
-            $tasks = $this->repository->getTasks(), /* query NOT result */
+            $tasks = $this->repository->getTasks($search),
+            /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             3 /*limit per page*/
         );
         return $this->render('task/index.html.twig', [
             'Tasks' => $Tasks,
+            'form' => $form->createView()
         ]);
     }
 
@@ -85,6 +96,60 @@ class TaskController extends AbstractController
             $this->em->flush();
             return new JsonResponse("success");
         }
+    }
+
+    /**
+     * @Route("/ajax-user-tasks", name="ajaxUsertasks")
+     */
+    public function ajaxuserTasks(Request $request , UserRepository $userRepository){
+        //si la requete est de type AJAX
+        if ($request->isXmlHttpRequest() && $request->request->has('id')) {
+            $user = $userRepository->find($request->request->get('id'));
+            $tasks = $user->getTasks();
+            $userTasks = [];
+            foreach ($tasks as $task){
+                $userTasks[] = [
+                    'id' => $task->getId(),
+                    'title' => $task->getTaskName(),
+                    'start' => $task->getDateDebut()->format('Y-m-d H:i:s'),
+                    'end' => $task->getDateFin()->format('Y-m-d H:i:s'),
+                    'status' => $task->getStatus(),
+                ];
+            }
+
+            return new JsonResponse([
+                "success" => true,
+                'tasks' =>  $userTasks
+            ]);
+        }
+
+    }
+
+
+
+    /**
+     * @param Request $request
+     * @param Tasks $Tasks
+     * @return Response
+     * @package App\Controller
+     * @Route("/update/{id}" ,name="update_task")
+     */
+    public function update(Request $request, Tasks $Tasks)
+    {
+        $form = $this->createForm(TasksType::class, $Tasks);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+
+            $this->em->persist($Tasks);
+            $this->em->flush();
+            $this->addFlash('success' , 'tâche modifié avec succés!');
+            return $this->redirectToRoute('task_index');
+        }
+        return $this->render('task/update.html.twig', [
+            'task' =>$Tasks,
+            'form' => $form->createView(),
+        ]);
+
     }
 
     /**

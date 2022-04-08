@@ -32,6 +32,7 @@
                     {{ form_errors(form.date_debut) }}
                 </div>
             </div>
+            {% if form.date_fin is defined %}
                 <div class="form-group">
                     {{ form_label(form.date_fin) }}
                     {{ form_widget(form.date_fin) }}
@@ -39,6 +40,7 @@
                         {{ form_errors(form.date_fin) }}
                     </div>
                 </div>
+            {% endif %}
         </div>
         <!-- /.box-body -->
 

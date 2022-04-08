@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -95,6 +96,29 @@ class TasksType extends AbstractType
                 'choice_label'  => 'name',
                 'attr' => [
                     'class' => "form-control ",
+                ]
+            ])
+            ->add('description' ,TextareaType::class,[
+                'attr' => [
+                    'class' => "form-control ",
+                ]
+            ])
+            ->add('avancement',ChoiceType::class,[
+                'attr' => [
+                    'class' => "form-control ",
+                ],
+                'choices' =>[
+                    '' => '' ,
+                    '10%' => 10,
+                    '20%' => 20,
+                    '30%' => 30,
+                    '40%' => 40,
+                    '50%' => 50,
+                    '60%' => 60,
+                    '70%' => 70,
+                    '80%' => 80,
+                    '90%' => 90,
+                    '100%' => 100,
                 ]
             ])
         ;

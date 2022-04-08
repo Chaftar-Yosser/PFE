@@ -4,10 +4,8 @@
 
 {% block body %}
     <div class="container text-center mt-4">
-        <h1>voir liste des tâches</h1>
+        <h1>tâches </h1>
     </div>
-
-
     <section class="content">
         <div class="container">
             {% for message in app.flashes('success') %}
@@ -15,6 +13,33 @@
                     {{ message }}
                 </div>
             {% endfor %}
+        </div>
+        <div class="box-header">
+            <div class="container">
+                {{ form_start(form) }}
+                <div class="form-group ">
+                    <div class="row">
+                        <div class="col-lg-3 col-2">
+                            {{ form_row(form.projects) }}
+                        </div>
+                        <div class="col-lg-3 col-2">
+                            {{ form_row(form.sprint) }}
+                        </div>
+                        <div class="col-lg-3 col-2">
+                            {{ form_row(form.status) }}
+                        </div>
+                        <div class="col-lg-3 col-3">
+                            <div class="form-group">
+                                <button class="btn btn-primary">Rechercher</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-3" hidden>
+                            {{ form_rest(form) }}
+                        </div>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
         </div>
         <!-- /.row -->
         <div class="row">
@@ -30,19 +55,21 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover">
+                        <table class="table table-hover" id="table_id">
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>name</th>
                                 <th>project</th>
                                 <th>sprint</th>
+                                <th>tâche</th>
                                 <th>status</th>
                                 <th>priorite</th>
                                 <th>duree</th>
                                 <th>date_debut</th>
                                 <th>date_fin</th>
                                 <th>Users</th>
+                                <th>Avencement</th>
+                                <th>Description</th>
                                 <th>
                                     {% if is_granted('ROLE_ADMIN') %}
                                         <a  class="btn btn-success" href={{ path("create_task") }}>Créer</a>
@@ -54,9 +81,9 @@
                                 {% for task in Tasks %}
                                     <tr>
                                         <td>{{ task.id }}</td>
-                                        <td>{{ task.taskname}}</td>
                                         <td>{{ task.projects.name}}</td>
                                         <td>{{ task.sprint.name}}</td>
+                                        <td>{{ task.taskname}}</td>
                                         <td>{{ task.status}}</td>
                                         <td>{{ task.priorite }}</td>
                                         <td>{{ task.duree}}</td>
@@ -67,7 +94,10 @@
                                                 {{ user.lastName }}
                                             {% endfor %}
                                         </td>
+                                        <td>{{ task.avancement}} %</td>
+                                        <td>{{ task.description}} </td>
                                         <td >
+                                            <a  class="btn bg-info" href={{ path("update_task", {"id": task.id}) }}> Update </a>
                                             {% if is_granted('ROLE_ADMIN') %}
                                                 <a  class="btn btn-info" href={{ path("edit_task", {"id": task.id}) }}, style="display: inline-block"> Editer </a>
                                                 <a  class="btn btn-danger" onclick="return confirm('Etes vous sur ???');"
@@ -97,6 +127,13 @@
                 $("#myTable tr").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
+            });
+        });
+
+        $(document).ready( function () {
+            $('#table_id').DataTable({
+                paging: false ,
+                searching: false
             });
         });
     </script>

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Contrat;
+use App\Entity\Search;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,6 +19,34 @@ class ContratRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Contrat::class);
     }
+
+
+    public function getContrats(Search $search = null)
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->select("c")
+            ->join('c.user', 'user');
+        if ($search && $search->getUser()){
+            //filter by user
+            $qb->andWhere($qb->expr()->eq("user", ':user'))
+                ->setParameter('user', $search->getUser() )
+            ;
+        }
+        $qb->join('c.type_contrat', 'type_contrat');
+        if ($search && $search->getTypeContrat()){
+            //filter by type contrat
+            $qb->andWhere($qb->expr()->eq("type_contrat", ':type_contrat'))
+                ->setParameter('type_contrat', $search->getTypeContrat() )
+            ;
+        }
+        return $qb->getQuery()
+            ->getResult()
+            ;
+    }
+
+
+
+
 
     // /**
     //  * @return Contrat[] Returns an array of Contrat objects

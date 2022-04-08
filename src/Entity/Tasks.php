@@ -49,6 +49,12 @@ class Tasks
     #[ORM\ManyToOne(targetEntity: Sprint::class, inversedBy: 'tasks')]
     private $sprint;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $avancement;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $description;
+
 
 
     public function __construct()
@@ -180,6 +186,30 @@ class Tasks
     public function setSprint(?Sprint $sprint): self
     {
         $this->sprint = $sprint;
+
+        return $this;
+    }
+
+    public function getAvancement(): ?int
+    {
+        return $this->avancement;
+    }
+
+    public function setAvancement(?int $avancement): self
+    {
+        $this->avancement = $avancement;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

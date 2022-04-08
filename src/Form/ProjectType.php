@@ -52,7 +52,7 @@ class ProjectType extends AbstractType
                 ]
             ])
         ;
-//        if (!$options['create']){
+        if (!$options['create']){
             $builder->add('date_fin',DateType::class,[
                 'widget' => 'single_text',
                 'attr' => [
@@ -60,7 +60,7 @@ class ProjectType extends AbstractType
                 ],
 
             ]);
-//        }
+        }
 
     }
 
@@ -68,6 +68,7 @@ class ProjectType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Projects::class,
+            'create' => false
         ]);
     }
 }

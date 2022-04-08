@@ -19,6 +19,20 @@ class SprintRepository extends ServiceEntityRepository
         parent::__construct($registry, Sprint::class);
     }
 
+
+    public function Avg($id)
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->select("avg(s.avancement)")
+            ->where('s.idPlayer = :idPlayer')
+            ->setParameter('idPlayer', $id);
+        return $qb->getQuery()
+            ->getResult()
+            ;
+    }
+
+
+
     // /**
     //  * @return Sprint[] Returns an array of Sprint objects
     //  */

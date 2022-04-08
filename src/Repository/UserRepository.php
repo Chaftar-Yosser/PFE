@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Search;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,6 +20,22 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+
+    public function getUser(Search $search = null)
+    {
+        $qb = $this->createQueryBuilder('u');
+        $qb->select("u");
+        if ($search && $search->getRole()){
+            //filter by role user
+            $qb->andWhere($qb->expr()->like("u.role",":userRole"))
+                ->setParameter(
+                    "userRole"  , '%"'.$search->getRole().'"%');
+            ;
+        }
+        return $qb->getQuery()
+            ->getResult()
+            ;
+    }
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
@@ -47,4 +64,5 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
     */
+
 }

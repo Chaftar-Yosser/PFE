@@ -7,6 +7,7 @@ use App\Repository\TasksRepository;
 use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -26,13 +27,14 @@ class HomeController extends AbstractController
      * @return Response
      */
 
-    public function index(TasksRepository $tasksRepository): Response
+    public function index(TasksRepository $tasksRepository , Request $request): Response
     {
+//        dd($request->request->get('id'));
         $user = $this->getUser();
         if ($this->isGranted('ROLE_ADMIN')){
-            $events = $tasksRepository->findAll();
+            $events = $tasksRepository->getTaskByDate();
         }else{
-            $events = $user->getTasks();
+            $events = $tasksRepository->getTaskByDate($user);
         }
         // afficher les tâches sur une calendrier
         $tasks = [];
@@ -58,11 +60,13 @@ class HomeController extends AbstractController
                 'end' => $event->getDateFin()->format('Y-m-d H:i:s'),
                 'title' => $event->getTaskName(),
                 'status' => $event->getStatus(),
-                'backgroundColor' => $color
+                'backgroundColor' => $color,
+                'editUrl' => $this->generateUrl('edit_task', ['id'=>$event->getId()] )
             ];
         }
         $data = json_encode($tasks);
-        return $this->render('pages/home.html.twig', compact('data', 'events'));
+        $users = $this->repository->findAll();
+        return $this->render('pages/home.html.twig', compact('data', 'events', 'users'));
     }
 
     public function notfound(): Response

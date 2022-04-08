@@ -65,7 +65,9 @@ class ProjectController extends AbstractController
         }
 
         $Project = new Projects();
-        $form = $this->createForm(ProjectType::class, $Project);
+        $form = $this->createForm(ProjectType::class, $Project, [
+            'create' =>true
+        ]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
 

@@ -2,14 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Search;
 use App\Entity\User;
+use App\Form\SearchType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,15 +42,22 @@ class UserController extends AbstractController
      */
 
     //@IsGranted("ROLE_ADMIN")
-    public function index(  PaginatorInterface $paginator , Request $request ,UserRepository $userRepository): Response
-    {   //pagination
+    public function index(  PaginatorInterface $paginator , Request $request): Response
+    {
+        //Filter
+        $search = new Search();
+        $form = $this->createForm(SearchType::class,$search);
+        $form->handleRequest($request);
+
+        //pagination
         $users = $paginator->paginate(
-            $this->repository->findAll(), /* query NOT result */
+            $this->repository->getUser($search), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             3 /*limit per page*/
         );
         return $this->render('user/index.html.twig',[
             'users' => $users,
+            'form' => $form->createView()
         ]);
     }
 

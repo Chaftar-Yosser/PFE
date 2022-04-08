@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Contrat;
+use App\Entity\Search;
 use App\Entity\User;
 use App\Form\ContratType;
+use App\Form\SearchType;
 use App\Repository\ContratRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -39,10 +41,15 @@ class ContratController extends AbstractController
      */
     public function index(PaginatorInterface $paginator , Request $request): Response
     {
+        // Filter
+        $search = new Search();
+        $form = $this->createForm(SearchType::class,$search);
+        $form->handleRequest($request);
+
         // affichage des contrats pour l'utilisateur courant
         $user = $this->getUser();
         if ($this->isGranted('ROLE_ADMIN')){
-            $contrat = $this->repository->findAll();
+            $contrat = $this->repository->getContrats($search);
         }else{
             $contrat = $this->repository->findBy(["user" => $user]);
         }
@@ -54,6 +61,7 @@ class ContratController extends AbstractController
         );
         return $this->render('contrat/index.html.twig',[
             'contrats' => $contrat,
+            'form' => $form->createView()
         ]);
     }
 

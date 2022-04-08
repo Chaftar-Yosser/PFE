@@ -33,6 +33,7 @@
             <div class="login-logo">
                 <a href="template.html.twig"></a>
             </div>
+
             <!-- /.login-logo -->
             <div class="login-box-body">
                 <p class="login-box-msg">Sign in to start your session</p>
@@ -45,6 +46,13 @@
                     <div class="form-group has-feedback">
                         <input type="password" class="form-control" placeholder="Password" id="password" name="_password">
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+{#                        <div >#}
+{#                            {% for message in app.flashes('error') %}#}
+{#                                <div>#}
+{#                                    {{ message }}#}
+{#                                </div>#}
+{#                            {% endfor %}#}
+{#                        </div>#}
                     </div>
                     <div class="row">
                         <div class="col-xs-8">

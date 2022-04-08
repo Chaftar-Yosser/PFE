@@ -5,6 +5,9 @@
               text-decoration: line-through;
               color: #DBA7E2;
           }
+          .wrap{
+              color: #DBA7E2;
+          }
       </style>
   {% endblock %}
 
@@ -21,31 +24,65 @@
                             <div class="box-header">
                                 <i class="ion ion-clipboard"></i>
                                 <h3 class="box-title">To Do List</h3>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <select id="user" class="form-control user">
+                                        {% for user in users %}
+                                            <option value="{{ user.id }}"  selected="selected" >{{ user.lastname }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <div class="box-body">
+                                        <ul class="todo-list" id="user-tasks"></ul>
+                                    </div>
+                                {% endif %}
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
                                 <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
-                                <ul id="todo-list">
-                                    {% for task in events %}
-                                        <li>
-                                            <!-- checkbox -->
-                                            <input type="checkbox" class="task-checkbox" value="" id="{{ task.id }}">
-                                            <!-- todo text -->
-                                            <span class="text" data-id="{{ task.id }}">{{ task.taskName }}</span>
-                                            <!-- Emphasis label -->
-                                            <small class="label label-default"><i class="fa fa-clock-o"></i>{{ task.duree }}</small>
-                                        </li>
-                                    {% endfor %}
+                                <ul class="todo-list">
+                                    {% if is_granted('ROLE_DEV') %}
+                                        {% for task in events %}
+                                            <li>
+                                                 <span class="handle">
+                                                    <i class="fa fa-ellipsis-v"></i>
+                                                    <i class="fa fa-ellipsis-v"></i>
+                                                 </span>
+                                                <!-- checkbox -->
+                                                <input type="checkbox" class="task-checkbox" value="" id="{{ task.id }}">
+                                                <!-- todo text -->
+                                                <span class="text" data-id="{{ task.id }}">{{ task.taskName }}</span>
+                                                <!-- Emphasis label -->
+                                                <small class="label label-default" data-toggle-id="{{ task.id }}" ><i class="fa fa-clock-o"></i>{{ task.duree }}</small>
+                                            </li>
+                                        {% endfor %}
+                                    {% endif %}
                                 </ul>
                             </div>
                         </div>
                 </div>
+                <!-- CALENDAR -->
                 <div class="col-md-9">
                     <div class="box box-primary">
                         <h2>Calendrier</h2>
                         <div class="box-body no-padding">
                             <!-- THE CALENDAR -->
                             <div id="calendar"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--popup-->
+                <div id="calendarModal" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content ">
+                            <div class="modal-header box box-primary">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
+                                <h3  id="modalTitle" class="modal-title"></h3>
+                            </div>
+                            <div id="modalBody" class="modal-body"></div>
+                            <div class="modal-footer">
+                                <a  class="btn btn-info" id="eventUrl">edit</a>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -59,12 +96,16 @@
 
     <script>
 
+
+
         // Add a "checked" symbol when clicking on a list item
         var events = document.querySelector('ul');
         $(".task-checkbox").change(function () {
             let taskId = $(this).attr("id");
             let taskSpan = $("span[data-id="+taskId+"]");
             taskSpan.toggleClass('strike');
+            let tasksmall = $("small[data-toggle-id="+taskId+"]") ;
+            tasksmall.toggleClass('wrap');
             //if checked add class to span
 
                 //en ajax modifier le statut du task
@@ -78,13 +119,39 @@
                     dataType:   'json',
                     async:      true,
 
-                    success: function() {}
+                    success: function() {
+
+                    }
 
                 });
 
         });
 
 
+        $(document).ready(function () {
+            $('.user').on('change', function() {
+                let userId= this.value ;
+                $.ajax({
+                    url:        '/task/ajax-user-tasks',
+                    type:       'POST',
+                    data:       {
+                        id: userId,
+                    },
+                    dataType:   'json',
+                    async:      true,
+
+                    success: function(response) {
+                        $('#user-tasks').empty();
+                        $.each(response.tasks, function (index, task) {
+                           $('#user-tasks').append(
+                               "<li>"+task.title+"</li>"
+                           )
+                        })
+                    }
+
+                });
+            });
+        });
         $(function () {
 
             /* initialize the external events
@@ -119,7 +186,7 @@
                     center: 'title',
                     right : 'month,agendaWeek,agendaDay'
                 },
-                locale : 'fr',//ne fonctionne pas
+                locale : 'fr',     //ne fonctionne pas
                 timeZone : 'Tunisie',
                 buttonText: {
                     today: 'today',
@@ -129,12 +196,27 @@
                 },
                 //Random default events
                 events    :  {{ data|raw  }},
-                editable  : true,
+                editable  : false,
                 eventResizableFromStart: true,
 
-            });
-            $('#calendar').on('eventChange', (e) => {
-                console.log(e)
+                //pop-up
+                eventClick:  function(event, jsEvent, view) {
+                    let content =   "<div >"
+                                        +"<h4>"+"Date début: "+event.start.format('DD/MM/YYYY')+"</h4>"+
+                                    "</div>"+
+
+                                    "<div >"
+                                        +"<h4>"+"Date fin: "+event.end.format('DD/MM/YYYY')+"</h4>" +
+                                    "</div>"+
+
+                                    "<div >"+"<h4>"+event.status+"</h4></div>"
+                    ;
+                    $('#modalTitle').html(event.title);
+                    $('#modalBody').html(content);
+                    $('#eventUrl').attr('href',event.editUrl);
+                    $('#calendarModal').modal();
+                },
+
             });
 
         })
