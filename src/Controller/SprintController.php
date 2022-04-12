@@ -37,13 +37,24 @@ class SprintController extends AbstractController
      */
     public function index(Projects $projects, PaginatorInterface $paginator , Request $request): Response
     {
+
+        $sprints =
         $sprint = $paginator->paginate(
             $this->repository->findBy(["project" => $projects]), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             3 /*limit per page*/
         );
+        // calcul de percentage d'avancement d'un sprint
+        $total = 0;
+        foreach ($projects->getSprints() as $projectSprint){
+            $total += $this->em->getRepository(Sprint::class)->getSprintAdvancement($projectSprint);
+        }
+
+        $percent = $total / $projects->getSprints()->count();
+
         return $this->render('sprint/index.html.twig', [
             'Sprint' => $sprint,
+            'percent' => round($percent, 2),
         ]);
     }
 

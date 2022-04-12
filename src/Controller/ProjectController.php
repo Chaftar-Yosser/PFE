@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Projects;
+use App\Entity\Sprint;
 use App\Form\ProjectType;
 use App\Repository\ProjectsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -37,9 +38,28 @@ class ProjectController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
+        $projects = [];
+        foreach ($this->repository->findAll() as $project){
+            // calcul de percentage d'avancement de chaque projet
+            $total = 0;
+            foreach ($project->getSprints() as $projectSprint){
+                $total += $this->em->getRepository(Sprint::class)->getSprintAdvancement($projectSprint);
+            }
+
+            if ($project->getSprints()->count() == 0 ){
+                $percent = 0;
+            }else {
+                $percent = $total / $project->getSprints()->count();
+            }
+
+            $projects[] = [
+                "project" => $project,
+                "percent" => round($percent, 2),
+            ];
+        }
         //pagination
         $Project = $paginator->paginate(
-            $this->repository->findAll(), /* query NOT result */
+            $projects, /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             3 /*limit per page*/
         );

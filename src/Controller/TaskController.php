@@ -78,9 +78,12 @@ class TaskController extends AbstractController
         $taskRepository = $this->em->getRepository(Tasks::class);
         // affichage des tâches selon les sprints pour l'utilisateur courant
         $tasks = $taskRepository->getTasksByUserAndSprint($user, $sprint);
+        // calcul de percentage d'avancement d'une tâche
+        $percent = $this->em->getRepository(Sprint::class)->getSprintAdvancement($sprint);
         return $this->render('task/sprintTasks.html.twig', [
             'sprint' => $sprint,
             'tasks' => $tasks,
+            'percent' => round($percent, 2),
         ]);
     }
 

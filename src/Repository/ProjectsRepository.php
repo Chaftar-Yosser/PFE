@@ -19,6 +19,19 @@ class ProjectsRepository extends ServiceEntityRepository
         parent::__construct($registry, Projects::class);
     }
 
+
+//    public function getProjectAdvancement($projects)
+//    {
+//        $qb = $this->createQueryBuilder('p');
+//        $qb->join("p.sprint", "s")
+//            ->join("p.sprint", "s")
+//            ->select()
+//            ->where()
+//            ->setParameter('project', $projects);
+//        return $qb->getQuery()->getSingleScalarResult()
+//            ;
+//    }
+
     // /**
     //  * @return Projects[] Returns an array of Projects objects
     //  */

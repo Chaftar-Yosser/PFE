@@ -43,6 +43,7 @@
                                     <th>duree</th>
                                     <th>date_debut</th>
                                     <th>date_fin</th>
+                                    <th>Percent</th>
                                     <th>
                                         {% if is_granted('ROLE_ADMIN') %}
                                             <a  class="btn btn-success" href={{ path("create_project") }}>Créer</a>
@@ -52,6 +53,8 @@
                             </thead>
                             <tbody id="myTable">
                                 {% for project in projects %}
+                                    {% set percent = project.percent %}
+                                    {% set project = project.project %}
                                     <tr>
                                         <td>{{ project.id }}</td>
                                         <td>{{ project.name}}</td>
@@ -59,6 +62,7 @@
                                         <td>{{ project.duree}}</td>
                                         <td>{{ project.datedebut|date('d/m/Y')}}</td>
                                         <td>{{ project.datefin|date('d/m/Y')}}</td>
+                                        <td>{{ percent }}</td>
                                         <td >
                                             {% if is_granted('ROLE_ADMIN') %}
                                                 <a  class="btn btn-info" href={{ path("edit_project", {"id": project.id}) }}, style="display: inline-block"> Editer </a>

@@ -40,8 +40,8 @@
                                 </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-                    <li class="active"><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+                    <li><a href="{{ path ('home_index') }}"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
+{#                    <li class="active"><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>#}
                 </ul>
             </li>
         </ul>
@@ -88,21 +88,32 @@
                 </ul>
             </li>
         </ul>
-{#        {% if is_granted('ROLE_ADMIN') %}#}
-            <ul class="sidebar-menu" data-widget="tree">
-                <li class="treeview active">
-                    <a href="#">
-                        <i class="fa fa-edit"></i> <span>Tâches</span>
-                        <span class="pull-right-container">
-                                    <i class="fa fa-angle-left pull-right"></i>
-                                </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="{{ path("task_index") }}"><i class="fa fa-circle-o"></i> Consulter Tâches</a></li>
-                    </ul>
-                </li>
-            </ul>
-{#        {% endif %}#}
+{#        <ul class="sidebar-menu" data-widget="tree">#}
+{#            <li class="treeview active">#}
+{#                <a href="#">#}
+{#                    <i class="fa fa-edit"></i> <span>Sprint</span>#}
+{#                    <span class="pull-right-container">#}
+{#                                    <i class="fa fa-angle-left pull-right"></i>#}
+{#                                </span>#}
+{#                </a>#}
+{#                <ul class="treeview-menu">#}
+{#                    <li><a href="{{ path("sprint_index") }}"><i class="fa fa-circle-o"></i> Consulter Sprint</a></li>#}
+{#                </ul>#}
+{#            </li>#}
+{#        </ul>#}
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="treeview active">
+                <a href="#">
+                    <i class="fa fa-edit"></i> <span>Tâches</span>
+                    <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{{ path("task_index") }}"><i class="fa fa-circle-o"></i> Consulter Tâches</a></li>
+                </ul>
+            </li>
+        </ul>
         <ul class="sidebar-menu" data-widget="tree">
             <li class="treeview active">
                 <a href="#">

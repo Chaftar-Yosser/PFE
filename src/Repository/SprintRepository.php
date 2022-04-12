@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Sprint;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Sprint|null find($id, $lockMode = null, $lockVersion = null)
@@ -20,14 +21,14 @@ class SprintRepository extends ServiceEntityRepository
     }
 
 
-    public function Avg($id)
+    public function getSprintAdvancement($sprint)
     {
-        $qb = $this->createQueryBuilder('s')
-            ->select("avg(s.avancement)")
-            ->where('s.idPlayer = :idPlayer')
-            ->setParameter('idPlayer', $id);
-        return $qb->getQuery()
-            ->getResult()
+        $qb = $this->createQueryBuilder('s');
+        $qb->join("s.tasks", "t")
+            ->select("avg(t.avancement)")
+            ->where($qb->expr()->eq('s', ':sprint'))
+            ->setParameter('sprint', $sprint);
+        return $qb->getQuery()->getSingleScalarResult()
             ;
     }
 
