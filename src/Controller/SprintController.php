@@ -38,7 +38,6 @@ class SprintController extends AbstractController
     public function index(Projects $projects, PaginatorInterface $paginator , Request $request): Response
     {
 
-        $sprints =
         $sprint = $paginator->paginate(
             $this->repository->findBy(["project" => $projects]), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/

@@ -62,7 +62,7 @@
                                         <td>{{ project.duree}}</td>
                                         <td>{{ project.datedebut|date('d/m/Y')}}</td>
                                         <td>{{ project.datefin|date('d/m/Y')}}</td>
-                                        <td>{{ percent }}</td>
+                                        <td>{{ percent }}%</td>
                                         <td >
                                             {% if is_granted('ROLE_ADMIN') %}
                                                 <a  class="btn btn-info" href={{ path("edit_project", {"id": project.id}) }}, style="display: inline-block"> Editer </a>

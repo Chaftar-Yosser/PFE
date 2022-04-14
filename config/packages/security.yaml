@@ -16,6 +16,9 @@ security:
             security: false
         main:
             lazy: true
+            logout:
+                path: /logout
+                target: /
             form_login:
                 # "login" is the name of the route created previously
                 login_path: login

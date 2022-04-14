@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-md-3">
                         <!-- TO DO List -->
-                        <div class="box box-primary">
+                    <div class="box box-primary">
                             <div class="box-header">
                                 <i class="ion ion-clipboard"></i>
                                 <h3 class="box-title">To Do List</h3>
@@ -75,7 +75,10 @@
                     <div class="modal-dialog">
                         <div class="modal-content ">
                             <div class="modal-header box box-primary">
-                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">×</span>
+                                    <span class="sr-only">close</span>
+                                </button>
                                 <h3  id="modalTitle" class="modal-title"></h3>
                             </div>
                             <div id="modalBody" class="modal-body"></div>
@@ -83,6 +86,72 @@
                                 <a  class="btn btn-info" id="eventUrl">edit</a>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="schedule-calendar"></div>
+                <!-- Add Modal -->
+                <div class="modal fade" id="schedule-add">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Remplire le formulaire</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body"></div>
+                            {{ form_start(form) }}
+                            <div class="box-body">
+                                <div class="form-group">
+                                    {{ form_label(form.userFrom) }}
+                                    {{ form_widget(form.userFrom) }}
+                                    <div class="form-error">
+                                        {{ form_errors(form.userFrom) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.userTo) }}
+                                    {{ form_widget(form.userTo) }}
+                                    <div class="form-error">
+                                        {{ form_errors(form.userTo) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.Leave_type) }}
+                                    {{ form_widget(form.Leave_type) }}
+                                    <div class="form-error">
+                                        {{ form_errors(form.Leave_type) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.startDate) }}
+                                    {{ form_widget(form.startDate) }}
+                                    <div class="form-error">
+                                        {{ form_errors(form.startDate) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.endDate) }}
+                                    {{ form_widget(form.endDate) }}
+                                    <div class="form-error">
+                                        {{ form_errors(form.endDate) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(form.status) }}
+                                    {{ form_widget(form.status) }}
+                                    <div class="form-error">
+                                        {{ form_errors(form.status) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-info" id="eventUrl"/>
+                            </div>
+                            {{ form_end(form) }}
                         </div>
                     </div>
                 </div>
@@ -198,23 +267,40 @@
                 events    :  {{ data|raw  }},
                 editable  : false,
                 eventResizableFromStart: true,
+                eventColor: '#D47DB2',
+                eventRender: function (event, element) {
+                    $(element).popover({
+                        title: event.title , status: event.status , trigger: 'hover', placement: 'auto right', delay: {"hide": 300 },
+                    });
+                },
 
                 //pop-up
                 eventClick:  function(event, jsEvent, view) {
-                    let content =   "<div >"
-                                        +"<h4>"+"Date début: "+event.start.format('DD/MM/YYYY')+"</h4>"+
-                                    "</div>"+
+                    if (event.type === "TASK"){
+                        let content =   "<div >"
+                            +"<h4>"+"Date début: "+event.start.format('DD/MM/YYYY')+"</h4>"+
+                            "</div>"+
 
-                                    "<div >"
-                                        +"<h4>"+"Date fin: "+event.end.format('DD/MM/YYYY')+"</h4>" +
-                                    "</div>"+
+                            "<div >"
+                            +"<h4>"+"Date fin: "+event.end.format('DD/MM/YYYY')+"</h4>" +
+                            "</div>"+
 
-                                    "<div >"+"<h4>"+event.status+"</h4></div>"
-                    ;
-                    $('#modalTitle').html(event.title);
-                    $('#modalBody').html(content);
-                    $('#eventUrl').attr('href',event.editUrl);
-                    $('#calendarModal').modal();
+                            "<div >"+"<h4>"+event.status+"</h4></div>"
+                        ;
+                        $('#modalTitle').html(event.title);
+                        $('#modalBody').html(content);
+                        $('#eventUrl').attr('href',event.editUrl);
+                        $('#calendarModal').modal();
+                    }
+
+                },
+
+                dayClick: function(date, jsEvent, view) {
+                    // récupérer la data cliquer
+                    $('#leave_startDate'). val(date.format())
+
+                    $('#schedule-add').modal('show');
+
                 },
 
             });

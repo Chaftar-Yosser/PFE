@@ -63,11 +63,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Contrat::class)]
     private $contrats;
 
+    #[ORM\OneToMany(mappedBy: 'userTo', targetEntity: Leave::class)]
+    private $leaves;
+
 
     public function __construct()
     {
         $this->Tasks = new ArrayCollection();
         $this->contrats = new ArrayCollection();
+        $this->leaves = new ArrayCollection();
 
     }
 
@@ -233,6 +237,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($contrat->getUser() === $this) {
                 $contrat->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Leave>
+     */
+    public function getLeaves(): Collection
+    {
+        return $this->leaves;
+    }
+
+    public function addLeaf(Leave $leaf): self
+    {
+        if (!$this->leaves->contains($leaf)) {
+            $this->leaves[] = $leaf;
+            $leaf->setUserTo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLeaf(Leave $leaf): self
+    {
+        if ($this->leaves->removeElement($leaf)) {
+            // set the owning side to null (unless already changed)
+            if ($leaf->getUserTo() === $this) {
+                $leaf->setUserTo(null);
             }
         }
 

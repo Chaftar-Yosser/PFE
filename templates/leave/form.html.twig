@@ -1,0 +1,53 @@
+<div class="box box-primary">
+    {{ form_start(form) }}
+    <div class="box-body">
+        <div class="form-group">
+            {{ form_label(form.userFrom) }}
+            {{ form_widget(form.userFrom) }}
+            <div class="form-error">
+                {{ form_errors(form.userFrom) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.userTo) }}
+            {{ form_widget(form.userTo) }}
+            <div class="form-error">
+                {{ form_errors(form.userTo) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.Leave_type) }}
+            {{ form_widget(form.Leave_type) }}
+            <div class="form-error">
+                {{ form_errors(form.Leave_type) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.startDate) }}
+            {{ form_widget(form.startDate) }}
+            <div class="form-error">
+                {{ form_errors(form.startDate) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.endDate) }}
+            {{ form_widget(form.endDate) }}
+            <div class="form-error">
+                {{ form_errors(form.endDate) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(form.status) }}
+            {{ form_widget(form.status) }}
+            <div class="form-error">
+                {{ form_errors(form.status) }}
+            </div>
+        </div>
+    </div>
+    <!-- /.box-body -->
+
+    <div class="box-footer">
+        <input type="submit" class="btn btn-primary" value="{{ button }}"/>
+    </div>
+    {{ form_end(form) }}
+</div>

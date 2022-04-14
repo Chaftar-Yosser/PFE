@@ -85,6 +85,26 @@ class SearchType extends AbstractType
                     'class' => "form-control ",
                 ]
             ])
+            ->add('userFrom', EntityType::class,[
+                'class' => User::class,
+                'choice_label'  => 'lastname',
+                'required' => false,
+                'label' => 'user :',
+                'attr' => [
+                    'placeholder' => false,
+                    'class' => "form-control ",
+                ]
+            ])
+            ->add('Leave_type', EntityType::class,[
+                'class' => \App\Entity\LeaveType::class,
+                'choice_label'  => 'name',
+                'required' => false,
+                'label' => 'type congés :',
+                'attr' => [
+                    'placeholder' => false,
+                    'class' => "form-control ",
+                ]
+            ])
         ;
     }
 

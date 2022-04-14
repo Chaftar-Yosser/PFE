@@ -34,6 +34,14 @@ class Search
      * @var null
      */
     private $role;
+    /**
+     * @var null
+     */
+    private $Leave_type ;
+    /**
+     * @var null
+     */
+    private $userFrom ;
 
     /**
      * @return null
@@ -140,6 +148,42 @@ class Search
     public function setRole($role)
     {
         $this->role = $role;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getLeaveType()
+    {
+        return $this->Leave_type;
+    }
+
+    /**
+     * @param null $Leave_type
+     * @return Search
+     */
+    public function setLeaveType($Leave_type)
+    {
+        $this->Leave_type = $Leave_type;
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getUserFrom()
+    {
+        return $this->userFrom;
+    }
+
+    /**
+     * @param null $userFrom
+     * @return Search
+     */
+    public function setUserFrom($userFrom)
+    {
+        $this->userFrom = $userFrom;
         return $this;
     }
 
