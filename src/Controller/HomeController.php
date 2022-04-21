@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 
@@ -18,10 +19,10 @@ class HomeController extends AbstractController
     private $repository;
     private $em;
 
-    public function __construct(EntityManagerInterface $em,  UserRepository $userRepository)
+    public function __construct(EntityManagerInterface $em, UserRepository $userRepository)
     {
         $this->em = $em;
-        $this->repository= $userRepository;
+        $this->repository = $userRepository;
     }
 
 
@@ -31,19 +32,19 @@ class HomeController extends AbstractController
      * @return Response
      */
 
-    public function index(TasksRepository $tasksRepository , Request $request): Response
+    public function index(TasksRepository $tasksRepository, Request $request): Response
     {
         $user = $this->getUser();
-        if ($this->isGranted('ROLE_ADMIN')){
+        if ($this->isGranted('ROLE_ADMIN')) {
             $events = $tasksRepository->getTaskByDate();
-        }else{
+        } else {
             $events = $tasksRepository->getTaskByDate($user);
         }
         // afficher les tâches sur une calendrier
         $tasks = [];
         /** @var Tasks $event */
-        foreach($events as $event){
-            switch ($event->getPriorite()){
+        foreach ($events as $event) {
+            switch ($event->getPriorite()) {
                 case "Elevée":
                     $color = "#B61702";
                     break;
@@ -51,21 +52,21 @@ class HomeController extends AbstractController
                     $color = "#91E302";
                     break;
                 case "Moyenne":
-                    $color = "#FEC68B" ;
+                    $color = "#FEC68B";
                     break;
                 default:
                     $color = "#02BEF2";
                     break;
             }
             $tasks[] = [
-                'type'=> "TASK" ,
+                'type' => "TASK",
                 'id' => $event->getId(),
                 'start' => $event->getDateDebut()->format('Y-m-d H:i:s'),
                 'end' => $event->getDateFin()->format('Y-m-d H:i:s'),
                 'title' => $event->getTaskName(),
                 'status' => $event->getStatus(),
                 'backgroundColor' => $color,
-                'editUrl' => $this->generateUrl('edit_task', ['id'=>$event->getId()] )
+                'editUrl' => $this->generateUrl('edit_task', ['id' => $event->getId()])
             ];
         }
         $users = $this->repository->findAll();
@@ -73,30 +74,49 @@ class HomeController extends AbstractController
         // afficher les congés sur une calendrier
         $leaves = $this->em->getRepository(Leave::class)->getLeaveByDateAndUser($user);
         /** @var Leave $event */
-        foreach ($leaves as $leave){
-            $tasks[] = [
-                'type'=> "LEAVE" ,
-               'id' => $leave->getId(),
-               'start' =>$leave->getStartDate()->format('Y-m-d'),
-               'end' =>$leave->getEndDate()->format('Y-m-d'),
-                'status' =>$leave->getStatus(),
-                'title' =>$leave->getLeaveType()->getName(),
-            ];
+        foreach ($leaves as $leave) {
+            if ($leave->getStatus() == Leave::STATUS_ACCEPTER) {
+                $tasks[] = [
+                    'type' => "LEAVE",
+                    'id' => $leave->getId(),
+                    'start' => $leave->getStartDate()->format('Y-m-d'),
+                    'end' => $leave->getEndDate()->format('Y-m-d'),
+                    'status' => $leave->getStatus(),
+                    'title' => $leave->getLeaveType()->getName(),
+                ];
+            }
         }
+
+        $holidays[] = [
+            "title" => "Journée des martyrs",
+            "start" => "2022-04-09",
+            "holiday" => "1",
+        ];
+        $holidays[] = [
+            "title" => "Fête du Travail",
+            "start" => "2022-05-01",
+            "holiday" => "1",
+        ];
+        $holidays[] = [
+            "title" => "Fête de la République",
+            "start" => "2022-07-25",
+            "holiday" => "1",
+        ];
+        $tasks = array_merge($holidays, $tasks);
 
         // formulaire d'ajout de congés
         $newLeave = new Leave();
         $form = $this->createForm(\App\Form\LeaveType::class, $newLeave);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $this->em->persist($newLeave);
             $this->em->flush();
-            $this->addFlash('success' , 'demande crée avec succés!');
+            $this->addFlash('success', 'demande crée avec succés!');
             return $this->redirectToRoute('home_index');
         }
 
-        return $this->render('pages/home.html.twig',[
+        return $this->render('pages/home.html.twig', [
             'data' => json_encode($tasks),
             'events' => $events,
             'users' => $user,

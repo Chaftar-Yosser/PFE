@@ -8,6 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ContratRepository::class)]
 class Contrat
 {
+    const STATUS_EN_COURS="En Cours";
+    const STATUS_RESILIE="Résilié";
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -65,7 +69,7 @@ class Contrat
 
     public function getDateDebut(): ?\DateTimeInterface
     {
-        return $this->date_debut;
+        return clone $this->date_debut;
     }
 
     public function setDateDebut(\DateTimeInterface $date_debut): self
@@ -80,7 +84,7 @@ class Contrat
      */
     public function getDateFin()
     {
-        return $this->date_fin;
+        return clone $this->date_fin;
     }
 
     /**

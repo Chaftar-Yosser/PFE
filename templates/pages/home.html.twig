@@ -146,8 +146,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Modal footer -->
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-info" id="eventUrl"/>
                             </div>
@@ -267,11 +265,20 @@
                 events    :  {{ data|raw  }},
                 editable  : false,
                 eventResizableFromStart: true,
-                eventColor: '#D47DB2',
-                eventRender: function (event, element) {
+                // eventColor: '#D47DB2',
+                eventRender: function(event, element, view) {
                     $(element).popover({
                         title: event.title , status: event.status , trigger: 'hover', placement: 'auto right', delay: {"hide": 300 },
                     });
+
+                    // si event 3andou propriété holiday , on change le background
+                    if (event.holiday === '1') {
+                        var dateString = event.start.format("YYYY-MM-DD");
+
+                        $(view.el[0]).find('.fc-day[data-date=' + dateString + ']')
+                            .css('background-color', '#008000')
+                        ;
+                    }
                 },
 
                 //pop-up

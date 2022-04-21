@@ -57,22 +57,21 @@ class LeaveRepository extends ServiceEntityRepository
             ;
     }
 
-    // /**
-    //  * @return Leave[] Returns an array of Leave objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findLeaveBy($user, $dateStart , $dateEnd)
     {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('l.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('l');
+        $qb->select("l")
+            ->andWhere($qb->expr()->eq("l.userFrom", ":userFrom"))
+            ->setParameter("userFrom", $user)
+            ->andWhere($qb->expr()->eq("l.status", ":status"))
+            ->setParameter("status", Leave::STATUS_ACCEPTER)
+            ->andWhere($qb->expr()->gte("l.startDate" ,":dateStart" ))  // gte() hiya nafsha " >= "
+            ->setParameter("dateStart" ,$dateStart)
+             ->andWhere($qb->expr()->lte("l.endDate" ,":dateEnd" ))  // gte() hiya nafsha " >= "
+             ->setParameter("dateEnd" ,$dateEnd);
+        return $qb->getQuery()->getResult();
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Leave

@@ -44,26 +44,25 @@ class ContratRepository extends ServiceEntityRepository
             ;
     }
 
-
-
-
-
-    // /**
-    //  * @return Contrat[] Returns an array of Contrat objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    // get last contrat
+    public function getUserContrat($user)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('c');
+
+            $qb->andWhere($qb->expr()->gte('c.date_fin', ':now'))
+                ->setParameter("now",new \DateTime());
+            $qb->andWhere($qb->expr()->eq("c.status", ":status"))
+                ->setParameter("status", Contrat::STATUS_EN_COURS);
+        if ($user){
+            $qb->andWhere($qb->expr()->eq("c.user", ":user"))
+                ->setParameter("user", $user);
+        }
+        $qb->orderBy("c.date_fin", "ASC");
+        $result = $qb->getQuery()->getResult();
+        return  $result ? $result[0] : null;
     }
-    */
+
+
 
     /*
     public function findOneBySomeField($value): ?Contrat

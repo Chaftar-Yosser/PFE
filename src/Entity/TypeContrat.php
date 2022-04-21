@@ -21,6 +21,9 @@ class TypeContrat
     #[ORM\OneToMany(mappedBy: 'type_contrat', targetEntity: Contrat::class)]
     private $contrats;
 
+    #[ORM\Column(type: 'float', nullable: false)]
+    private $maxJours;
+
     public function __construct()
     {
         $this->contrats = new ArrayCollection();
@@ -69,6 +72,18 @@ class TypeContrat
                 $contrat->setTypeContrat(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMaxJours(): ?float
+    {
+        return $this->maxJours;
+    }
+
+    public function setMaxJours(?float $maxJours): self
+    {
+        $this->maxJours = $maxJours;
 
         return $this;
     }

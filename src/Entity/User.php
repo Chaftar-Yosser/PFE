@@ -66,12 +66,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'userTo', targetEntity: Leave::class)]
     private $leaves;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: SuiviLeave::class)]
+    private $suiviLeaves;
+
 
     public function __construct()
     {
         $this->Tasks = new ArrayCollection();
         $this->contrats = new ArrayCollection();
         $this->leaves = new ArrayCollection();
+        $this->suiviLeaves = new ArrayCollection();
 
     }
 
@@ -267,6 +271,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($leaf->getUserTo() === $this) {
                 $leaf->setUserTo(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SuiviLeave>
+     */
+    public function getSuiviLeaves(): Collection
+    {
+        return $this->suiviLeaves;
+    }
+
+    public function addSuiviLeaf(SuiviLeave $suiviLeaf): self
+    {
+        if (!$this->suiviLeaves->contains($suiviLeaf)) {
+            $this->suiviLeaves[] = $suiviLeaf;
+            $suiviLeaf->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSuiviLeaf(SuiviLeave $suiviLeaf): self
+    {
+        if ($this->suiviLeaves->removeElement($suiviLeaf)) {
+            // set the owning side to null (unless already changed)
+            if ($suiviLeaf->getUser() === $this) {
+                $suiviLeaf->setUser(null);
             }
         }
 

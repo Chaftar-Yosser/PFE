@@ -72,4 +72,5 @@ class LeaveType
 
         return $this;
     }
+
 }

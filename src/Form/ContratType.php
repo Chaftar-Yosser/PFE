@@ -46,6 +46,13 @@ class ContratType extends AbstractType
                         'class' => "form-control ",
                     ]
             ])
+//            ->add('max_jours',EntityType::class,[
+//                'class' =>  TypeContrat::class,
+//                'choice_label' => 'maxJours',
+//                'attr' => [
+//                    'class' => "form-control ",
+//                ]
+//            ])
             ->add('user', EntityType::class, [
                 'class' =>  User::class,
                 'choice_label' => 'lastname',
