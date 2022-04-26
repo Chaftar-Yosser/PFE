@@ -40,9 +40,11 @@
 
                 <form action="{{ path('login') }}" method="post">
                     <div class="form-group has-feedback">
+                        <label> Email </label>
                         <input type="email" class="form-control" placeholder="Email"  id="username" name="_username" >
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
+                    <label> Mot de passe  </label>
                     <div class="form-group has-feedback">
                         <input type="password" class="form-control" placeholder="Password" id="password" name="_password">
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
@@ -56,11 +58,11 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-8">
-                            <div class="checkbox icheck-center">
-                                <label>
-                                    <input type="checkbox"> Remember Me
-                                </label>
-                            </div>
+{#                            <div class="checkbox icheck-center">#}
+{#                                <label>#}
+{#                                    <input type="checkbox"> Remember Me#}
+{#                                </label>#}
+{#                            </div>#}
                         </div>
                         <!-- /.col -->
                         <div class="col-xs-4">
@@ -69,7 +71,7 @@
                         <!-- /.col -->
                     </div>
                 </form>
-                <a href="{{ path('app_forgot_password_request') }}">I forgot my password</a><br>
+                <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié</a><br>
             </div>
             <!-- /.login-box-body -->
         </div>

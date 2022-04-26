@@ -88,6 +88,21 @@
                 </ul>
             </li>
         </ul>
+        {% if is_granted('ROLE_ADMIN') %}
+            <ul class="sidebar-menu" data-widget="tree">
+                <li class="treeview active">
+                    <a href="#">
+                        <i class="fa fa-edit"></i> <span>Skills</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ path("skills_index") }}"><i class="fa fa-circle-o"></i> Consulter Skills</a></li>
+                    </ul>
+                </li>
+            </ul>
+        {% endif %}
 {#        <ul class="sidebar-menu" data-widget="tree">#}
 {#            <li class="treeview active">#}
 {#                <a href="#">#}

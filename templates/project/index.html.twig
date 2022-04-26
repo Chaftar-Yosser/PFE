@@ -2,10 +2,6 @@
 
 {% block title %}{% endblock %}
 
-
-
-
-
 {% block body %}
     <div class="container text-center mt-4">
         <h1>Voir liste des projets </h1>
@@ -40,10 +36,10 @@
                                     <th>ID</th>
                                     <th>name</th>
                                     <th>status</th>
+                                    <th>Technologies</th>
                                     <th>duree</th>
                                     <th>date_debut</th>
                                     <th>date_fin</th>
-                                    <th>Percent</th>
                                     <th>
                                         {% if is_granted('ROLE_ADMIN') %}
                                             <a  class="btn btn-success" href={{ path("create_project") }}>Créer</a>
@@ -52,26 +48,58 @@
                                 </tr>
                             </thead>
                             <tbody id="myTable">
-                                {% for project in projects %}
-                                    {% set percent = project.percent %}
-                                    {% set project = project.project %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                {% for projectItem in projects %}
+                                    {% set project = projectItem.project %}
+                                    {% set percent = projectItem.percent %}
                                     <tr>
                                         <td>{{ project.id }}</td>
-                                        <td>{{ project.name}}</td>
-                                        <td>{{ project.status}}</td>
+                                        <td>{{ project.name }}</td>
+                                        <td>{{ project.status }}</td>
+                                        <td>
+                                            {% for skills in project.skills %}
+                                                {{ skills.name }}
+                                            {% endfor %}
+                                        </td>
                                         <td>{{ project.duree}}</td>
                                         <td>{{ project.datedebut|date('d/m/Y')}}</td>
                                         <td>{{ project.datefin|date('d/m/Y')}}</td>
-                                        <td>{{ percent }}%</td>
+                                        <td>
+                                            {{ percent }}
+                                            {% if not loop.last %}
+                                             %
+                                            {% endif %}
+                                        </td>
                                         <td >
                                             {% if is_granted('ROLE_ADMIN') %}
                                                 <a  class="btn btn-info" href={{ path("edit_project", {"id": project.id}) }}, style="display: inline-block"> Editer </a>
                                                 <a  class="btn btn-danger" onclick="return confirm('Etes vous sur ???');" href={{ path("delete_project", {"id": project.id}) }} > Supprimer </a>
                                             {% endif %}
                                             <a  class="btn btn-warning"  href={{ path("sprint_index", {"id": project.id}) }} >Sprint</a>
+                                            <a  class="btn btn-default"  href={{ path("show_details", {"id": project.id}) }} >Details</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
+                                {% else %}
+                                    {% for project in projects %}
+                                        <tr>
+                                            <td>{{ project.id }}</td>
+                                            <td>{{ project.name }}</td>
+                                            <td>{{ project.status }}</td>
+                                            <td>
+                                                {% for skills in project.skills %}
+                                                    {{ skills.name }}
+                                                {% endfor %}
+                                            </td>
+                                            <td>{{ project.duree}}</td>
+                                            <td>{{ project.datedebut|date('d/m/Y')}}</td>
+                                            <td>{{ project.datefin|date('d/m/Y')}}</td>
+                                            <td >
+                                                <a  class="btn btn-warning"  href={{ path("sprint_index", {"id": project.id}) }} >Sprint</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                            {% endif %}
                             </tbody>
                         </table>
                         <div class="navigation d-flex text-center justify-content-center">
@@ -84,6 +112,7 @@
             </div>
         </div>
     </section>
+
     <script>
         $(document).ready(function(){
             $("#myInput").on("keyup", function() {

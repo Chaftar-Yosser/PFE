@@ -51,7 +51,7 @@ class SuiviCongeCommand extends Command
                 $contrat->getTypeContrat()->getName();
 
                 $start_date = date_create($contrat->getDateDebut()->format("d/m/Y"));
-                $end_date = date_create($contrat->getDateFin()->format("d/m/Y")); // If you want to include this date, add 1 day
+                $end_date = date_create($contrat->getDateFin()->format("d/m/Y"));
 
                 $interval = \DateInterval::createFromDateString('1 month');
                 $daterange = new \DatePeriod($start_date, $interval, $end_date);
@@ -91,8 +91,6 @@ class SuiviCongeCommand extends Command
 
                     $maxJourMois = $contrat->getTypeContrat()->getMaxJours();
 
-
-
                     $oldRest = $suivi ? $suivi->getRestant() : 0;
                     $total = $oldRest + $maxJourMois;
 
@@ -119,64 +117,6 @@ class SuiviCongeCommand extends Command
 
             }
         }
-
-//die();
-//        $d = new \DateTimeImmutable();
-//        $firstDay = $d->modify('first day of previous month');
-//        $year = $firstDay->format('Y');
-//        $lastMonth = $firstDay->format('m');
-//        foreach ($users as $user ){
-//            //get user contract
-//            $contrat = $this->em->getRepository(Contrat::class)->getUserContrat($user);
-////            dump($contrat);
-////            die();
-//            if ($contrat){
-//                $name =$user->getLastname();
-//                $leaves = $this->em->getRepository(Leave::class)->findLeaveBy($user, $firstDay);
-//                $pris = 0;
-//                foreach ($leaves as $leave){
-//                    //get total pris
-//                    $end = $leave->getEndDate();
-//                    $pris += $end->diff($leave->getStartDate())->format("%a") ;
-//                }
-//
-//                $maxJourMois = $contrat->getTypeContrat()->getMaxJours();
-//                $Rest = $maxJourMois - $pris;
-//
-//                /** @var SuiviLeave $lastUserSuivi */
-//                $lastUserSuivi = $this->em->getRepository(SuiviLeave::class)->findOneBy([
-//                    "user" => $user,
-//                    "mois" => $lastMonth,
-//                    "annees" => $year,
-//                ]);
-//
-//                $oldRest = $lastUserSuivi ? $lastUserSuivi->getRestant() : 0;
-//                $totalRest = $oldRest + $Rest;
-//
-//                $output->writeln([$name . "=> " ."congés pris" . $pris. "=> " ."congés permis" . $maxJourMois
-//                    . "=> " ."congés rest" . $Rest . "=> " ."total restant" . $totalRest])
-//                ;
-//
-//                // new suivi (current month)
-//                $newSuivi = new SuiviLeave();
-//                if ($contrat->getDateFin() >= $date = new \DateTime()){
-//                    $newSuivi->setUser($user)
-//                        ->setAnnees($date->format('Y'))
-//                        ->setMois($date->format('m'))
-//                        ->setTotal($oldRest + $Rest)
-//                        ->setPris($pris)
-//                        ->setRestant($Rest)
-//                    ;
-//                }
-//
-//                    $this->em->persist($newSuivi);
-//                    $this->em->flush();
-//
-//            }
-//        }
-//        $date = new \DateTime();
-//        $this->curentMonth = $date->format('M');
-
         return Command::SUCCESS;
     }
 }

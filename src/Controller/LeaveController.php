@@ -41,6 +41,13 @@ class LeaveController extends AbstractController
         $form = $this->createForm(SearchType::class,$search);
         $form->handleRequest($request);
 
+//        $user = $this->getUser();
+//        if ($this->isGranted('ROLE_ADMIN')){
+//            $leave = $this->repository->getLeave($search);
+//        }else{
+//            $leave = $user->getLeaves();
+//        }
+
         $leave = $paginator->paginate(
             $leave = $this->repository->getLeave($search),
             /* query NOT result */

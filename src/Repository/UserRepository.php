@@ -2,10 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\Projects;
 use App\Entity\Search;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -36,22 +38,21 @@ class UserRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
+
+
+    // get user ili 3andou même skills avec le projet
+    public function getUsersByProjectSkills(Projects $project)
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('u');
+        $qb->select("u")
+            ->innerJoin("u.skills", 's')
+            ->andWhere($qb->expr()->in("s", ":skills"))
+            ->setParameter("skills"  , $project->getSkills());
+
+        return $qb->getQuery()->getResult();
     }
-    */
+
+
 
     /*
     public function findOneBySomeField($value): ?User

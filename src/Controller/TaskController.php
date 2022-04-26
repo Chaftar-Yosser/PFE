@@ -125,7 +125,6 @@ class TaskController extends AbstractController
                 'tasks' =>  $userTasks
             ]);
         }
-
     }
 
 

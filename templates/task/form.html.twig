@@ -11,10 +11,24 @@
                 </div>
             </div>
             <div class="form-group">
+                {{ form_label(form.Projects) }}
+                {{ form_widget(form.Projects) }}
+                <div class="form-error">
+                    {{ form_errors(form.Projects) }}
+                </div>
+            </div>
+            <div class="form-group">
                 {{ form_label(form.sprint) }}
                 {{ form_widget(form.sprint) }}
                 <div class="form-error">
                     {{ form_errors(form.sprint) }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.users) }}
+                {{ form_widget(form.users) }}
+                <div class="form-error">
+                    {{ form_errors(form.users) }}
                 </div>
             </div>
             <div class="form-group">
@@ -36,20 +50,6 @@
                 {{ form_widget(form.status) }}
                 <div class="form-error">
                     {{ form_errors(form.status) }}
-                </div>
-            </div>
-            <div class="form-group">
-                {{ form_label(form.Projects) }}
-                {{ form_widget(form.Projects) }}
-                <div class="form-error">
-                    {{ form_errors(form.Projects) }}
-                </div>
-            </div>
-            <div class="form-group">
-                {{ form_label(form.users) }}
-                {{ form_widget(form.users) }}
-                <div class="form-error">
-                    {{ form_errors(form.users) }}
                 </div>
             </div>
             <div class="form-group">

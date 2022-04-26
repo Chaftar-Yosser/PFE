@@ -58,7 +58,7 @@
                         <table class="table table-hover" id="table_id">
                             <thead>
                             <tr>
-                                <th>ID</th>
+{#                                <th>ID</th>#}
                                 <th>project</th>
                                 <th>sprint</th>
                                 <th>tâche</th>
@@ -80,7 +80,7 @@
                             <tbody id="myTable">
                                 {% for task in Tasks %}
                                     <tr>
-                                        <td>{{ task.id }}</td>
+{#                                        <td>{{ task.id }}</td>#}
                                         <td>{{ task.projects.name}}</td>
                                         <td>{{ task.sprint.name}}</td>
                                         <td>{{ task.taskname}}</td>
@@ -97,11 +97,11 @@
                                         <td>{{ task.avancement}} %</td>
                                         <td>{{ task.description}} </td>
                                         <td >
-                                            <a  class="btn bg-info" href={{ path("update_task", {"id": task.id}) }}> Update </a>
+                                            <a  class="btn bg-info" href={{ path("update_task", {"id": task.id}) }} , style="display: inline-block"> Update </a>
                                             {% if is_granted('ROLE_ADMIN') %}
                                                 <a  class="btn btn-info" href={{ path("edit_task", {"id": task.id}) }}, style="display: inline-block"> Editer </a>
                                                 <a  class="btn btn-danger" onclick="return confirm('Etes vous sur ???');"
-                                                    href={{ path("delete_task", {"id": task.id}) }} > Supprimer </a>
+                                                    href={{ path("delete_task", {"id": task.id}) }} , style="display: inline-block" > Supprimer </a>
                                             {% endif %}
                                         </td>
                                     </tr>

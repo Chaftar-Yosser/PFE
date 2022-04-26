@@ -36,10 +36,18 @@ class Projects
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Sprint::class)]
     private $sprints;
 
+    #[ORM\ManyToMany(targetEntity: Skills::class, inversedBy: 'projects')]
+    private $skills;
+
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'projects')]
+    private $users;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
         $this->sprints = new ArrayCollection();
+        $this->skills = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -166,4 +174,56 @@ class Projects
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Skills>
+     */
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    public function addSkill(Skills $skill): self
+    {
+        if (!$this->skills->contains($skill)) {
+            $this->skills[] = $skill;
+        }
+
+        return $this;
+    }
+
+    public function removeSkill(Skills $skill): self
+    {
+        $this->skills->removeElement($skill);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeProject($this);
+        }
+
+        return $this;
+    }
+
 }

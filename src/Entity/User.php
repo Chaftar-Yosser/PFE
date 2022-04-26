@@ -69,6 +69,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: SuiviLeave::class)]
     private $suiviLeaves;
 
+    #[ORM\ManyToMany(targetEntity: Skills::class, inversedBy: 'users')]
+    private $skills;
+
+    #[ORM\ManyToMany(targetEntity: Projects::class, inversedBy: 'users')]
+    private $projects;
+
 
     public function __construct()
     {
@@ -76,6 +82,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->contrats = new ArrayCollection();
         $this->leaves = new ArrayCollection();
         $this->suiviLeaves = new ArrayCollection();
+        $this->skills = new ArrayCollection();
+        $this->projects = new ArrayCollection();
 
     }
 
@@ -303,6 +311,54 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $suiviLeaf->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Skills>
+     */
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    public function addSkill(Skills $skill): self
+    {
+        if (!$this->skills->contains($skill)) {
+            $this->skills[] = $skill;
+        }
+
+        return $this;
+    }
+
+    public function removeSkill(Skills $skill): self
+    {
+        $this->skills->removeElement($skill);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Projects>
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Projects $project): self
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects[] = $project;
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Projects $project): self
+    {
+        $this->projects->removeElement($project);
 
         return $this;
     }

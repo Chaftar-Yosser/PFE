@@ -34,6 +34,7 @@ class HomeController extends AbstractController
 
     public function index(TasksRepository $tasksRepository, Request $request): Response
     {
+        $this->addFlash('success', 'demande crée avec succés!');
         $user = $this->getUser();
         if ($this->isGranted('ROLE_ADMIN')) {
             $events = $tasksRepository->getTaskByDate();

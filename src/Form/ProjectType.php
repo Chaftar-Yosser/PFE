@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Projects;
+use App\Entity\Skills;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -50,6 +52,16 @@ class ProjectType extends AbstractType
                 'attr' => [
                     'class' => "form-control ",
                 ]
+            ])
+
+            ->add('skills' , EntityType::class,[
+                'class' => Skills::class,
+                'choice_label' => 'name',
+                'attr' => [
+                    'class' => "form-control select2 ",
+                ],
+                'expanded'  => false,
+                'multiple'  => true,
             ])
         ;
         if (!$options['create']){

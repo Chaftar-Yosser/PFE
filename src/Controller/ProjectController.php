@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Projects;
+use App\Entity\Skills;
 use App\Entity\Sprint;
+use App\Entity\User;
 use App\Form\ProjectType;
 use App\Repository\ProjectsRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,6 +14,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -38,36 +42,114 @@ class ProjectController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        $projects = [];
-        foreach ($this->repository->findAll() as $project){
-            // calcul de percentage d'avancement de chaque projet
-            $total = 0;
-            foreach ($project->getSprints() as $projectSprint){
-                $total += $this->em->getRepository(Sprint::class)->getSprintAdvancement($projectSprint);
-            }
+        $user = $this->getUser();
+        if ($this->isGranted('ROLE_ADMIN')){
+            $projects = [];
+            foreach ($this->repository->findAll() as $project){
+                // calcul de percentage d'avancement de chaque projet
+                $total = 0;
+                foreach ($project->getSprints() as $projectSprint){
+                    $total += $this->em->getRepository(Sprint::class)->getSprintAdvancement($projectSprint);
+                }
 
-            if ($project->getSprints()->count() == 0 ){
-                $percent = 0;
-            }else {
-                $percent = $total / $project->getSprints()->count();
-            }
+                if ($project->getSprints()->count() == 0 ){
+                    $percent = 0;
+                }else {
+                    $percent = $total / $project->getSprints()->count();
+                }
 
-            $projects[] = [
-                "project" => $project,
-                "percent" => round($percent, 2),
-            ];
+                $projects[] = [
+                    "project" => $project,
+                    "percent" => round($percent, 2),
+                ];
+            }
+        }else{
+            $projects = $user->getProjects();
         }
+        // affichage les projets pour l'utilisateur courant
+//        $user = $this->getUser();
+//        if ($this->isGranted('ROLE_ADMIN')){
+//            $projects = $this->repository->findAll();
+//        }else{
+//            $projects = $user->getProjects();
+//        }
+
         //pagination
         $Project = $paginator->paginate(
             $projects, /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             3 /*limit per page*/
         );
-
+//        dd($Project);
         return $this->render('project/index.html.twig',[
             'projects' => $Project,
-
         ]);
+    }
+//        dd($users->getProjects());
+    /**
+     * @Route("/project-details/{id}", name="show_details")
+     * @return Response
+     */
+    public function showProjectDetail(Projects $project): Response
+    {
+        $suggestedUsers = $this->em->getRepository(User::class)->getUsersByProjectSkills($project);
+        return $this->render('project/showdetails.html.twig', [
+            'project' => $project,
+            'suggestedUsers' => $suggestedUsers,
+        ]);
+    }
+
+    /**
+     * @Route("/project/{id}/addUser/{userId}" , name="affect_user")
+     * @param Projects $project
+     * @param $userId
+     * @return Response
+     */
+    public function addUserToProject(Projects $project, $userId , MailerInterface $mailer): Response
+    {
+
+        $user =$this->em->getRepository(User::class)->find($userId);
+        $project->addUser($user);
+        $this->em->persist($project);
+        $this->em->flush();
+//      envoie de mail pour notifier user à quel projet il travail
+        $email = (new Email())
+            ->from($this->getParameter("mailer_sender")) // toujours l'envoie avec le mail déclarer dans le service yaml
+            ->to($user->getEmail())
+            ->subject('Affectation au projet ')
+            ->text('Sending emails is fun again!')
+            ->html('Vous êtes affecter à ' . $project->getName())
+        ;
+        $mailer->send($email);
+
+        $this->addFlash('success' , 'User affecter au projet avec succés!'); // ne foctionne pas
+        return $this->redirectToRoute('show_details', ['id' => $project->getId()]);
+    }
+
+    /**
+     * @Route("/project/{id}/removeUser/{userId}" , name="remove_user")
+     * @param Projects $project
+     * @param $userId
+     * @return Response
+     */
+    public function removeUserToProject(Projects $project, $userId , MailerInterface $mailer): Response
+    {
+
+        $user =$this->em->getRepository(User::class)->find($userId);
+        $project->removeUser($user);
+        $this->em->persist($project);
+        $this->em->flush();
+        $email = (new Email())
+            ->from($this->getParameter("mailer_sender"))
+            ->to($user->getEmail())
+            ->subject('attachement du projet ')
+            ->text('Sending emails is fun again!')
+            ->html('Vous êtes détacher de ' . $project->getName())
+        ;
+        $mailer->send($email);
+
+        $this->addFlash('success' , 'User remove au projet avec succés!');
+        return $this->redirectToRoute('show_details', ['id' => $project->getId()]);
     }
 
 
