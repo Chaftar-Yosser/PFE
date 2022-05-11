@@ -24,10 +24,18 @@ class Skills
     #[ORM\ManyToMany(targetEntity: Projects::class, mappedBy: 'skills')]
     private $projects;
 
+    #[ORM\OneToMany(mappedBy: 'skills', targetEntity: Question::class)]
+    private $questions;
+
+    #[ORM\ManyToMany(targetEntity: Quiz::class, mappedBy: 'skills')]
+    private $quizzes;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->projects = new ArrayCollection();
+        $this->questions = new ArrayCollection();
+        $this->quizzes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -100,4 +108,62 @@ class Skills
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Question>
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(Question $question): self
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions[] = $question;
+            $question->setSkills($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): self
+    {
+        if ($this->questions->removeElement($question)) {
+            // set the owning side to null (unless already changed)
+            if ($question->getSkills() === $this) {
+                $question->setSkills(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Quiz>
+     */
+    public function getQuizzes(): Collection
+    {
+        return $this->quizzes;
+    }
+
+    public function addQuiz(Quiz $quiz): self
+    {
+        if (!$this->quizzes->contains($quiz)) {
+            $this->quizzes[] = $quiz;
+            $quiz->addSkill($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuiz(Quiz $quiz): self
+    {
+        if ($this->quizzes->removeElement($quiz)) {
+            $quiz->removeSkill($this);
+        }
+
+        return $this;
+    }
+
 }

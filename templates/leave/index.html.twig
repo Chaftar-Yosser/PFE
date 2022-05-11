@@ -63,7 +63,9 @@
                                 <th>status</th>
 
                                 <th>
-                                    <a  class="btn btn-success" href={{ path("create_leave") }}>Créer</a>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a  class="btn btn-success" href={{ path("create_leave") }}>Créer</a>
+                                    {% endif %}
                                 </th>
                             </tr>
                             </thead>
@@ -79,9 +81,15 @@
                                     <td>{{ leave.status}}</td>
 
                                     <td >
-                                        <a  class="btn btn-info" href={{ path("edit_leave", {"id": leave.id}) }}, style="display: inline-block"> Editer </a>
+                                        <a class="btn btn-info"
+                                            href="{{ path("edit_leave", {"id": leave.id}) }}" style="display: inline-block"> Editer</a>
                                         <a  class="btn btn-danger" onclick="return confirm('Etes vous sur ???');"
                                             href={{ path("delete_leave", {"id": leave.id}) }} > Supprimer </a>
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <a class="btn btn-default"
+                                               href="{{ path("update_leave", {"id": leave.id}) }} " style="display: inline-block"> Mise àjour
+                                            </a>
+                                        {% endif %}
                                     </td>
                                 </tr>
                             {% endfor %}

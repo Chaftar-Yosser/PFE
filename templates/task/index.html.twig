@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container text-center mt-4">
-        <h1>tâches </h1>
+        <h1>liste de tous les tâches </h1>
     </div>
     <section class="content">
         <div class="container">
@@ -70,11 +70,6 @@
                                 <th>Users</th>
                                 <th>Avencement</th>
                                 <th>Description</th>
-                                <th>
-                                    {% if is_granted('ROLE_ADMIN') %}
-                                        <a  class="btn btn-success" href={{ path("create_task") }}>Créer</a>
-                                    {% endif %}
-                                </th>
                             </tr>
                             </thead>
                             <tbody id="myTable">
@@ -96,14 +91,6 @@
                                         </td>
                                         <td>{{ task.avancement}} %</td>
                                         <td>{{ task.description}} </td>
-                                        <td >
-                                            <a  class="btn bg-info" href={{ path("update_task", {"id": task.id}) }} , style="display: inline-block"> Update </a>
-                                            {% if is_granted('ROLE_ADMIN') %}
-                                                <a  class="btn btn-info" href={{ path("edit_task", {"id": task.id}) }}, style="display: inline-block"> Editer </a>
-                                                <a  class="btn btn-danger" onclick="return confirm('Etes vous sur ???');"
-                                                    href={{ path("delete_task", {"id": task.id}) }} , style="display: inline-block" > Supprimer </a>
-                                            {% endif %}
-                                        </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

@@ -13,11 +13,13 @@ use App\Repository\TasksRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -68,23 +70,37 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/sprint-tasks/{id}", name="sprint_tasks")
+     * @Route("/sprint-tasks/{id}/", name="sprint_tasks")
      * @param Sprint $sprint
      * @return Response
      */
-    public function showSprintTasks(Sprint $sprint): Response
+    public function showSprintTasks(Sprint $sprint , Request $request, PaginatorInterface $paginator): Response
     {
         $user = $this->getUser();
         $taskRepository = $this->em->getRepository(Tasks::class);
         // affichage des tâches selon les sprints pour l'utilisateur courant
-        $tasks = $taskRepository->getTasksByUserAndSprint($user, $sprint);
+        if ($this->isGranted("ROLE_ADMIN")){
+            $tasks = $taskRepository->findBy(["sprint" => $sprint]);
+        }else{
+            $tasks = $taskRepository->getTasksByUserAndSprint($user, $sprint);
+        }
         // calcul de percentage d'avancement d'une tâche
         $percent = $this->em->getRepository(Sprint::class)->getSprintAdvancement($sprint);
+
+        $Tasks = $paginator->paginate(
+            $tasks,
+            /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            3 /*limit per page*/
+        );
+
         return $this->render('task/sprintTasks.html.twig', [
             'sprint' => $sprint,
-            'tasks' => $tasks,
+            'tasks' => $Tasks,
+            'project' => $sprint->getProject(),
             'percent' => round($percent, 2),
         ]);
+
     }
 
     /**
@@ -134,9 +150,11 @@ class TaskController extends AbstractController
      * @param Tasks $Tasks
      * @return Response
      * @package App\Controller
-     * @Route("/update/{id}" ,name="update_task")
+     * @ParamConverter("project", options={"mapping": {"projectId": "id"}})
+     * @ParamConverter("Tasks", options={"mapping": {"taskId": "id"}})
+     * @Route("/project/{projectId}/update/{taskId}" ,name="update_task")
      */
-    public function update(Request $request, Tasks $Tasks)
+    public function update(Request $request, Projects $project, Tasks $Tasks )
     {
         $form = $this->createForm(TasksType::class, $Tasks);
         $form->handleRequest($request);
@@ -145,10 +163,11 @@ class TaskController extends AbstractController
             $this->em->persist($Tasks);
             $this->em->flush();
             $this->addFlash('success' , 'tâche modifié avec succés!');
-            return $this->redirectToRoute('task_index');
+            return $this->redirectToRoute('sprint_tasks' , ["id" => $Tasks->getSprint()->getId()]);
         }
         return $this->render('task/update.html.twig', [
             'task' =>$Tasks,
+            'project'=>$project,
             'form' => $form->createView(),
         ]);
 
@@ -157,17 +176,20 @@ class TaskController extends AbstractController
     /**
      * @param Request $request
      * @return Response
-     * @IsGranted("ROLE_ADMIN")
      * @package App\Controller
-     * @Route("/create" ,name="create_task")
+     * @ParamConverter("project", options={"mapping": {"id": "id"}})
+     * @ParamConverter("sprint", options={"mapping": {"sprintId": "id"}})
+     * @Route("/project/{id}/sprint/{sprintId}/create" ,name="create_task")
      */
-    public function create(Request $request)
+    public function create(Request $request , Projects $project , Sprint $sprint)
     {
         if (!$this->isGranted("ROLE_ADMIN")){
             return $this->render('pages/404.html.twig');
         }
 
         $Tasks = new Tasks();
+        $Tasks->setProjects($project);
+        $Tasks->setSprint($sprint);
         $form = $this->createForm(TasksType::class, $Tasks);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
@@ -181,11 +203,13 @@ class TaskController extends AbstractController
             $this->em->persist($Tasks);
             $this->em->flush();
             $this->addFlash('success' , 'Tâche crée avec succés!');
-            return $this->redirectToRoute('task_index');
+            return $this->redirectToRoute('sprint_tasks' , ["id" => $Tasks->getSprint()->getId()]);
         }
 
         return $this->render('task/create.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'project'=>$project,
+            'sprint'=>$sprint
         ]);
     }
 
@@ -193,11 +217,12 @@ class TaskController extends AbstractController
      * @param Request $request
      * @param Tasks $Tasks
      * @return Response
-     * @IsGranted("ROLE_ADMIN")
      * @package App\Controller
-     * @Route("/edit/{id}" ,name="edit_task")
+     * @ParamConverter("project", options={"mapping": {"projectId": "id"}})
+     * @ParamConverter("Tasks", options={"mapping": {"taskId": "id"}})
+     * @Route("/project/{projectId}/edit/{taskId}" ,name="edit_task")
      */
-    public function edit(Request $request, Tasks $Tasks)
+    public function edit(Request $request, Projects $project, Tasks $Tasks)
     {
         if (!$this->isGranted("ROLE_ADMIN")){
             return $this->render('pages/404.html.twig');
@@ -205,6 +230,7 @@ class TaskController extends AbstractController
 
         $form = $this->createForm(TasksType::class, $Tasks);
         $form->handleRequest($request);
+        $Tasks->setProjects($project);
         if($form->isSubmitted() && $form->isValid()){
             //todo: check persistence
             //mazelet fama mochkell : tnajem tziid ayy w modification le
@@ -217,10 +243,11 @@ class TaskController extends AbstractController
             $this->em->persist($Tasks);
             $this->em->flush();
             $this->addFlash('success' , 'tâche modifié avec succés!');
-            return $this->redirectToRoute('task_index');
+            return $this->redirectToRoute('sprint_tasks' , ["id" => $Tasks->getSprint()->getId()]);
         }
         return $this->render('task/edit.html.twig', [
             'task' =>$Tasks,
+            'project' =>$project,
             'form' => $form->createView(),
         ]);
 
@@ -228,11 +255,14 @@ class TaskController extends AbstractController
 
 
     /**
-     * @Route("/delete/{id}", name="delete_task")
      * @param Tasks $Tasks
+     * @Route("/project/{projectId}/delete/{taskId}", name="delete_task")
+     * @ParamConverter("project", options={"mapping": {"projectId": "id"}})
+     * @ParamConverter("Tasks", options={"mapping": {"taskId": "id"}})
      * @IsGranted("ROLE_ADMIN")
+     * @return Response
      */
-    public function delete(Tasks $Tasks)
+    public function delete(Tasks $Tasks )
     {
         if (!$this->isGranted("ROLE_ADMIN")){
             return $this->render('pages/404.html.twig');
@@ -241,7 +271,7 @@ class TaskController extends AbstractController
         $this->em->remove($Tasks);
         $this->em->flush();
         $this->addFlash('success' , 'tâche supprimé avec succés');
-        return $this->redirectToRoute('task_index');
+        return $this->redirectToRoute('sprint_tasks' , ["id" => $Tasks->getSprint()->getId()]);
     }
 
 }

@@ -53,6 +53,7 @@ class ContratController extends AbstractController
         }else{
             $contrat = $this->repository->findBy(["user" => $user]);
         }
+
         // pagination
         $contrat = $paginator->paginate(
             $contrat, /* query NOT result */

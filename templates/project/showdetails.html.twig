@@ -10,8 +10,7 @@
                 {{ skills.name }}
             {% endfor %}
         </h3>
-    </div>
-    <div class="container">
+
         {% for message in app.flashes('success') %}
             <div class="alert alert-success">
                 {{ message }}
@@ -20,7 +19,7 @@
     </div>
     <section class="content">
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-md-6">
                 <div class="box box-primary">
                     <div class="box-header">
                         <h3 class="box-title">tableau des users affecter à ce projet </h3>
@@ -50,12 +49,8 @@
                     <!-- /.box-body -->
                 </div>
             </div>
-        </div>
-    </section>
 
-    <section class="content">
-        <div class="row">
-            <div class="col-xs-12">
+            <div class="col-md-6">
                 <div class="box box-primary">
                     <div class="box-header">
                         <h3 class="box-title">Suggestion Users Table</h3>
@@ -86,6 +81,58 @@
                                     </td>
                                     <td>
                                         <a  class="btn btn" href="{{ path('affect_user', {'id': project.id, 'userId': user.id}) }}" > Add </a>
+                                  </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Tableau des tâches pour {{ project.name }}</h3>
+                        <h4>
+{#                            on peut pas faire la création des tâches il faut que deja 3ana sprint pour créer les tâches#}
+{#                            <a  class="btn btn-success" href="{{ path('create_task', {'id': project.id , "sprintId":sprint.id }) }}" > Créer une tâche </a>#}
+                            <a  class="btn btn-default" href={{ path("sprint_index" , {"id": project.id} )}}> Plus de détail  </a>
+                        </h4>
+                        <div class="box-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <input id="myInput" type="text" placeholder="Search..">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover" id="table_id">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Sprint</th>
+                                <th>tâche</th>
+                                <th>status</th>
+                                <th>Users</th>
+                            </tr>
+
+                            </thead>
+                            <tbody id="myTable">
+                            {% for task in tasks %}
+                                <tr>
+                                    <td>{{ task.id }}</td>
+                                    <td>{{ task.sprint.name }}</td>
+                                    <td>{{ task.taskname}}</td>
+                                    <td>{{ task.status}}</td>
+                                    <td>
+                                        {% for user in task.users  %}
+                                            {{ user.lastName }}
+                                        {% endfor %}
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -94,9 +141,12 @@
                     </div>
                     <!-- /.box-body -->
                 </div>
-                <a  class="btn btn-danger" href={{ path("project_index" , {"id": project.id} )}}, style="display: inline-block"> Back To  </a>
                 <!-- /.box -->
             </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <a  class="btn btn-danger" href={{ path("project_index" , {"id": project.id} )}}, style="display: inline-block"> Back To  </a>
         </div>
     </section>
 {% endblock %}

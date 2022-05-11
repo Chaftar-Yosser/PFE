@@ -34,14 +34,40 @@ class Search
      * @var null
      */
     private $role;
+
     /**
      * @var null
      */
     private $Leave_type ;
+
     /**
      * @var null
      */
     private $userFrom ;
+
+    /**
+     * @var null
+     */
+    private $skills;
+
+    /**
+     * @return null
+     */
+    public function getSkills()
+    {
+        return $this->skills;
+    }
+
+    /**
+     * @param null $skills
+     * @return Search
+     */
+    public function setSkills($skills)
+    {
+        $this->skills = $skills;
+        return $this;
+    }
+
 
     /**
      * @return null

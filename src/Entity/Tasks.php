@@ -46,11 +46,11 @@ class Tasks
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $priorite;
 
-    #[ORM\ManyToOne(targetEntity: Sprint::class, inversedBy: 'tasks')]
+    #[ORM\ManyToOne(targetEntity: Sprint::class, inversedBy: 'tasks' )]
     private $sprint;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private $avancement;
+    private $avancement = 0;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description;

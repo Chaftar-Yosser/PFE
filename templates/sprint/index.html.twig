@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container text-center mt-4">
-        <h1>voir liste des sprints </h1>
+        <h2>voir liste des sprints de : {{ project.name}} </h2>
     </div>
 
 
@@ -42,7 +42,7 @@
                                 <th>date_debut</th>
                                 <th>date_fin</th>
                                 <th>
-                                    <a  class="btn btn-success" href={{ path("create_sprint") }}>Créer</a>
+                                    <a  class="btn btn-success" href={{ path("create_sprint" , {"id": project.id}) }}>Créer</a>
                                 </th>
                             </tr>
                             </thead>
@@ -57,7 +57,7 @@
                                         <td>{{ sprint.startDate|date('d/m/Y')}}</td>
                                         <td>{{ sprint.endDate|date('d/m/Y')}}</td>
                                         <td >
-                                            <a  class="btn btn-info" href={{ path("edit_sprint", {"id": sprint.id}) }}, style="display: inline-block"> Editer </a>
+                                            <a  class="btn btn-info" href="{{ path("edit_sprint", {"id": sprint.id}) }}" style="display: inline-block"> Editer </a>
                                             <a  class="btn btn-danger" onclick="return confirm('Etes vous sur ???');"
                                                 href={{ path("delete_sprint", {"id": sprint.id}) }} > Supprimer
                                             </a>

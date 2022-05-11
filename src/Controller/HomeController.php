@@ -67,7 +67,7 @@ class HomeController extends AbstractController
                 'title' => $event->getTaskName(),
                 'status' => $event->getStatus(),
                 'backgroundColor' => $color,
-                'editUrl' => $this->generateUrl('edit_task', ['id' => $event->getId()])
+                'editUrl' => $this->generateUrl('edit_task', ['taskId' => $event->getId()])
             ];
         }
         $users = $this->repository->findAll();

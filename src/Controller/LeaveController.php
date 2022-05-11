@@ -10,8 +10,10 @@ use App\Repository\LeaveRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,11 +44,11 @@ class LeaveController extends AbstractController
         $form->handleRequest($request);
 
 //        $user = $this->getUser();
-//        if ($this->isGranted('ROLE_ADMIN')){
-//            $leave = $this->repository->getLeave($search);
-//        }else{
-//            $leave = $user->getLeaves();
-//        }
+////        if ($this->isGranted('ROLE_ADMIN')){
+////            $leave = $this->repository->getLeave($search);
+////        }else{
+////            $leave = $user->getLeaves();
+////        }
 
         $leave = $paginator->paginate(
             $leave = $this->repository->getLeave($search),
@@ -91,15 +93,16 @@ class LeaveController extends AbstractController
      * @param Request $request
      * @param Leave $leave
      * @return Response
+     * @throws TransportExceptionInterface
      * @package App\Controller
-     * @Route("/edit/{id}" ,name="edit_leave")
+     * @Route("/update/{id}" ,name="update_leave")
      */
-    public function editLeave(Request $request, Leave $leave, MailerInterface $mailer )
+    public function UpdateLeave(Request $request, Leave $leave, MailerInterface $mailer )
     {
-        $form = $this->createForm(\App\Form\LeaveType::class, $leave);
+        $form = $this->createForm(\App\Form\LeaveType::class, $leave, ['update'=>true]);
+//        $form->remove(startDate);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-
             $this->em->persist($leave);
             $this->em->flush();
             // envoie de mail pour noitifier user de l'etat de sa demande
@@ -116,6 +119,45 @@ class LeaveController extends AbstractController
             $this->addFlash('success' , 'demande modifié avec succés!');
             return $this->redirectToRoute('leave_index');
         }
+        return $this->render('leave/update.html.twig', [
+            'leave' =>$leave,
+            'form' => $form->createView(),
+        ]);
+
+    }
+
+    /**
+     * @param Request $request
+     * @param Leave $leave
+     * @param MailerInterface $mailer
+     * @return Response
+     * @package App\Controller
+     * @Route("/edit/{id}" ,name="edit_leave")
+     */
+    public function editLeave(Request $request, Leave $leave , MailerInterface $mailer )
+    {
+        $form = $this->createForm(\App\Form\LeaveType::class, $leave );
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+
+            $this->em->persist($leave);
+            $this->em->flush();
+
+            $email = (new Email())
+                ->from($leave->getUserFrom()->getEmail())
+                ->to($leave->getUserTo()->getEmail())
+                ->subject('Modification de la demande ')
+                ->text('Sending emails is fun again!')
+                ->html(' Cette demande a été modifié  ' . '<br>'
+                    .' date début : '  . $leave->getStartDate()->format('d-m-Y')
+                    . '<br>'.' date fin : ' . $leave->getEndDate()->format('d-m-Y')
+                )
+            ;
+            $mailer->send($email);
+
+            $this->addFlash('success' , 'demande modifié avec succés!');
+            return $this->redirectToRoute('leave_index');
+        }
         return $this->render('leave/edit.html.twig', [
             'leave' =>$leave,
             'form' => $form->createView(),
@@ -126,7 +168,7 @@ class LeaveController extends AbstractController
     /**
      * @Route("/delete/{id}", name="delete_leave")
      * @param Leave $leave
-     *
+     * @return Response
      */
     public function deleteLeave(Leave $leave)
     {

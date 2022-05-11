@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="container text-center mt-4">
-        <h1>voir tous les skills</h1>
+        <h1>voir tout les skills</h1>
     </div>
 
 
@@ -18,7 +18,7 @@
         </div>
         <!-- /.row -->
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-md-8 col-md-offset-2">
                 <div class="box box-primary">
                     <div class="box-header">
                         <h3 class="box-title">Skills Table</h3>
@@ -49,7 +49,7 @@
                                     <td>{{ skills.name}}</td>
                                     <td >
                                         {% if is_granted('ROLE_ADMIN') %}
-                                            <a  class="btn btn-info" href={{ path("edit_skills", {"id": skills.id}) }}, style="display: inline-block"> Editer </a>
+                                            <a  class="btn btn-info" href="{{ path("edit_skills", {"id": skills.id}) }}" style="display: inline-block"> Editer </a>
                                             <a  class="btn btn-danger" onclick="return confirm('Etes vous sur ???');
                                                 " href={{ path("delete_skills", {"id": skills.id}) }} > Supprimer
                                             </a>

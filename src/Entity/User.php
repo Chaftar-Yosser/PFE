@@ -75,6 +75,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Projects::class, inversedBy: 'users')]
     private $projects;
 
+    #[ORM\ManyToMany(targetEntity: Quiz::class, mappedBy: 'users')]
+    private $quizzes;
+
+
+
 
     public function __construct()
     {
@@ -84,7 +89,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->suiviLeaves = new ArrayCollection();
         $this->skills = new ArrayCollection();
         $this->projects = new ArrayCollection();
-
+        $this->quizzes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -359,6 +364,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeProject(Projects $project): self
     {
         $this->projects->removeElement($project);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Quiz>
+     */
+    public function getQuizzes(): Collection
+    {
+        return $this->quizzes;
+    }
+
+    public function addQuiz(Quiz $quiz): self
+    {
+        if (!$this->quizzes->contains($quiz)) {
+            $this->quizzes[] = $quiz;
+            $quiz->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuiz(Quiz $quiz): self
+    {
+        if ($this->quizzes->removeElement($quiz)) {
+            $quiz->removeUser($this);
+        }
 
         return $this;
     }

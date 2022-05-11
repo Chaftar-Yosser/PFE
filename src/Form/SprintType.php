@@ -58,13 +58,6 @@ class SprintType extends AbstractType
                     'Terminé' => 'terminé',
                 ]
             ])
-            ->add('project', EntityType::class,[
-                'class' => Projects::class,
-                'choice_label'  => 'name',
-                'attr' => [
-                    'class' => "form-control ",
-                ]
-            ])
         ;
     }
 

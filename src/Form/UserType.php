@@ -24,6 +24,7 @@ class UserType extends AbstractType
         /** @var User $user */
         $user = $builder->getData() ? $builder->getData() : null;
 
+
         $file = $user && $user->getImage() ? new File($user->getImage(), false) : null ;
         $builder
 //            ->add('fullname',TextType::class)

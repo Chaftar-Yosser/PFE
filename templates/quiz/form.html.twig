@@ -1,0 +1,47 @@
+{% block body %}
+    <div class="box box-primary">
+
+        {{ form_start(form) }}
+        <div class="box-body">
+            <div class="form-group">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+                <div class="form-error">
+                    {{ form_errors(form.name) }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.nombrequestion) }}
+                {{ form_widget(form.nombrequestion) }}
+                <div class="form-error">
+                    {{ form_errors(form.nombrequestion) }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.skills) }}
+                {{ form_widget(form.skills) }}
+                <div class="form-error">
+                    {{ form_errors(form.skills) }}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.time) }}
+                {{ form_widget(form.time) }}
+                <div class="form-error">
+                    {{ form_errors(form.time) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="box-footer">
+            <input type="submit" class="btn btn-primary" value="{{ button }}"/>
+        </div>
+        {{ form_end(form) }}
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2();
+        })
+    </script>
+{% endblock %}
+

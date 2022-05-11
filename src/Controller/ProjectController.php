@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Projects;
 use App\Entity\Skills;
 use App\Entity\Sprint;
+use App\Entity\Tasks;
 use App\Entity\User;
 use App\Form\ProjectType;
 use App\Repository\ProjectsRepository;
@@ -14,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
@@ -64,15 +66,26 @@ class ProjectController extends AbstractController
                 ];
             }
         }else{
-            $projects = $user->getProjects();
-        }
-        // affichage les projets pour l'utilisateur courant
-//        $user = $this->getUser();
-//        if ($this->isGranted('ROLE_ADMIN')){
-//            $projects = $this->repository->findAll();
-//        }else{
 //            $projects = $user->getProjects();
-//        }
+            foreach ($user->getProjects() as $project){
+                // calcul de percentage d'avancement de chaque projet
+                $total = 0;
+                foreach ($project->getSprints() as $projectSprint){
+                    $total += $this->em->getRepository(Sprint::class)->getSprintAdvancement($projectSprint);
+                }
+
+                if ($project->getSprints()->count() == 0 ){
+                    $percent = 0;
+                }else {
+                    $percent = $total / $project->getSprints()->count();
+                }
+
+                $projects[] = [
+                    "project" => $project,
+                    "percent" => round($percent, 2),
+                ];
+            }
+        }
 
         //pagination
         $Project = $paginator->paginate(
@@ -80,12 +93,10 @@ class ProjectController extends AbstractController
             $request->query->getInt('page', 1), /*page number*/
             3 /*limit per page*/
         );
-//        dd($Project);
         return $this->render('project/index.html.twig',[
             'projects' => $Project,
         ]);
     }
-//        dd($users->getProjects());
     /**
      * @Route("/project-details/{id}", name="show_details")
      * @return Response
@@ -95,6 +106,7 @@ class ProjectController extends AbstractController
         $suggestedUsers = $this->em->getRepository(User::class)->getUsersByProjectSkills($project);
         return $this->render('project/showdetails.html.twig', [
             'project' => $project,
+            'tasks' => $project->getTasks(),
             'suggestedUsers' => $suggestedUsers,
         ]);
     }
@@ -103,6 +115,7 @@ class ProjectController extends AbstractController
      * @Route("/project/{id}/addUser/{userId}" , name="affect_user")
      * @param Projects $project
      * @param $userId
+     * @param MailerInterface $mailer
      * @return Response
      */
     public function addUserToProject(Projects $project, $userId , MailerInterface $mailer): Response
@@ -176,7 +189,7 @@ class ProjectController extends AbstractController
             $this->em->persist($Project);
             $this->em->flush();
             $this->addFlash('success' , 'Projet crée avec succés!');
-            return $this->redirectToRoute('project_index');
+            return $this->redirectToRoute('show_details' , ["id" => $Project->getId()]);
         }
 
         return $this->render('project/create.html.twig', [

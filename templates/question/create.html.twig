@@ -1,0 +1,8 @@
+{% extends 'template.html.twig' %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Créer nouveau question </h1>
+        {{  include ('question/form.html.twig', { button: 'Créer'}) }}
+    </div>
+{% endblock %}

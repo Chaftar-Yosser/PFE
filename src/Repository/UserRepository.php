@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Projects;
+use App\Entity\Quiz;
 use App\Entity\Search;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -52,6 +53,37 @@ class UserRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+
+
+    // get user ili 3andou même skills avec le quiz
+    public function getUsersByQuizSkills(Quiz $quiz)
+    {
+//        $skillsQuestion = [];
+//        foreach ($quiz->getQuestions() as $question ){
+//            $skillsQuestion = $question->getSkills();
+//            // kii ken aandich relation entre skills et quiz
+//        }
+
+        $qb = $this->createQueryBuilder('u');
+        $qb->select("u")
+            ->innerJoin("u.skills", 's')
+            ->andWhere($qb->expr()->in("s", ":skills"))
+            ->setParameter("skills"  , $quiz->getSkills());
+
+        return $qb->getQuery()->getResult();
+    }
+
+
+    public function getUsersByProject(Projects $project)
+    {
+        $qb = $this->createQueryBuilder('u');
+        $qb->select("u")
+            ->Join("u.projects", 'p')
+            ->andWhere($qb->expr()->eq("projects", ':projects'))
+            ->setParameter("projects"  , $project->getUsers());
+
+        return $qb->getQuery()->getResult();
+    }
 
 
     /*

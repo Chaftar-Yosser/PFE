@@ -1,0 +1,34 @@
+{% extends 'template.html.twig' %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h2>Mise à jours de la demande de congé </h2>
+        <div class="box box-primary">
+{#            <input value="{{ leave.userFrom.lastname }}" disabled>#}
+            {{ form_start(form) }}
+            <div class="form-group">
+                <label > user </label>
+                <input value="{{ leave.userFrom.lastname }}" disabled>
+            </div>
+            <div class="form-group">
+                <label > user </label>
+                <input value="{{ leave.userTo.lastname }}" disabled>
+            </div>
+            <div class="form-group">
+                <label > Type de Congé </label>
+                <input value="{{ leave.leaveType.name }}" disabled>
+            </div>
+            <div class="form-group">
+                <label > Date début </label>
+                <input value="{{ leave.startDate.format('d-m-Y') }}" disabled>
+            </div>
+            <div class="form-group">
+                <label > Date fin </label>
+                <input class="form-group" value="{{ leave.endDate.format('d-m-Y') }}" disabled>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+

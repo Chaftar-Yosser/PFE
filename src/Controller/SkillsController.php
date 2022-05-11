@@ -42,7 +42,6 @@ class SkillsController extends AbstractController
     /**
      * @param Request $request
      * @return Response
-     * @IsGranted("ROLE_ADMIN")
      * @package App\Controller
      * @Route("/create" ,name="create_skills")
      */
@@ -73,7 +72,6 @@ class SkillsController extends AbstractController
      * @param Request $request
      * @param Skills $skills
      * @return Response
-     * @IsGranted("ROLE_ADMIN")
      * @package App\Controller
      * @Route("/edit/{id}" ,name="edit_skills")
      */

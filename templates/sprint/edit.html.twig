@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="container mt-4">
-        <h1>Editer les sprints</h1>
+        <h2>Modifier {{ sprint.name }}</h2>
         {{  include ('sprint/form.html.twig', { button: 'Editer'}) }}
     </div>
 {% endblock %}

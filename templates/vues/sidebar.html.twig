@@ -7,7 +7,7 @@
                 <img src="{{ asset ('images/' ~ app.user.image) }}" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>{{ app.user.lastname }}</p>
+                <p>{{ app.user.lastname }} {{ app.user.firstname }}</p>
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 {#   just ena n7ab naaref chkoun connectée#}
                 {% for role in app.user.role  %}
@@ -147,11 +147,37 @@
                 <a href="#">
                     <i class="fa fa-edit"></i> <span>Congés</span>
                     <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="{{ path("leave_index") }}"><i class="fa fa-circle-o"></i> Consulter les congés </a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="treeview active">
+                <a href="#">
+                    <i class="fa fa-edit"></i> <span>Questions de quiz </span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{{ path("question_index") }}"><i class="fa fa-circle-o"></i> Consulter tout les questions </a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="treeview active">
+                <a href="#">
+                    <i class="fa fa-edit"></i> <span>Quiz </span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="{{ path("quiz_index") }}"><i class="fa fa-circle-o"></i> Consulter tout les Quiz </a></li>
                 </ul>
             </li>
         </ul>

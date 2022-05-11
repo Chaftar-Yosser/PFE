@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="container mt-4">
-        <h1>Editer les tâches</h1>
+        <h2>{{ project.name}} / Modifier {{ task.taskName }}</h2>
         {{  include ('task/form.html.twig', { button: 'Editer'}) }}
     </div>
 {% endblock %}

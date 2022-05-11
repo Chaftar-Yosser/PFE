@@ -35,24 +35,30 @@ class SprintController extends AbstractController
      * @Route("/project-sprints/{id}" , name="sprint_index")
      * @return Response
      */
-    public function index(Projects $projects, PaginatorInterface $paginator , Request $request): Response
+    public function index(Projects $project, PaginatorInterface $paginator , Request $request): Response
     {
 
         $sprint = $paginator->paginate(
-            $this->repository->findBy(["project" => $projects]), /* query NOT result */
+            $this->repository->findBy(["project" => $project]), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             3 /*limit per page*/
         );
         // calcul de percentage d'avancement d'un sprint
         $total = 0;
-        foreach ($projects->getSprints() as $projectSprint){
+        foreach ($project->getSprints() as $projectSprint){
             $total += $this->em->getRepository(Sprint::class)->getSprintAdvancement($projectSprint);
         }
 
-        $percent = $total / $projects->getSprints()->count();
+        $nbSprint = $project->getSprints()->count();
+        if ($nbSprint == 0 ){
+            $percent = 0 ;
+        }else{
+         $percent = $total / $nbSprint;
+        }
 
         return $this->render('sprint/index.html.twig', [
             'Sprint' => $sprint,
+            'project' => $project,
             'percent' => round($percent, 2),
         ]);
     }
@@ -61,17 +67,18 @@ class SprintController extends AbstractController
     /**
      * @param Request $request
      * @return Response
-     * @IsGranted("ROLE_ADMIN")
      * @package App\Controller
-     * @Route("/create" ,name="create_sprint")
+
+     * @Route("/project/{id}/create" ,name="create_sprint")
      */
-    public function createsprint(Request $request)
+    public function createsprint(Request $request, Projects $project)
     {
         if (!$this->isGranted("ROLE_ADMIN")){
             return $this->render('pages/404.html.twig');
         }
 
         $sprint = new Sprint();
+        $sprint->setProject($project);
         $form = $this->createForm(SprintType::class, $sprint);
         $form->handleRequest($request);
 
@@ -83,7 +90,9 @@ class SprintController extends AbstractController
         }
 
         return $this->render('sprint/create.html.twig',[
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'project' => $project,
+
         ]);
     }
 

@@ -6,9 +6,11 @@ use App\Entity\Projects;
 use App\Entity\Sprint;
 use App\Entity\Tasks;
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -19,6 +21,7 @@ class TasksType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $task = $builder->getData();
         $builder
             ->add('task_name' ,TextType::class,[
                 'attr' => [
@@ -74,16 +77,10 @@ class TasksType extends AbstractType
                     'class' => "form-control ",
                 ]
             ])
-            ->add('Projects', EntityType::class,[
-                'class' => Projects::class,
-                'choice_label'  => 'name',
-                'attr' => [
-                    'class' => "form-control ",
 
-                ]
-            ])
             ->add('users' , EntityType::class, [
                 'class' => User::class,
+                'choices' => $task->getProjects()->getUsers(), // just les users affecter à ce projet
                 'choice_label'  => 'lastname',
                 'attr' => [
                     'class' => "form-control  select2",
@@ -91,14 +88,8 @@ class TasksType extends AbstractType
                 'expanded'  => false,
                 'multiple'  => true,
             ])
-            ->add('sprint', EntityType::class,[
-                'class' => Sprint::class,
-                'choice_label'  => 'name',
-                'attr' => [
-                    'class' => "form-control ",
-                ]
-            ])
             ->add('description' ,TextareaType::class,[
+                'required' => false,
                 'attr' => [
                     'class' => "form-control ",
                 ]
@@ -107,8 +98,8 @@ class TasksType extends AbstractType
                 'attr' => [
                     'class' => "form-control ",
                 ],
+                'required' => false,
                 'choices' =>[
-                    '' => '' ,
                     '10%' => 10,
                     '20%' => 20,
                     '30%' => 30,
@@ -119,11 +110,9 @@ class TasksType extends AbstractType
                     '80%' => 80,
                     '90%' => 90,
                     '100%' => 100,
-                ]
+                ],
             ])
         ;
-
-
 
     }
 

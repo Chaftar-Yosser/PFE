@@ -62,11 +62,10 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-{#                                    <th>Fullname</th>#}
                                     <th>Prénom</th>
                                     <th>Nom</th>
+                                    <th>Technologies</th>
                                     <th>Rôle</th>
-{#                                    <th>Technologie</th>#}
                                     <th>Email</th>
                                     <th>Image</th>
                                     <th>
@@ -78,23 +77,23 @@
                                 {% for user in users %}
                                     <tr>
                                         <td>{{ user.id }}</td>
-                                        {#      <td>{{ user.fullname}}</td>#}
                                         <td>{{ user.firstname}}</td>
                                         <td>{{ user.lastname}}</td>
+                                        <td>
+                                            {% for skills in user.skills  %}
+                                                {{ skills.name }}
+                                                {% if not loop.last %} , {% endif %}
+                                            {% endfor %}
+                                        </td>
                                         <td>
                                             {% for role in user.role  %}
                                                 {{ role }}
                                             {% endfor %}
                                         </td>
-{#                                        <td>#}
-{#                                            {% for skills in user.skills  %}#}
-{#                                                {{ skills.name }}#}
-{#                                            {% endfor %}#}
-{#                                        </td>#}
                                         <td>{{ user.email}}</td>
                                         <td><img src="{{ asset('images/'~user.image) }}" style="height: 100px; width: 100px"></td>
                                         <td >
-                                            <a  class="btn btn-info" href={{ path("edit_user", {"id": user.id}) }}, style="display: inline-block"> Editer </a>
+                                            <a  class="btn btn-info" href="{{ path("edit_user", {"id": user.id}) }}" style="display: inline-block"> Editer </a>
                                             <a  class="btn btn-danger" onclick="return confirm('Etes vous sur ???');" href={{ path("delete_user", {"id": user.id}) }} > Supprimer </a>
                                         </td>
                                     </tr>

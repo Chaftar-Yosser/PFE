@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="container mt-4">
-        <h1>Create new sprint</h1>
+        <h1>Create new sprint pour {{ project.name }}</h1>
         {{  include ('sprint/form.html.twig', { button: 'Créer'}) }}
     </div>
 {% endblock %}

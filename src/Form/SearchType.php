@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Projects;
 use App\Entity\Search;
+use App\Entity\Skills;
 use App\Entity\Sprint;
 use App\Entity\TypeContrat;
 use App\Entity\User;
@@ -100,6 +101,16 @@ class SearchType extends AbstractType
                 'choice_label'  => 'name',
                 'required' => false,
                 'label' => 'type congés :',
+                'attr' => [
+                    'placeholder' => false,
+                    'class' => "form-control ",
+                ]
+            ])
+            ->add('skills', EntityType::class,[
+                'class' => Skills::class,
+                'choice_label'  => 'name',
+                'required' => false,
+                'label' => 'Technologie :',
                 'attr' => [
                     'placeholder' => false,
                     'class' => "form-control ",
