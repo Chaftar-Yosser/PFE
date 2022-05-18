@@ -11,6 +11,7 @@ use App\Form\SearchType;
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,13 +26,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class QuestionController extends AbstractController
 {
-    private $em;
-    private $repository;
+    private EntityManagerInterface $em;
+    private QuestionRepository $repository;
 
-    public function __construct(EntityManagerInterface $em, QuestionRepository $questionQuizRepository)
+    public function __construct(EntityManagerInterface $em, QuestionRepository $questionRepository)
     {
         $this->em = $em;
-        $this->repository= $questionQuizRepository;
+        $this->repository= $questionRepository;
     }
 
     #[Route('/', name: 'question_index')]
@@ -45,7 +46,7 @@ class QuestionController extends AbstractController
         $question = $paginator->paginate(
             $this->repository->getQuestions($search), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
-            3 /*limit per page*/
+            4 /*limit per page*/
         );
 
         return $this->render('question/index.html.twig', [
@@ -60,7 +61,7 @@ class QuestionController extends AbstractController
      * @package App\Controller
      * @Route("/create" ,name="create_question")
      */
-    public function createQuestion(Request $request)
+    public function createQuestion(Request $request): Response
     {
         $question = new Question();
 //        $question->setSkills($skills);
@@ -85,7 +86,7 @@ class QuestionController extends AbstractController
      * @package App\Controller
      * @Route("/edit/{id}" ,name="edit_question")
      */
-    public function edit(Request $request, Question $question)
+    public function edit(Request $request, Question $question): Response
     {
         //controle d'acces
         if (!$this->isGranted("ROLE_ADMIN")){
@@ -110,8 +111,9 @@ class QuestionController extends AbstractController
     /**
      * @Route("/delete/{id}", name="delete_question")
      * @param Question $question
+     * @return Response
      */
-    public function delete(Question $question)
+    public function delete(Question $question): Response
     {
         //controle d'acces
         if (!$this->isGranted("ROLE_ADMIN")){

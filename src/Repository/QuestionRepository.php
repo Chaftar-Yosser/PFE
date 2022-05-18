@@ -21,18 +21,6 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
-//$questions => where q.skills in $skills
-    public function getQuestionBySkills(Quiz $quiz, $skills)
-    {
-        $qb = $this->createQueryBuilder('question');
-        $qb->andWhere($qb->expr()->eq("question.skills", ":skills"))
-            ->setParameter("skills", $skills)
-            ->orderBy('RAND()')
-            ->setMaxResults( $quiz->getNombrequestion());
-        return $qb->getQuery()->getResult();
-    }
-
-
     public function getQuestionByQuiz(Quiz $quiz)
     {
         $qb = $this->createQueryBuilder('q');
@@ -42,6 +30,17 @@ class QuestionRepository extends ServiceEntityRepository
             ->setParameter("skills", $quiz->getSkills())
             ->orderBy('RAND()')
             ->setMaxResults( $quiz->getNombrequestion());
+        return $qb->getQuery()->getResult();
+    }
+
+
+    public function getAllQuestionByQuiz(Quiz $quiz)
+    {
+        $qb = $this->createQueryBuilder('question');
+        $qb->select("question")
+            ->innerJoin("question.skills", 's')
+            ->andWhere($qb->expr()->in("s", ":skills"))
+            ->setParameter("skills", $quiz->getSkills());
         return $qb->getQuery()->getResult();
     }
 

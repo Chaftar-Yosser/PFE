@@ -19,8 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class SprintController extends AbstractController
 {
 
-    private $em;
-    private $repository;
+    private EntityManagerInterface $em;
+    private SprintRepository $repository;
 
     public function __construct(EntityManagerInterface $em , SprintRepository $sprintRepository)
     {
@@ -30,9 +30,11 @@ class SprintController extends AbstractController
     }
 
 
-
     /**
      * @Route("/project-sprints/{id}" , name="sprint_index")
+     * @param Projects $project
+     * @param PaginatorInterface $paginator
+     * @param Request $request
      * @return Response
      */
     public function index(Projects $project, PaginatorInterface $paginator , Request $request): Response
@@ -66,12 +68,12 @@ class SprintController extends AbstractController
 
     /**
      * @param Request $request
+     * @param Projects $project
      * @return Response
      * @package App\Controller
-
      * @Route("/project/{id}/create" ,name="create_sprint")
      */
-    public function createsprint(Request $request, Projects $project)
+    public function createsprint(Request $request, Projects $project): Response
     {
         if (!$this->isGranted("ROLE_ADMIN")){
             return $this->render('pages/404.html.twig');
@@ -104,7 +106,7 @@ class SprintController extends AbstractController
      * @package App\Controller
      * @Route("/edit/{id}" ,name="edit_sprint")
      */
-    public function editsprint(Request $request, Sprint $sprint)
+    public function editsprint(Request $request, Sprint $sprint): Response
     {
         if (!$this->isGranted("ROLE_ADMIN")){
             return $this->render('pages/404.html.twig');
@@ -130,8 +132,9 @@ class SprintController extends AbstractController
      * @Route("/delete/{id}", name="delete_sprint")
      * @param Sprint $sprint
      * @IsGranted("ROLE_ADMIN")
+     * @return Response
      */
-    public function deletesprint(Sprint $sprint)
+    public function deletesprint(Sprint $sprint): Response
     {
         if (!$this->isGranted("ROLE_ADMIN")){
             return $this->render('pages/404.html.twig');

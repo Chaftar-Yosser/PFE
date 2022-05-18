@@ -8,6 +8,7 @@ use App\Form\ReponseType;
 use App\Repository\ReponseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,8 +23,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ReponseController extends AbstractController
 {
-    private $em;
-    private $repository;
+    private EntityManagerInterface $em;
+    private ReponseRepository $repository;
 
     public function __construct(EntityManagerInterface $em, ReponseRepository $reponseRepository)
     {
@@ -47,11 +48,12 @@ class ReponseController extends AbstractController
 
     /**
      * @param Request $request
+     * @param Question $question
      * @return Response
      * @package App\Controller
      * @Route("/question/{id}/create" ,name="create_reponse")
      */
-    public function createQuestion(Request $request , Question $question)
+    public function createQuestion(Request $request , Question $question): Response
     {
         $reponse = new Reponse();
         $reponse->setQuestion($question);
@@ -75,9 +77,11 @@ class ReponseController extends AbstractController
      * @param Reponse $reponse
      * @return Response
      * @package App\Controller
-     * @Route("/edit/{id}" ,name="edit_reponse")
+     * @ParamConverter("question", options={"mapping": {"questionId": "id"}})
+     * @ParamConverter("reponse", options={"mapping": {"id": "id"}})
+     * @Route("/question/{questionId}/edit/{id}" ,name="edit_reponse")
      */
-    public function edit(Request $request, Reponse $reponse)
+    public function edit(Request $request, Reponse $reponse): Response
     {
         //controle d'acces
         if (!$this->isGranted("ROLE_ADMIN")){
@@ -100,10 +104,13 @@ class ReponseController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="delete_reponse")
+     * @ParamConverter("question", options={"mapping": {"questionId": "id"}})
+     * @ParamConverter("reponse", options={"mapping": {"id": "id"}})
+     * @Route("/question/{questionId}/delete/{id}", name="delete_reponse")
      * @param Reponse $reponse
+     * @return Response
      */
-    public function delete(Reponse $reponse)
+    public function delete(Reponse $reponse):Response
     {
         //controle d'acces
         if (!$this->isGranted("ROLE_ADMIN")){
@@ -113,6 +120,6 @@ class ReponseController extends AbstractController
         $this->em->remove($reponse);
         $this->em->flush();
         $this->addFlash('success' , 'Réponse supprimé avec succés');
-        return $this->redirectToRoute('reponse_index');
+        return $this->redirectToRoute('reponse_index' , ["id" => $reponse->getQuestion()->getId()]);
     }
 }

@@ -1,0 +1,52 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    <div class="container text-center mt-4">
+        <h1>Nom de quiz : {{ quiz.name }}</h1>
+
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    <section class="content">
+        <div class="row">
+{#            <div class="col-md-6">#}
+            <div class="col-xs-8">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title"></h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <form action="{{ path('quiz_participate' , { 'id' : quiz.id }) }}" method="post" >
+                        <ol>
+                            {% for question in suggestedQuestions %}
+                            <li>
+                                <input type="hidden" name="question[]" value="{{ question.id }}">
+                                {{ question.title}}
+                                <ul>
+                                    {% for reponse in question.reponses %}
+                                    <li>
+                                        <input type="checkbox" name="reponse[{{ question.id }}][{{ reponse.id }}]" id="{{ reponse.id }}">
+                                        {{reponse.title  }}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                            {% endfor %}
+                        </ol>
+                        <div class="form-example">
+                            <input type="submit"  class="btn btn-primary" style="margin-left: 2% ; margin-bottom: 2%" value="Enregistrer">
+                        </div>
+                    </form>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+    </section>
+{% endblock %}

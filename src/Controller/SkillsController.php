@@ -62,6 +62,7 @@ class SkillsController extends AbstractController
             $this->addFlash('success' , 'skills crée avec succés!');
             return $this->redirectToRoute('skills_index');
         }
+        dd($form->getData());
 
         return $this->render('skills/create.html.twig', [
             'form' => $form->createView()

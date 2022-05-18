@@ -60,15 +60,11 @@
                                     <td>{{ quiz.nombrequestion}}</td>
                                     <td>{{ quiz.time|date('H:i')}} minutes</td>
                                     <td>
-                                        {% for questions in quiz.questions %}
-                                            {{ questions.title }}
-                                            {% if not loop.last %} , {% endif %}
-
-{#                                            {% for i in 1..quiz.nombrequestion %}#}
-{#                                                 {{ i }}#}
-{#                                            {% endfor %}#}
-
-                                        {% endfor %}
+                                        <ol>
+                                            {% for questions in quiz.questions  %}
+                                                <li>{{ questions.title}}</li>
+                                            {% endfor %}
+                                        </ol>
                                     </td>
                                     <td>
                                         {% for user in quiz.users %}
@@ -78,12 +74,14 @@
                                     </td>
                                     <td >
                                         {% if is_granted('ROLE_ADMIN') %}
-                                            <a  class="btn btn-info" href="{{ path("edit_quiz", {"id": quiz.id}) }}"  style="display: inline-block"> Editer </a>
+                                            <a  class="btn btn-info" href="{{ path("moreInfo_quiz", {"id": quiz.id}) }}"  style="display: inline-block">View</a>
+                                            <a  class="btn bg-purple margin" href="{{ path("edit_quiz", {"quizId": quiz.id}) }}" >Editer</a>
                                             <a  class="btn btn-danger" onclick="return confirm('Etes vous sur ???');
                                                 " href={{ path("delete_quiz", {"id": quiz.id}) }} > Supprimer
                                             </a>
-                                            <a  class="btn btn-default"  href={{ path("details", {"id": quiz.id}) }} >Details</a>
+                                            <a  class="btn btn-default"  href={{ path("details", {"id": quiz.id}) }} >Affecter User</a>
                                         {% endif %}
+                                        <a  class="btn btn-warning"  href={{ path("quiz_participate", {"id": quiz.id}) }} >Participer</a>
                                     </td>
                                 </tr>
                             {% endfor %}

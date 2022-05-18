@@ -52,9 +52,9 @@
                                     <td>{{ reponse.isCorrect}}</td>
                                     <td >
                                         {% if is_granted('ROLE_ADMIN') %}
-                                            <a  class="btn btn-info" href="{{ path("edit_reponse", {"id": reponse.id}) }}"  style="display: inline-block"> Editer </a>
+                                            <a  class="btn btn-info" href="{{ path("edit_reponse", {"questionId":question.id , "id": reponse.id}) }}"  style="display: inline-block"> Editer </a>
                                             <a  class="btn btn-danger" onclick="return confirm('Etes vous sur ???');
-                                                " href={{ path("delete_reponse", {"id": reponse.id}) }} > Supprimer
+                                                " href={{ path("delete_reponse", {"questionId":question.id , "id": reponse.id}) }} > Supprimer
                                             </a>
                                         {% endif %}
                                     </td>

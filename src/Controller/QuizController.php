@@ -4,14 +4,18 @@ namespace App\Controller;
 
 use App\Entity\Question;
 use App\Entity\Quiz;
+use App\Entity\Reponse;
 use App\Entity\User;
 use App\Form\QuizType;
+use App\Form\ReponseType;
 use App\Repository\QuizRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
@@ -48,13 +52,58 @@ class QuizController extends AbstractController
         ]);
     }
 
+
     /**
-     * @Route("/quiz-details/{id}", name="details")
+     * @Route("/quiz-participate/{id}", name="quiz_participate")
+     * @param Quiz $quiz
+     * @param Request $request
+     * @param Reponse $reponse
+     * @param MailerInterface $mailer
      * @return Response
      */
-    public function showProjectDetail(Quiz $quiz): Response
+    public function ParticipateQuiz(Quiz $quiz , Request $request , Reponse $reponse , MailerInterface $mailer): Response
+    {
+        $suggestedQuestions = $quiz->getQuestions();
+        $score=0;
+        if ($request->request->has('reponse')){
+            foreach ($_POST["question"] as $questionId){
+                if (isset($_POST["reponse"][$questionId])){
+                    $questions =$_POST["reponse"];
+
+                    foreach($questions as $key => $item){
+                        // recuperer la question
+                        $question  =$this->em->getRepository(Question::class)->find($key);
+
+                        foreach($item as $k=>$value){
+                            //  recuperer reponse correct de chaque question
+                            $userResponse = $this->em->getRepository(Reponse::class)->find($k);
+                            $isCorrect= $userResponse->getIsCorrect();
+                            // if id reponse correcte de quesstion = id de réponse de user , calcul de score
+                            if($isCorrect==true){
+                                $score+=$question->getScore();
+                            }
+                        }
+                    }
+//                    dd($score);
+                }
+            }
+        }
+        return $this->render('quiz/quiz_participate.html.twig', [
+            'quiz' => $quiz,
+            'suggestedQuestions' => $suggestedQuestions,
+        ]);
+    }
+
+
+    /**
+     * @Route("/quiz-details/{id}", name="details")
+     * @param Quiz $quiz
+     * @return Response
+     */
+    public function showQuizDetail(Quiz $quiz): Response
     {
         $suggestedUsers = $this->em->getRepository(User::class)->getUsersByQuizSkills($quiz);
+//        dd($suggestedUsers);
         return $this->render('quiz/details.html.twig', [
             'quiz' => $quiz,
             'suggestedUsers' => $suggestedUsers,
@@ -94,14 +143,12 @@ class QuizController extends AbstractController
      * @package App\Controller
      * @Route("/create" ,name="create_quiz")
      */
-    public function create(Request $request )
+    public function create(Request $request ): Response
     {
         $quiz = new Quiz();
         $form = $this->createForm(QuizType::class,$quiz);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-//            $skills = $form->get("skills")->getData();
-
             $questions = $this->em->getRepository(Question::class)->getQuestionByQuiz($quiz);
             foreach ($questions as $quizQuestion){
                 $quiz->addQuestion($quizQuestion);
@@ -123,9 +170,10 @@ class QuizController extends AbstractController
      * @param Quiz $quiz
      * @return Response
      * @package App\Controller
-     * @Route("/edit/{id}" ,name="edit_quiz")
+     * @ParamConverter("quiz", options={"mapping": {"quizId": "id"}})
+     * @Route("/edit/{quizId}" ,name="edit_quiz")
      */
-    public function edit(Request $request, Quiz $quiz)
+    public function edit(Request $request, Quiz $quiz): Response
     {
         //controle d'acces
         if (!$this->isGranted("ROLE_ADMIN")){
@@ -133,18 +181,21 @@ class QuizController extends AbstractController
         }
 
         $form = $this->createForm(QuizType::class, $quiz);
+//        $nbquestion = $quiz->getNombrequestion();
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid()){
+            foreach ($quiz->getQuestions() as $quizQuestion){
+                $quiz->removeQuestion($quizQuestion);
+            }
             $questions = $this->em->getRepository(Question::class)->getQuestionByQuiz($quiz);
             foreach ($questions as $quizQuestion){
-                $quiz->removeQuestion($quizQuestion);
-//                $quiz->addQuestion($quizQuestion);
+                $quiz->addQuestion($quizQuestion);
             }
-
             $this->em->persist($quiz);
             $this->em->flush();
             $this->addFlash('success' , 'Quiz modifié avec succés!');
-            return $this->redirectToRoute('quiz_index' ,);
+            return $this->redirectToRoute('quiz_index');
         }
         return $this->render('quiz/edit.html.twig', [
             'quiz' =>$quiz,
@@ -153,11 +204,53 @@ class QuizController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param Quiz $quiz
+     * @return Response
+     * @package App\Controller
+     * @Route("/moreInfo/{id}" ,name="moreInfo_quiz")
+     */
+    public function moreInfo(Request $request, Quiz $quiz)
+    {
+        //controle d'acces
+        if (!$this->isGranted("ROLE_ADMIN")){
+            return $this->render('pages/404.html.twig');
+        }
+        $allQuestions = $this->em->getRepository(Question::class)->getAllQuestionByQuiz($quiz);
+        return $this->render('quiz/more_Information.html.twig', [
+            'quiz' =>$quiz,
+            'allQuestions' => $allQuestions,
+        ]);
+    }
+
+    /**
+     * @param Quiz $quiz
+     * @return Response
+     * @package App\Controller
+     * @Route("/quiz/{id}" , name="update_quiz")
+     */
+    public function update(Quiz $quiz): Response
+    {
+        foreach ($quiz->getQuestions() as $quizQuestion){
+            $quiz->removeQuestion($quizQuestion);
+        }
+
+        $questions = $this->em->getRepository(Question::class)->getQuestionByQuiz($quiz);
+        foreach ($questions as $quizQuestion){
+            $quiz->addQuestion($quizQuestion);
+        }
+        $this->em->persist($quiz);
+        $this->em->flush();
+        $this->addFlash('success' , 'Quiz modifié avec succés!');
+        return $this->redirectToRoute('quiz_index');
+    }
+
+    /**
      * @Route("/delete/{id}", name="delete_quiz")
      * @param Quiz $quiz
      * @return Response
      */
-    public function delete(Quiz $quiz)
+    public function delete(Quiz $quiz): Response
     {
         //controle d'acces
         if (!$this->isGranted("ROLE_ADMIN")){
