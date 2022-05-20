@@ -17,6 +17,7 @@ class Reponse
     private $title;
 
     #[ORM\ManyToOne(targetEntity: Question::class, inversedBy: 'reponses')]
+    #[ORM\JoinColumn(name:"question_id", referencedColumnName:"id")]
     #[ORM\JoinColumn(nullable: false)]
     private $question;
 

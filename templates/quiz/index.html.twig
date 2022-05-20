@@ -52,10 +52,11 @@
                                     <td>{{ quiz.id }}</td>
                                     <td>{{ quiz.name}}</td>
                                     <td>
+                                        <ol>
                                         {% for skills in quiz.skills %}
-                                            {{ skills.name }}
-                                            {% if not loop.last %} , {% endif %}
+                                            <li>{{ skills.name }}</li>
                                         {% endfor %}
+                                        </ol>
                                     </td>
                                     <td>{{ quiz.nombrequestion}}</td>
                                     <td>{{ quiz.time|date('H:i')}} minutes</td>

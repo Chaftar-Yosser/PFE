@@ -28,7 +28,8 @@ class Question
     #[ORM\Column(type: 'integer', length: 255)]
     private $score;
 
-    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Reponse::class)]
+    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Reponse::class, cascade:["remove"])]
+
     private $reponses;
 
     #[ORM\ManyToMany(targetEntity: Quiz::class, mappedBy: 'questions')]

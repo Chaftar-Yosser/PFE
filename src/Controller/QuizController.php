@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Question;
 use App\Entity\Quiz;
 use App\Entity\Reponse;
+use App\Entity\Search;
 use App\Entity\User;
 use App\Form\QuizType;
 use App\Form\ReponseType;
+use App\Form\SearchType;
 use App\Repository\QuizRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -15,6 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -41,9 +44,17 @@ class QuizController extends AbstractController
     #[Route('/', name: 'quiz_index')]
     public function index(PaginatorInterface $paginator , Request $request): Response
     {
+        // affichage des quiz pour l'utilisateur courant
+        $user = $this->getUser();
+        if ($this->isGranted('ROLE_ADMIN')){
+            $quiz = $this->repository->findAll();
+        }else{
+            $quiz = $this->repository->getQuizByUser($user);
+        }
+
         // pagination
         $quiz = $paginator->paginate(
-            $this->repository->findAll(), /* query NOT result */
+            $quiz, /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             3 /*limit per page*/
         );
@@ -54,20 +65,21 @@ class QuizController extends AbstractController
 
 
     /**
-     * @Route("/quiz-participate/{id}", name="quiz_participate")
      * @param Quiz $quiz
      * @param Request $request
-     * @param Reponse $reponse
      * @param MailerInterface $mailer
      * @return Response
+     * @Route("/quiz-participate/{id}", name="quiz_participate")
      */
-    public function ParticipateQuiz(Quiz $quiz , Request $request , Reponse $reponse , MailerInterface $mailer): Response
+    public function ParticipateQuiz(Quiz $quiz , Request $request , MailerInterface $mailer): Response
     {
         $suggestedQuestions = $quiz->getQuestions();
+        $user = $this->getUser();
         $score=0;
         if ($request->request->has('reponse')){
-            foreach ($_POST["question"] as $questionId){
-                if (isset($_POST["reponse"][$questionId])){
+
+            foreach ($_POST["question"] as $questionId){ // jebli les questions ta3 quiz hekii
+                if (isset($_POST["reponse"][$questionId])){ // jebli ken question ilii aandou reponse
                     $questions =$_POST["reponse"];
 
                     foreach($questions as $key => $item){
@@ -84,7 +96,15 @@ class QuizController extends AbstractController
                             }
                         }
                     }
-//                    dd($score);
+                    $email = (new Email())
+                        ->from($this->getParameter("mailer_sender")) // toujours l'envoie avec le mail déclarer dans le service yaml
+                        ->to($user->getEmail())
+                        ->subject('Score de quiz ')
+                        ->html('Votre score de quiz  ' . $quiz->getName() . ' est : ' . $score .' points ')
+                    ;
+                    $mailer->send($email);
+
+                    return $this->redirectToRoute('quiz_index');
                 }
             }
         }
@@ -103,7 +123,6 @@ class QuizController extends AbstractController
     public function showQuizDetail(Quiz $quiz): Response
     {
         $suggestedUsers = $this->em->getRepository(User::class)->getUsersByQuizSkills($quiz);
-//        dd($suggestedUsers);
         return $this->render('quiz/details.html.twig', [
             'quiz' => $quiz,
             'suggestedUsers' => $suggestedUsers,
@@ -185,6 +204,15 @@ class QuizController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+            //            if ($nbquestion == $quiz->getNombrequestion()){
+//                $diff= $quiz->getNombrequestion() - $nbquestion;
+//                dd($diff);
+//                $questions = $this->em->getRepository(Question::class)->getQuestionByQuiz($quiz);
+//                foreach ($questions as $quizQuestion){
+//                    $quiz->addQuestion($quizQuestion);
+//                }
+//            }
+
             foreach ($quiz->getQuestions() as $quizQuestion){
                 $quiz->removeQuestion($quizQuestion);
             }
