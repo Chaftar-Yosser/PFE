@@ -130,7 +130,7 @@ class QuizController extends AbstractController
     }
 
     /**
-     * @Route("/quiz/{id}/addUser/{userId}" , name="affect_user")
+     * @Route("/quiz/{id}/addUser/{userId}" , name="affectuser")
      * @param Quiz $quiz
      * @param $userId
      * @param MailerInterface $mailer

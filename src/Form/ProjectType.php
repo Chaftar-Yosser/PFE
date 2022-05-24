@@ -47,7 +47,7 @@ class ProjectType extends AbstractType
                     '' => '' ,
                     'En Cours' => 'En Cours',
                     'En Pause' => 'En Pause',
-                    'Terminé' => 'terminé',
+                    'Terminé' => 'Terminé',
                 ],
                 'attr' => [
                     'class' => "form-control ",

@@ -125,6 +125,12 @@ class HomeController extends AbstractController
         ]);
     }
 
+//    #[Route('/dashbord', name: 'dashbord_index')]
+//    public function index2(): Response
+//    {
+//        return $this->render('vues/dashbord.html.twig');
+//    }
+
     public function notfound(): Response
     {
         return $this->render('pages/404.html.twig');

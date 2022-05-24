@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: '`leave`')]
 class Leave
 {
-    const STATUS_ENCOURS="En Cours";
+    const STATUS_ENCOURS="En cours";
     const STATUS_ACCEPTER="Accepter";
     const STATUS_REFUSER="Réfuser";
 

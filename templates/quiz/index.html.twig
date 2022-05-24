@@ -1,11 +1,102 @@
 {% extends 'template.html.twig' %}
 
-{% block title %}Hello QuizController!{% endblock %}
+{% block title %}Les Quiz{% endblock %}
 
 {% block body %}
-    <div class="container text-center mt-4">
-        <h1>Voir tout les quiz  </h1>
+
+    <div class="card">
+
+        <div class="box-header">
+            <h5 class="card-header">Liste des Quiz
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a  class="btn btn-success" href={{ path("create_quiz") }}>Créer</a>
+                {% endif %}
+            </h5>
+            <div class="row justify-content-end my-4">
+                <div class="box-tools col-3">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                        <input id="myInput" type="text" placeholder="Search..">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive text-nowrap m-2">
+            <table class=" table table-hover table-sm">
+                <thead>
+                <tr>
+                    <th>name</th>
+                    <th>technologies</th>
+                    <th>nombre de question</th>
+                    <th>durée</th>
+                    <th>questions</th>
+                    <th>Users</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody class="table-border-bottom-0" id="myTable">
+                {% for quiz in quiz %}
+                    <tr>
+                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{ quiz.name}}</strong></td>
+                        <td>
+                            <ol>
+                                {% for skills in quiz.skills %}
+                                    <li>{{ skills.name }}</li>
+                                {% endfor %}
+                            </ol>
+                        </td>
+                        <td>{{ quiz.nombrequestion}}</td>
+                        <td>{{ quiz.time|date('H:i')}} minutes</td>
+                        <td>
+                            <ol>
+                                {% for questions in quiz.questions  %}
+                                    <li>{{ questions.title}}</li>
+                                {% endfor %}
+                            </ol>
+                        </td>
+                        <td>
+                            {% for user in quiz.users %}
+                                <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="" data-bs-original-title="{{ user.lastname}}">
+                                        <img src="{{ asset('images/'~user.image) }}" alt="Avatar" class="rounded-circle">
+                                    </li>
+                                </ul>
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a class="dropdown-item" href="{{ path("moreInfo_quiz", {"id": quiz.id}) }}"><i class="bx bx-edit-alt me-1"></i> View</a>
+                                        <a class="dropdown-item" href="{{ path("edit_quiz", {"quizId": quiz.id}) }}"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                                        <a class="dropdown-item" href="{{ path("details", {"id": quiz.id}) }}"><i class="bx bx-edit-alt me-1"></i> Affecter User</a>
+                                        <a class="dropdown-item" onclick="return confirm('Etes vous sur ???'); " href="{{ path("delete_quiz", {"id": quiz.id}) }}"><i class="bx bx-trash me-1"></i> Delete</a>
+                                    {% endif %}
+                                    <a class="dropdown-item" href="{{ path("quiz_participate", {"id": quiz.id}) }}"><i class="bx bx-edit-alt me-1"></i> Participer</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="content-wrapper">
+            <div class="demo-inline-spacing">
+                <!-- Basic Pagination -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination d-flex text-center justify-content-center">
+                        {{ knp_pagination_render(quiz) }}
+                    </ul>
+                </nav>
+            </div>
+            <div class="content-backdrop fade"></div>
+        </div>
     </div>
+
 
     <section class="content">
         <div class="container">
@@ -14,90 +105,6 @@
                     {{ message }}
                 </div>
             {% endfor %}
-        </div>
-        <!-- /.row -->
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="box box-primary">
-                    <div class="box-header">
-                        <h3 class="box-title">Tableau des quiz</h3>
-                        <div class="box-tools">
-                            <div class="input-group input-group-sm" style="width: 150px;">
-                                <input id="myInput" type="text" placeholder="Search..">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>name</th>
-                                <th>technologies</th>
-                                <th>nombre de question</th>
-                                <th>durée</th>
-                                <th>questions</th>
-                                <th>Users</th>
-                                <th>
-                                    {% if is_granted('ROLE_ADMIN') %}
-                                        <a  class="btn btn-success" href={{ path("create_quiz") }}>Créer</a>
-                                    {% endif %}
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody id="myTable">
-                            {% for quiz in quiz %}
-                                <tr>
-                                    <td>{{ quiz.id }}</td>
-                                    <td>{{ quiz.name}}</td>
-                                    <td>
-                                        <ol>
-                                        {% for skills in quiz.skills %}
-                                            <li>{{ skills.name }}</li>
-                                        {% endfor %}
-                                        </ol>
-                                    </td>
-                                    <td>{{ quiz.nombrequestion}}</td>
-                                    <td>{{ quiz.time|date('H:i')}} minutes</td>
-                                    <td>
-                                        <ol>
-                                            {% for questions in quiz.questions  %}
-                                                <li>{{ questions.title}}</li>
-                                            {% endfor %}
-                                        </ol>
-                                    </td>
-                                    <td>
-                                        {% for user in quiz.users %}
-                                            {{ user.lastname }}
-                                            {% if not loop.last %} , {% endif %}
-                                        {% endfor %}
-                                    </td>
-                                    <td >
-                                        {% if is_granted('ROLE_ADMIN') %}
-                                            <a  class="btn btn-info" href="{{ path("moreInfo_quiz", {"id": quiz.id}) }}"  style="display: inline-block">View</a>
-                                            <a  class="btn bg-purple margin" href="{{ path("edit_quiz", {"quizId": quiz.id}) }}" >Editer</a>
-                                            <a  class="btn btn-danger" onclick="return confirm('Etes vous sur ???');
-                                                " href={{ path("delete_quiz", {"id": quiz.id}) }} > Supprimer
-                                            </a>
-                                            <a  class="btn btn-default"  href={{ path("details", {"id": quiz.id}) }} >Affecter User</a>
-                                        {% endif %}
-                                        <a  class="btn btn-warning"  href={{ path("quiz_participate", {"id": quiz.id}) }} >Participer</a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-
-                        <div class="navigation d-flex text-center justify-content-center">
-                            {{ knp_pagination_render(quiz) }}
-                        </div>
-
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
-            </div>
         </div>
     </section>
 {% endblock %}

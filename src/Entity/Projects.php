@@ -10,6 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ProjectsRepository::class)]
 class Projects
 {
+    const STATUS_ENCOURS="En Cours";
+    const STATUS_PAUSE="En Pause";
+    const STATUS_TERMINER="Terminé";
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]

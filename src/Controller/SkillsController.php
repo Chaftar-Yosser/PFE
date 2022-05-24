@@ -6,6 +6,7 @@ use App\Entity\Skills;
 use App\Form\SkillsType;
 use App\Repository\SkillsRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,9 +32,13 @@ class SkillsController extends AbstractController
     }
 
     #[Route('/', name: 'skills_index')]
-    public function index(): Response
+    public function index(PaginatorInterface $paginator , Request $request): Response
     {
-        $skills = $this->repository->findAll();
+        $skills = $paginator->paginate(
+            $this->repository->findAll(),
+            $request->query->getInt('page', 1),
+            3 /*limit per page*/
+        );
         return $this->render('skills/index.html.twig', [
             'skills' => $skills,
         ]);
@@ -62,8 +67,6 @@ class SkillsController extends AbstractController
             $this->addFlash('success' , 'skills crée avec succés!');
             return $this->redirectToRoute('skills_index');
         }
-        dd($form->getData());
-
         return $this->render('skills/create.html.twig', [
             'form' => $form->createView()
         ]);

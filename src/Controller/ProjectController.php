@@ -12,6 +12,7 @@ use App\Repository\ProjectsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -112,6 +113,8 @@ class ProjectController extends AbstractController
     }
 
     /**
+     * @ParamConverter("project", options={"mapping": {"id": "id"}})
+     * @ParamConverter("user", options={"mapping": {"userId": "id"}})
      * @Route("/project/{id}/addUser/{userId}" , name="affect_user")
      * @param Projects $project
      * @param $userId

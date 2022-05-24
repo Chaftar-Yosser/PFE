@@ -35,8 +35,9 @@ class ReponseController extends AbstractController
     #[Route('/question-reponse/{id}', name: 'reponse_index')]
     public function index(Question $question , PaginatorInterface $paginator , Request $request ): Response
     {
+//        dd($this->repository->findByQuestion($question));
         $reponse = $paginator->paginate(
-            $this->repository->findBy(["question" => $question]), /* query NOT result */
+            $this->repository->findByQuestion($question), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             4 /*limit per page*/
         );
