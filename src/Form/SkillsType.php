@@ -14,6 +14,7 @@ class SkillsType extends AbstractType
     {
         $builder
             ->add('name',TextType::class,[
+                'label' => 'nom',
                 'attr' => [
                     'class' => "form-control ",
                 ]

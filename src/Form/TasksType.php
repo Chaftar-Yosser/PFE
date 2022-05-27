@@ -24,6 +24,7 @@ class TasksType extends AbstractType
         $task = $builder->getData();
         $builder
             ->add('task_name' ,TextType::class,[
+                'label' => 'nom',
                 'attr' => [
                     'class' => "form-control ",
                 ]
@@ -36,6 +37,7 @@ class TasksType extends AbstractType
 
             ])
             ->add('date_debut',DateType::class,[
+                'label' => 'daate début',
                 'widget' => 'single_text',
                 'attr' => [
                     'class' => "form-control ",
@@ -43,6 +45,7 @@ class TasksType extends AbstractType
 
             ])
             ->add('duree',ChoiceType::class,[
+                'label' => 'durée',
                 'attr' => [
                     'class' => "form-control ",
                 ],
@@ -67,6 +70,7 @@ class TasksType extends AbstractType
                 ]
             ])
             ->add('priorite',ChoiceType::class,[
+                'label' => 'priorité',
                 'choices' =>[
                     '' => '' ,
                     'Elevée' => 'Elevée',
@@ -82,6 +86,7 @@ class TasksType extends AbstractType
                 'class' => User::class,
                 'choices' => $task->getProjects()->getUsers(), // just les users affecter à ce projet
                 'choice_label'  => 'lastname',
+                'label' => 'utilisateurs',
                 'attr' => [
                     'class' => "form-control  select2",
                 ],

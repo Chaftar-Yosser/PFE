@@ -17,6 +17,15 @@
         {% endfor %}
     </h4>
 
+    <div class="container text-center mt-4">
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+
     <div class="row">
         <div class="card col mx-1">
             <div class="box-header">
@@ -39,24 +48,13 @@
                             <td>{{ user.lastname}}</td>
                             <td>
                                 {% if is_granted('ROLE_ADMIN') %}
-                                    <a class="btn btn-sm btn-outline-success" href="{{ path('remove_user', {'id': project.id, 'userId': user.id}) }}"><i class="bx bx-edit-alt me-1"></i> Remove</a>
+                                    <a class="btn btn-sm btn-outline-primary" href="{{ path('remove_user', {'id': project.id, 'userId': user.id}) }}"><i class="bx bx-edit-alt me-1"></i>Remove</a>
                                 {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
-            </div>
-            <div class="content-wrapper">
-                <div class="demo-inline-spacing">
-                    <!-- Basic Pagination -->
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination d-flex text-center justify-content-center">
-                            <a  class="btn btn-danger" href={{ path("project_index" , {"id": project.id} )}}, style="display: inline-block"> Back To  </a>
-                        </ul>
-                    </nav>
-                </div>
-                <div class="content-backdrop fade"></div>
             </div>
         </div>
 
@@ -90,7 +88,7 @@
                             </td>
                             <td>
                                 {% if is_granted('ROLE_ADMIN') %}
-                                    <a class="dropdown-item" href="{{ path('affect_user', {'id': project.id, 'userId': user.id}) }}"><i class="bx bx-edit-alt me-1"></i> Add</a>
+                                    <a class="btn btn-sm btn-outline-primary" href="{{ path('affect_user', {'id': project.id, 'userId': user.id}) }}"><i class="bx bx-edit-alt me-1"></i> Add</a>
                                 {% endif %}
                             </td>
                         </tr>
@@ -98,120 +96,53 @@
                     </tbody>
                 </table>
             </div>
-            <div class="content-wrapper">
-                <div class="demo-inline-spacing">
-                    <!-- Basic Pagination -->
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination d-flex text-center justify-content-center">
-                            <a  class="btn btn-danger" href={{ path("project_index" , {"id": project.id} )}}, style="display: inline-block"> Back To  </a>
-                        </ul>
-                    </nav>
-                </div>
-                <div class="content-backdrop fade"></div>
-            </div>
         </div>
     </div>
-    <div class="container text-center mt-4">
 
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success">
-                {{ message }}
-            </div>
-        {% endfor %}
-    </div>
-    <section class="content">
-        <div class="row">
-
-{#            <div class="col-md-6">#}
-{#                <div class="box box-primary">#}
-{#                    <div class="box-header">#}
-{#                        <h3 class="box-title">Suggestion Users Table</h3>#}
-{#                    </div>#}
-{#                    <!-- /.box-header -->#}
-{#                    <div class="box-body table-responsive no-padding">#}
-{#                        <table class="table table-hover">#}
-{#                            <thead>#}
-{#                            <tr>#}
-{#                                <th>ID</th>#}
-{#                                <th>name</th>#}
-
-{#                                <th>Action</th>#}
-{#                            </tr>#}
-{#                            </thead>#}
-{#                            <tbody id="myTable">#}
-{#                            {% for user in suggestedUsers %}#}
-{#                                <tr>#}
-{#                                    <td>{{ user.id }}</td>#}
-{#                                    <td>{{ user.lastname}}</td>#}
-
-{#                                    <td>#}
-{#                                        <a  class="btn btn" href="{{ path('affect_user', {'id': project.id, 'userId': user.id}) }}" > Add </a>#}
-{#                                  </td>#}
-{#                                </tr>#}
-{#                            {% endfor %}#}
-{#                            </tbody>#}
-{#                        </table>#}
-{#                    </div>#}
-{#                    <!-- /.box-body -->#}
-{#                </div>#}
-{#                <!-- /.box -->#}
-{#            </div>#}
+    <div class="card mt-5">
+        <div class="box-header">
+            <h5 class="card-header">Liste des Tâche de :  {{ project.name }} </h5>
+            <a  class="btn btn-sm btn-outline-primary" href={{ path("sprint_index" , {"id": project.id} )}} , style="margin-left: 1%"> Plus de détail  </a>
         </div>
 
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="box box-primary">
-                    <div class="box-header">
-                        <h3 class="box-title">Tableau des tâches pour {{ project.name }}</h3>
-                        <h4>
-{#                            on peut pas faire la création des tâches il faut que deja 3ana sprint pour créer les tâches#}
-{#                            <a  class="btn btn-success" href="{{ path('create_task', {'id': project.id , "sprintId":sprint.id }) }}" > Créer une tâche </a>#}
-                            <a  class="btn btn-default" href={{ path("sprint_index" , {"id": project.id} )}}> Plus de détail  </a>
-                        </h4>
-                        <div class="box-tools">
-                            <div class="input-group input-group-sm" style="width: 150px;">
-                                <input id="myInput" type="text" placeholder="Search..">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover" id="table_id">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Sprint</th>
-                                <th>tâche</th>
-                                <th>status</th>
-                                <th>Users</th>
-                            </tr>
-
-                            </thead>
-                            <tbody id="myTable">
-                            {% for task in tasks %}
-                                <tr>
-                                    <td>{{ task.id }}</td>
-                                    <td>{{ task.sprint.name }}</td>
-                                    <td>{{ task.taskname}}</td>
-                                    <td>{{ task.status}}</td>
-                                    <td>
-                                        {% for user in task.users  %}
-                                            {{ user.lastName }}
-                                        {% endfor %}
-                                    </td>
-                                </tr>
+        <div class="table-responsive text-nowrap m-2">
+            <table class="table table-hover table-sm">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Sprint</th>
+                    <th>tâche</th>
+                    <th>status</th>
+                    <th>Users</th>
+                </tr>
+                </thead>
+                <tbody id="myTable" class="table-border-bottom-0">
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.id }}</td>
+                        <td>{{ task.sprint.name }}</td>
+                        <td>{{ task.taskname}}</td>
+                        <td>{{ task.status}}</td>
+                        <td>
+                            {% for user in task.users  %}
+                                {{ user.lastName }}
                             {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
-            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
-
-
-    </section>
-
-
+    </div>
+    <div class="content-wrapper">
+        <div class="demo-inline-spacing">
+            <!-- Basic Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination d-flex text-center ">
+                    <a class="btn btn-sm btn-outline-danger" href={{ path("project_index" , {"id": project.id} )}}, style="display: inline-block"> <i class="bx bx-log-out me-2"></i>Back To..  </a>
+                </ul>
+            </nav>
+        </div>
+        <div class="content-backdrop fade"></div>
+    </div>
 {% endblock %}

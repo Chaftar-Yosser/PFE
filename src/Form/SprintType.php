@@ -18,12 +18,14 @@ class SprintType extends AbstractType
     {
         $builder
             ->add('name',TextType::class,[
+                'label' => 'nom',
                 'attr' => [
                     'class' => "form-control ",
                 ]
             ])
             ->add('startDate',DateType::class,[
                 'widget' => 'single_text',
+                'label' => 'date debut',
                 'attr' => [
                     'class' => "form-control ",
                 ],
@@ -31,12 +33,14 @@ class SprintType extends AbstractType
             ])
             ->add('endDate',DateType::class,[
                 'widget' => 'single_text',
+                'label' => 'date fin',
                 'attr' => [
                     'class' => "form-control ",
                 ],
 
             ])
             ->add('duree',ChoiceType::class,[
+                'label' => 'dureé',
                 'attr' => [
                     'class' => "form-control ",
                 ],
@@ -55,7 +59,7 @@ class SprintType extends AbstractType
                     '' => '' ,
                     'En Cours' => 'En Cours',
                     'En Pause' => 'En Pause',
-                    'Terminé' => 'terminé',
+                    'Terminé' => 'Terminé',
                 ]
             ])
         ;

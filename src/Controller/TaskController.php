@@ -82,7 +82,7 @@ class TaskController extends AbstractController
             $tasks = $taskRepository->getTasksByUserAndSprint($user, $sprint);
         }
         // calcul de percentage d'avancement d'une tâche
-        $percent = $this->em->getRepository(Sprint::class)->getSprintAdvancement($sprint);
+//        $percent = $this->em->getRepository(Sprint::class)->getSprintAdvancement($sprint);
 
         $Tasks = $paginator->paginate(
             $tasks,
@@ -95,7 +95,7 @@ class TaskController extends AbstractController
             'sprint' => $sprint,
             'tasks' => $Tasks,
             'project' => $sprint->getProject(),
-            'percent' => round($percent, 2),
+//            'percent' => round($percent, 2),
         ]);
 
     }
@@ -219,7 +219,7 @@ class TaskController extends AbstractController
      * @ParamConverter("Tasks", options={"mapping": {"taskId": "id"}})
      * @Route("/project/{projectId}/edit/{taskId}" ,name="edit_task")
      */
-    public function edit(Request $request, Projects $project, Tasks $Tasks)
+    public function edit(Request $request, Projects $project, Tasks $Tasks , Sprint $sprint)
     {
         if (!$this->isGranted("ROLE_ADMIN")){
             return $this->render('pages/404.html.twig');
@@ -243,6 +243,7 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('sprint_tasks' , ["id" => $Tasks->getSprint()->getId()]);
         }
         return $this->render('task/edit.html.twig', [
+            'sprint' => $sprint,
             'task' =>$Tasks,
             'project' =>$project,
             'form' => $form->createView(),

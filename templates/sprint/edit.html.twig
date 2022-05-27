@@ -1,8 +1,7 @@
 {% extends 'template.html.twig' %}
-
+{% block title %}Formulaire d'edit {% endblock %}
 {% block body %}
     <div class="container mt-4">
-        <h2>Modifier {{ sprint.name }}</h2>
         {{  include ('sprint/form.html.twig', { button: 'Editer'}) }}
     </div>
 {% endblock %}

@@ -10,6 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: SprintRepository::class)]
 class Sprint
 {
+    const STATUS_EN_COURS="En Cours";
+    const STATUS_RESILIE="En Pause";
+    const STATUS_TERMINE="Terminé";
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]

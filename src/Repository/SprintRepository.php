@@ -25,11 +25,10 @@ class SprintRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('s');
         $qb->join("s.tasks", "t")
-            ->select("avg(t.avancement)")
+            ->select("avg(COALESCE(t.avancement, '0'))")
             ->where($qb->expr()->eq('s', ':sprint'))
             ->setParameter('sprint', $sprint);
-        return $qb->getQuery()->getSingleScalarResult()
-            ;
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
 

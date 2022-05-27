@@ -1,8 +1,7 @@
 {% extends 'template.html.twig' %}
-
+{% block title %}Formulaire d'ajout {% endblock %}
 {% block body %}
     <div class="container mt-4">
-        <h1>Create new skills</h1>
         {{  include ('skills/form.html.twig', { button: 'Créer'}) }}
     </div>
 {% endblock %}

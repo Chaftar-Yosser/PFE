@@ -31,28 +31,36 @@ class UserType extends AbstractType
             ->add('firstname',TextType::class, [
                 'attr' => [
                     'class' => "form-control ",
+                    'placeholder' => " admin"
                 ],
                 'label' => 'Prénom',
             ])
             ->add('lastname',TextType::class, [
                 'attr' => [
                     'class' => "form-control ",
+                    'placeholder' => " admin"
                 ],
                 'label' => 'Nom',
             ])
             ->add('email',EmailType::class, [
                 'attr' => [
                     'class' => "form-control ",
+                    'placeholder' => " admin@admin.fr"
                 ]
             ])
             ->add('password',PasswordType::class, [
                 'attr' => [
+                    "aria-describedby" =>"basic-default-password2",
+                    'placeholder' => " .........",
                     'class' => "form-control ",
                 ],
                 'label' => 'Mot de passe',
             ])
             ->add('image',FileType::class,[
-                "data" => $file
+                "data" => $file,
+                'attr' => [
+                    'class' => "form-control ",
+                ]
             ])
             ->add('role',ChoiceType::class,[
                 'attr' => [

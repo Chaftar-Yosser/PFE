@@ -16,11 +16,13 @@ class ReponseType extends AbstractType
     {
         $builder
             ->add('title', TextType::class,[
+                'label' => 'réponse',
                 'attr' => [
                     'class' => "form-control ",
                 ]
             ])
             ->add('isCorrect',CheckboxType::class ,[
+                'label' => 'réponse correcte',
                 'required' => false,
             ])
         ;

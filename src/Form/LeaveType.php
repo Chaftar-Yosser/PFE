@@ -67,11 +67,11 @@ class LeaveType extends AbstractType
                     'class' => "form-control ",
                 ]
             ])
-            ->add('save',SubmitType::class,[
-                'attr' => [
-                    'class' => "btn btn-success ",
-                ]
-            ])
+//            ->add('save',SubmitType::class,[
+//                'attr' => [
+//                    'class' => "btn btn-success ",
+//                ]
+//            ])
         ;
     }
 

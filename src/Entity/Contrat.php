@@ -69,7 +69,10 @@ class Contrat
 
     public function getDateDebut(): ?\DateTimeInterface
     {
-        return clone $this->date_debut;
+        if ($this->date_debut)
+            return clone ($this->date_debut);
+
+        return null;
     }
 
     public function setDateDebut(\DateTimeInterface $date_debut): self
@@ -84,7 +87,7 @@ class Contrat
      */
     public function getDateFin()
     {
-        return clone $this->date_fin;
+        return clone ($this->date_fin) ;
     }
 
     /**

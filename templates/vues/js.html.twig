@@ -47,6 +47,35 @@
 
 <!-- Page JS -->
 <script src="{{ asset ('bundles/assets/js/dashboards-analytics.js') }}"></script>
+<!-- Select2-->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.select2').select2();
+    })
+</script>
+<script>
+    const departMinutes = $("#time").val();
+    // const departMinutes = 0.1
+    let temps = departMinutes * 60
+
+    const timerElement = document.getElementById("timer")
+
+    const clockCheck =  setInterval(() => {
+        let minutes = parseInt(temps / 60, 10)
+        let secondes = parseInt(temps % 60, 10)
+
+        minutes = minutes < 10 ? "0" + minutes : minutes
+        secondes = secondes < 10 ? "0" + secondes : secondes
+
+        timerElement.innerText = `${minutes}:${secondes}`
+        temps = temps <= 0 ? 0 : temps - 1
+        if (temps === 0){
+            clearInterval(clockCheck);
+            $(".quiz").submit();
+        }
+    }, 1000)
+</script>

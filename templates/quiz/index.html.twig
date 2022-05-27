@@ -4,12 +4,21 @@
 
 {% block body %}
 
-    <div class="card">
+    <section class="content">
+        <div class="container">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    </section>
 
+    <div class="card">
         <div class="box-header">
             <h5 class="card-header">Liste des Quiz
                 {% if is_granted('ROLE_ADMIN') %}
-                    <a  class="btn btn-success" href={{ path("create_quiz") }}>Créer</a>
+                    <a  class="btn btn-sm btn-outline-success" href={{ path("create_quiz") }}>Créer</a>
                 {% endif %}
             </h5>
             <div class="row justify-content-end my-4">
@@ -25,9 +34,9 @@
             <table class=" table table-hover table-sm">
                 <thead>
                 <tr>
-                    <th>name</th>
+                    <th>Nom</th>
                     <th>technologies</th>
-                    <th>nombre de question</th>
+                    <th>nombre <br> de question</th>
                     <th>durée</th>
                     <th>questions</th>
                     <th>Users</th>
@@ -50,34 +59,43 @@
                         <td>
                             <ol>
                                 {% for questions in quiz.questions  %}
-                                    <li>{{ questions.title}}</li>
+                                    <li>{{ questions.title|slice(0,10)}}...</li>
                                 {% endfor %}
                             </ol>
                         </td>
                         <td>
-                            {% for user in quiz.users %}
-                                <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                            <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                                {% for user in quiz.users %}
                                     <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="" data-bs-original-title="{{ user.lastname}}">
                                         <img src="{{ asset('images/'~user.image) }}" alt="Avatar" class="rounded-circle">
                                     </li>
-                                </ul>
-                            {% endfor %}
+                                {% endfor %}
+                            </ul>
                         </td>
                         <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    {% if is_granted('ROLE_ADMIN') %}
-                                        <a class="dropdown-item" href="{{ path("moreInfo_quiz", {"id": quiz.id}) }}"><i class="bx bx-edit-alt me-1"></i> View</a>
-                                        <a class="dropdown-item" href="{{ path("edit_quiz", {"quizId": quiz.id}) }}"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                        <a class="dropdown-item" href="{{ path("details", {"id": quiz.id}) }}"><i class="bx bx-edit-alt me-1"></i> Affecter User</a>
-                                        <a class="dropdown-item" onclick="return confirm('Etes vous sur ???'); " href="{{ path("delete_quiz", {"id": quiz.id}) }}"><i class="bx bx-trash me-1"></i> Delete</a>
-                                    {% endif %}
-                                    <a class="dropdown-item" href="{{ path("quiz_participate", {"id": quiz.id}) }}"><i class="bx bx-edit-alt me-1"></i> Participer</a>
-                                </div>
+                            <div class="row  d-flex justify-content-center">
+                                {% if is_granted('ROLE_ADMIN') %}
+                                        <a  class="btn m-1 col-3 btn-sm btn-quiz" href="{{ path("moreInfo_quiz", {"id": quiz.id}) }}"
+                                            data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="View"
+                                        > <i class="bx bx-show-alt me-1 "></i></a>
+                                        <a  class="btn m-1  col-3 btn-sm btn-outline-info" href="{{ path("edit_quiz", {"quizId": quiz.id}) }}"
+                                            data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Edit"
+                                        > <i class="bx bx-edit-alt me-1 "></i></a>
+                                        <a class="btn m-1 col-3 btn-sm btn-outline-warning" href="{{ path("details", {"id": quiz.id}) }}"
+                                           data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Affecter User"
+                                        ><i class="bx bx-edit-alt me-1"></i></a>
+{#                                carbon:add-alt#}
                             </div>
+                            <div class="row  d-flex justify-content-center">
+                                        <a  class="btn col-3 m-1 btn-sm btn-outline-danger" onclick="return confirm('Etes vous sur ???');" href="{{ path("delete_quiz", {"id": quiz.id}) }}"
+                                            data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
+                                        ><i class="bx bx-trash me-1"></i></a>
+                                {% endif %}
+                                        <a class="btn col-3 m-1 btn-sm btn-outline-secondary" href="{{ path("quiz_participate", {"id": quiz.id}) }}"
+                                           data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Participer"
+                                        ><i class="bx bx-edit-alt me-1"></i></a>
+                            </div>
+
                         </td>
                     </tr>
                 {% endfor %}
@@ -98,13 +116,5 @@
     </div>
 
 
-    <section class="content">
-        <div class="container">
-            {% for message in app.flashes('success') %}
-                <div class="alert alert-success">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </div>
-    </section>
+
 {% endblock %}

@@ -1,12 +1,8 @@
 {% extends 'template.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %} Les Sprints {% endblock %}
 
 {% block body %}
-    <div class="container text-center mt-4">
-        <h2>voir liste des sprints de : {{ project.name}} </h2>
-    </div>
-
 
     <section class="content">
         <div class="container">
@@ -16,68 +12,121 @@
                 </div>
             {% endfor %}
         </div>
-        <!-- /.row -->
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="box box-primary">
-                    <div class="box-header">
-                        <h3 class="box-title">sprint Table</h3>
-                        <h4> avancement de ce projet ({{ percent }} %)</h4>
-                        <div class="box-tools">
-                            <div class="input-group input-group-sm" style="width: 150px;">
-                                <input id="myInput" type="text" placeholder="Search..">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>name</th>
-                                <th>project</th>
-                                <th>duree</th>
-                                <th>status</th>
-                                <th>date_debut</th>
-                                <th>date_fin</th>
-                                <th>
-                                    <a  class="btn btn-success" href={{ path("create_sprint" , {"id": project.id}) }}>Créer</a>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody id="myTable">
-                                {% for sprint in Sprint %}
-                                    <tr>
-                                        <td>{{ sprint.id }}</td>
-                                        <td>{{ sprint.name}}</td>
-                                        <td>{{ sprint.project.name}}</td>
-                                        <td>{{ sprint.duree}}</td>
-                                        <td>{{ sprint.status}}</td>
-                                        <td>{{ sprint.startDate|date('d/m/Y')}}</td>
-                                        <td>{{ sprint.endDate|date('d/m/Y')}}</td>
-                                        <td >
-                                            <a  class="btn btn-info" href="{{ path("edit_sprint", {"id": sprint.id}) }}" style="display: inline-block"> Editer </a>
-                                            <a  class="btn btn-danger" onclick="return confirm('Etes vous sur ???');"
-                                                href={{ path("delete_sprint", {"id": sprint.id}) }} > Supprimer
-                                            </a>
-                                            <a  class="btn btn-warning"  href={{ path("sprint_tasks", {"id": sprint.id}) }} >Tâches</a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+    </section>
+    <div class="card">
+        <div class="box-header">
+            <h5 class="card-header">Liste des Sprints de projet : {{ project.name }}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a class="modal-effect btn btn-sm btn-outline-success" href="{{ path("create_sprint" , {"id": project.id}) }}">Ajouter</a>
+                {% endif %}
+            </h5>
+            {#            <h6 class="card-header"> avancement de ce projet {{ percent }} %</h6>#}
 
-                        <div class="navigation d-flex text-center justify-content-center">
-                            {{ knp_pagination_render(Sprint) }}
-                        </div>
+            <div class="row justify-content-end">
+                <div class="box-tools col-3">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                        <input id="myInput" type="text" placeholder="Search..">
                     </div>
-                    <!-- /.box-body -->
                 </div>
-                <!-- /.box -->
+
             </div>
         </div>
-    </section>
+
+        <div class="table-responsive text-nowrap m-2">
+            <table class="table table-hover table-sm">
+                <thead>
+                <tr>
+                    <th>name</th>
+                    <th>project</th>
+                    <th>duree</th>
+                    <th>status</th>
+                    <th>Avancement</th>
+                    <th>date_debut</th>
+                    <th>date_fin</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="myTable" class="table-border-bottom-0">
+                {% for sprint in Sprint %}
+                    {% set sprintTasksTotal = 0 %}
+                    {% set sprintPercent = 0 %}
+                    {% for task in sprint.tasks %}
+                        {% set sprintTasksTotal = sprintTasksTotal + task.avancement %}
+                    {% endfor %}
+
+                    {% if sprint.tasks|length != 0 %}
+                        {% set sprintPercent = sprintTasksTotal / sprint.tasks|length %}
+                    {% endif %}
+                    <tr>
+                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{ sprint.name}}</strong></td>
+                        <td>{{ sprint.project.name}}</td>
+                        <td>{{ sprint.duree}}</td>
+                        <td>
+                            <span class="badge {% if (sprint.status == "En Cours") %} bg-label-warning
+                                    {% elseif( sprint.status == "En Pause") %} bg-label-danger
+                                    {% else %} bg-label-info  {% endif %} me-1">
+                                {{ sprint.status}}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="demo-vertical-spacing">
+                                <div class="progress">
+                                    <div
+                                            class="progress-bar"
+                                            role="progressbar"
+                                            style="width:{{ sprintPercent }}%"
+                                            aria-valuenow="{{ sprintPercent }}%"
+                                            aria-valuemin="0"
+                                            aria-valuemax="100"
+                                    >
+                                        {{ sprintPercent }}
+                                        {% if not loop.last %} % {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ sprint.startDate|date('d/m/Y')}}</td>
+                        <td>{{ sprint.endDate|date('d/m/Y')}}</td>
+                        <td>
+                            <a  class="btn btn-sm btn-outline-info" href="{{ path("edit_sprint", {"id": sprint.id}) }}"
+                                data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Edit"
+                            ><i class="bx bx-edit-alt me-1 "></i></a>
+                            <a  class="btn btn-sm btn-outline-danger" onclick="return confirm('Etes vous sur ???');" href="{{ path("delete_sprint", {"id": sprint.id}) }}"
+                                data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
+                            ><i class="bx bx-trash me-1"></i></a>
+                            <a  class="btn btn-sm btn-outline-secondary" href="{{ path("sprint_tasks", {"id": sprint.id}) }}"
+                                data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Tâches"
+                            ><i class="bx bx-edit-alt me-1"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="content-wrapper">
+            <div class="demo-inline-spacing">
+                <!-- Basic Pagination -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination d-flex text-center justify-content-center">
+                        {{ knp_pagination_render(Sprint) }}
+                    </ul>
+                </nav>
+            </div>
+            <div class="content-backdrop fade"></div>
+        </div>
+    </div>
+    <div class="content-wrapper">
+        <div class="demo-inline-spacing">
+            <!-- Basic Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination d-flex text-center ">
+                    <a class="btn btn-sm btn-outline-danger" href={{ path("project_index" , {"id": project.id} )}}, style="display: inline-block"> <i class="bx bx-log-out me-2"></i>Back To..  </a>
+                </ul>
+            </nav>
+        </div>
+        <div class="content-backdrop fade"></div>
+    </div>
+
 
     <script>
         $(document).ready(function(){

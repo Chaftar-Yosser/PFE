@@ -1,7 +1,7 @@
 {% extends 'template.html.twig' %}
-
+{% block title %}Formulaire d'edit {% endblock %}
 {% block body %}
     <div class="container mt-4">
-    <h1>Editer les questions</h1>
-    {{  include ('question/form.html.twig', { button: 'Editer'}) }}
+        {{  include ('question/form.html.twig', { button: 'Editer'}) }}
+    </div>
 {% endblock %}

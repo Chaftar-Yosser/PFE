@@ -106,7 +106,7 @@ class SprintController extends AbstractController
      * @package App\Controller
      * @Route("/edit/{id}" ,name="edit_sprint")
      */
-    public function editsprint(Request $request, Sprint $sprint): Response
+    public function editsprint(Request $request, Sprint $sprint , Projects $project): Response
     {
         if (!$this->isGranted("ROLE_ADMIN")){
             return $this->render('pages/404.html.twig');
@@ -123,6 +123,7 @@ class SprintController extends AbstractController
         }
         return $this->render('sprint/edit.html.twig', [
             'sprint' =>$sprint,
+            'project' => $project,
             'form' => $form->createView(),
         ]);
 

@@ -19,7 +19,7 @@
         <div class="box-header">
             <h5 class="card-header">Liste des questions
                 {% if is_granted('ROLE_RH') or is_granted('ROLE_ADMIN') %}
-                    <a  class="btn btn-success" href={{ path("create_question") }}>Ajouter</a>
+                    <a  class="btn btn-sm btn-outline-success" href={{ path("create_question") }}>Ajouter</a>
                 {% endif %}
             </h5>
             <div class="row justify-content-end my-4">
@@ -68,7 +68,7 @@
                 {% for question in question %}
                     <tr>
                         <td>
-                            <i class="fab fa-angular fa-lg text-danger me-3"></i>
+                            <i class="fab fa-angular fa-lg text-danger"></i>
                             <strong>
                                 {{ question.title}}
                             </strong>
@@ -76,20 +76,18 @@
                         <td>{{ question.score}}</td>
                         <td>{{ question.skills.name}}</td>
                         <td>
-                            {% if is_granted('ROLE_RH') or is_granted('ROLE_ADMIN') %}
-                                <div class="dropdown">
-                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="{{ path("edit_question", {"id": question.id}) }}"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                        <a class="dropdown-item" onclick="return confirm('Etes vous sur ???'); " href="{{ path("delete_question", {"id": question.id}) }}"><i class="bx bx-trash me-1"></i> Delete</a>
-                                        <a class="dropdown-item" href="{{ path("reponse_index" , {"id": question.id}) }}"><i class="bx bx-edit-alt me-1"></i> Details</a>
-                                    </div>
-                                </div>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a  class="btn btn-sm btn-outline-info" href="{{ path("edit_question", {"id": question.id}) }}"
+                                    data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Edit"
+                                > <i class="bx bx-edit-alt me-1 "></i></a>
+                                <a  class="btn btn-sm btn-outline-danger" onclick="return confirm('Etes vous sur ???');" href="{{ path("delete_question", {"id": question.id}) }}"
+                                    data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
+                                ><i class="bx bx-trash me-1"></i></a>
+                                <a class="btn btn-sm btn-outline-warning" href="{{ path("reponse_index" , {"id": question.id}) }}"
+                                   data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Details"
+                                ><i class="bx bx-show-alt me-1"></i></a>
                             {% endif %}
                         </td>
-
                     </tr>
                 {% endfor %}
                 </tbody>

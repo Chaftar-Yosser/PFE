@@ -1,6 +1,6 @@
 {% extends 'template.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %}Participer au Quiz {% endblock %}
 
  {% block stylesheets %}
      <style>
@@ -14,75 +14,51 @@
 {% block body %}
     <div class="container text-center mt-4">
         <h1>Nom de quiz : {{ quiz.name }}</h1>
-
-
         {% for message in app.flashes('success') %}
             <div class="alert alert-success">
                 {{ message }}
             </div>
         {% endfor %}
     </div>
-    <section class="content">
-        <div id="timer"></div>
-        <input type="hidden" id="time" value="{{ quiz.time|date('i') }}">
-        <script>
-            const departMinutes = $("#time").val();
-            // const departMinutes = 0.1
-            let temps = departMinutes * 60
-
-            const timerElement = document.getElementById("timer")
-
-            const clockCheck =  setInterval(() => {
-                let minutes = parseInt(temps / 60, 10)
-                let secondes = parseInt(temps % 60, 10)
-
-                minutes = minutes < 10 ? "0" + minutes : minutes
-                secondes = secondes < 10 ? "0" + secondes : secondes
-
-                timerElement.innerText = `${minutes}:${secondes}`
-                temps = temps <= 0 ? 0 : temps - 1
-                if (temps === 0){
-                    clearInterval(clockCheck);
-                    $(".quiz").submit();
-                }
-            }, 1000)
-        </script>
-
-
+    <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
-{#            <div class="col-md-6">#}
-            <div class="col-xs-8">
-                <div class="box box-primary">
-                    <div class="box-header">
-                        <h3 class="box-title"></h3>
+            <div class="col-xxl">
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">
+                            {# aafiicher le chrono#}
+                            <div id="timer"></div>
+                            <input type="hidden" id="time" value="{{ quiz.time|date('i') }}">
+                        </h5>
                     </div>
-                    <!-- /.box-header -->
-                    <form action="{{ path('quiz_participate' , { 'id' : quiz.id }) }}" class="quiz" method="post" >
-                        <ol>
-                            {% for question in suggestedQuestions %}
-                            <li>
-                                <input type="hidden" name="question[]" value="{{ question.id }}">
-                                {{ question.title}}
-                                <ul>
-                                    {% for reponse in question.reponses %}
+                    <div class="card-body">
+                        <form action="{{ path('quiz_participate' , { 'id' : quiz.id }) }}" class="quiz" method="post" >
+                            <ol>
+                                {% for question in suggestedQuestions %}
                                     <li>
-                                        <input type="checkbox" name="reponse[{{ question.id }}][{{ reponse.id }}]" id="{{ reponse.id }}">
-                                        {{reponse.title  }}
+                                        <input type="hidden" name="question[]" value="{{ question.id }}">
+                                        {{ question.title}}
+                                        <ul>
+                                            {% for reponse in question.reponses %}
+                                                <li>
+                                                    <input type="checkbox" name="reponse[{{ question.id }}][{{ reponse.id }}]" id="{{ reponse.id }}">
+                                                    {{reponse.title  }}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
                                     </li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                            {% endfor %}
-                        </ol>
-                        <div class="form-example">
-                            <input type="submit"  class="btn btn-primary" style="margin-left: 2% ; margin-bottom: 2%" value="Enregistrer">
-                        </div>
-                    </form>
-                    <!-- /.box-body -->
+                                {% endfor %}
+                            </ol>
+                            <div class="row justify-content-end">
+                                <div class="col-sm-2">
+                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <!-- /.box -->
             </div>
         </div>
-    </section>
+    </div>
 
 {% endblock %}

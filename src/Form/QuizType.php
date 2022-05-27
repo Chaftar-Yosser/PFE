@@ -24,7 +24,7 @@ class QuizType extends AbstractType
                 ]
             ])
             ->add('nombrequestion' , TextType::class,[
-                'label' => 'Nombre de question de Quiz',
+                'label' => 'Nombre de question',
                 'attr' => [
                     'class' => "form-control ",
                 ]
@@ -32,7 +32,7 @@ class QuizType extends AbstractType
             ->add('skills' , EntityType::class, [
                 'class' =>  Skills::class,
                 'choice_label' => 'name',
-                'label' => 'Technologies de Quiz',
+                'label' => 'Technologies ',
                 'attr' => [
                     'class' => "form-control select2",
                 ],

@@ -18,6 +18,7 @@ class ProjectType extends AbstractType
     {
         $builder
             ->add('name',TextType::class,[
+                'label' => 'Nom',
                 'attr' => [
                     'class' => "form-control ",
                 ]
@@ -57,6 +58,7 @@ class ProjectType extends AbstractType
             ->add('skills' , EntityType::class,[
                 'class' => Skills::class,
                 'choice_label' => 'name',
+                'label' => 'technologies',
                 'attr' => [
                     'class' => "form-control select2 ",
                 ],

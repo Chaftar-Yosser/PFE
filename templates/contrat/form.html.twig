@@ -1,68 +1,102 @@
-<div class="box box-primary">
-    {#    <div class="box-header with-border">#}
-    {#        <h3 class="box-title">Quick Example</h3>#}
-    {#    </div>#}
-    <!-- /.box-header -->
-    <!-- form start -->
-    {{ form_start(form) }}
-    <div class="box-body">
-        <div class="form-group">
-            {{ form_label(form.user) }}
-            {{ form_widget(form.user) }}
-            <div class="form-error">
-                {{ form_errors(form.user) }}
+{% block body %}
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <!-- Basic Layout & Basic with Icons -->
+        <div class="row">
+            <!-- Basic with Icons -->
+            <div class="col-xxl">
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">Des Contrats</h5>
+                    </div>
+                    <div class="card-body">
+                        {{ form_start(form) }}
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">{{ form_label(form.user) }}</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
+                                    {{ form_widget(form.user) }}
+                                    <div class="form-error">
+                                        {{ form_errors(form.user) }}
+                                    </div>
+                                    <span class="input-group-text"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-icon-default-email">{{ form_label(form.status) }}</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text"><i>Options</i></span>
+                                    {{ form_widget(form.status , {'attr' : {'class' : 'form-select'}}) }}
+                                    <div class="form-error">
+                                        {{ form_errors(form.status) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 form-label" for="basic-icon-default-message"> {{ form_label(form.duree) }}</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <span id="basic-icon-default-message2"  class="input-group-text"><i class="bx bx-time"></i></span>
+                                    {{ form_widget(form.duree , {'attr' : {'class' : 'form-select'}}) }}
+                                    <div class="form-error">
+                                        {{ form_errors(form.duree) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 form-label" for="basic-icon-default-message"> {{ form_label(form.typeContrat) }}</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <span id="basic-icon-default-message2"  class="input-group-text"><i>Options</i></span>
+                                    {{ form_widget(form.typeContrat , {'attr' : {'class' : 'form-select'}}) }}
+                                    <div class="form-error">
+                                        {{ form_errors(form.typeContrat) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 form-label" for="basic-icon-default-message">{{ form_label(form.date_debut) }}</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-calendar"></i></span>
+                                    {{ form_widget(form.date_debut) }}
+                                    <div class="form-error">
+                                        {{ form_errors(form.date_debut) }}
+                                    </div>
+                                    <span class="input-group-text"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            {% if form.date_fin is defined %}
+                                <label class="col-sm-2 form-label" for="basic-icon-default-message">{{ form_label(form.date_fin) }}</label>
+                                <div class="col-sm-10">
+                                    <div class="input-group input-group-merge">
+                                        <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-calendar"></i></span>
+                                        {{ form_widget(form.date_fin) }}
+                                        <div class="form-error">
+                                            {{ form_errors(form.date_fin) }}
+                                        </div>
+                                        <span class="input-group-text"></span>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="row justify-content-end">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-primary">{{ button }}</button>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            {{ form_label(form.status) }}
-            {{ form_widget(form.status) }}
-            <div class="form-error">
-                {{ form_errors(form.status) }}
-            </div>
-        </div>
-        <div class="form-group">
-            {{ form_label(form.duree) }}
-            {{ form_widget(form.duree) }}
-            <div class="form-error">
-                {{ form_errors(form.duree) }}
-            </div>
-        </div>
-        <div class="form-group">
-            {{ form_label(form.typeContrat) }}
-            {{ form_widget(form.typeContrat) }}
-            <div class="form-error">
-                {{ form_errors(form.typeContrat) }}
-            </div>
-        </div>
-{#        <div class="form-group">#}
-{#            {{ form_label(form.maxJours) }}#}
-{#            {{ form_widget(form.maxJours) }}#}
-{#            <div class="form-error">#}
-{#                {{ form_errors(form.maxJours) }}#}
-{#            </div>#}
-{#        </div>#}
-        <div class="form-group">
-            <i class="fa fa-calendar"></i>
-            {{ form_label(form.date_debut) }}
-            {{ form_widget(form.date_debut) }}
-            <div class="form-error">
-                {{ form_errors(form.date_debut) }}
-            </div>
-        </div>
-        {% if form.date_fin is defined %}
-        <div class="form-group">
-            {{ form_label(form.date_fin) }}
-            {{ form_widget(form.date_fin) }}
-            <div class="form-error">
-                {{ form_errors(form.date_fin) }}
-            </div>
-        </div>
-        {% endif %}
     </div>
-    <!-- /.box-body -->
+{% endblock %}
 
-    <div class="box-footer">
-        <input type="submit" class="btn btn-primary" value="{{ button }}"/>
-    </div>
-    {{ form_end(form) }}
-</div>
