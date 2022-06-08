@@ -1,253 +1,639 @@
+{#hedha ilii en viollett #}
+
+
 <!DOCTYPE html>
-<html lang="fr">
-{% include'vues/head.html.twig' %}
 
-<body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
-    {% include'vues/header.html.twig' %}
+<html lang="en" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+    <title></title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
+    <!--[if !mso]><!-->
+    <link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css"/>
+    <!--<![endif]-->
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    <!-- Left side column. contains the logo and sidebar -->
-    {% include'vues/sidebar.html.twig' %}
+        body {
+            margin: 0;
+            padding: 0;
+        }
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        {% for label, flashes in app.session.flashbag.all %}
-            {% for flash in flashes %}
-                {% if ( label == 'success' ) %}
-                    <div class="alert alert-success alert-dismissible fade show">
-                        {{ flash }}
-                    </div>
-                {% elseif ( label == 'error' ) %}
-                    <div class="alert alert-danger alert-dismissible fade show">
-                        {{ flash }}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% endfor %}
-        {% block body %}{% endblock %}
-    </div>
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: inherit !important;
+        }
 
-    <!-- Layout container -->
-    <div class="layout-page">
-        <!-- Navbar -->
+        #MessageViewBody a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-        <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-             id="layout-navbar">
-            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-                <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
-                    <i class="bx bx-menu bx-sm"></i>
-                </a>
-            </div>
+        p {
+            line-height: inherit
+        }
 
-            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-                <!-- Search -->
-                <div class="navbar-nav align-items-center">
-                    <div class="nav-item d-flex align-items-center">
-                        <i class="bx bx-search fs-4 lh-0"></i>
-                        <input
-                                type="text"
-                                class="form-control border-0 shadow-none"
-                                placeholder="Search..."
-                                aria-label="Search..."
-                        />
-                    </div>
-                </div>
-                <!-- /Search -->
+        .desktop_hide,
+        .desktop_hide table {
+            mso-hide: all;
+            display: none;
+            max-height: 0px;
+            overflow: hidden;
+        }
 
-                <ul class="navbar-nav flex-row align-items-center ms-auto">
-                    <!-- Place this tag where you want the button to render. -->
-                    <li class="nav-item lh-1 me-3">
-                        <a
-                                class="github-button"
-                                href="https://github.com/themeselection/sneat-html-admin-template-free"
-                                data-icon="octicon-star"
-                                data-size="large"
-                                data-show-count="true"
-                                aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
-                        >Star</a
-                        >
-                    </li>
+        @media (max-width:670px) {
+            .desktop_hide table.icons-inner {
+                display: inline-block !important;
+            }
 
-                    <!-- User -->
-                    <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                        <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                            <div class="avatar avatar-online">
-                                <img src="{{ asset ('images/' ~ app.user.image) }}" alt class="w-px-40 h-auto rounded-circle" />
-                            </div>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <div class="d-flex">
-                                        <div class="flex-shrink-0 me-3">
-                                            <div class="avatar avatar-online">
-                                                <img src="{{ asset ('images/' ~ app.user.image) }}" alt class="w-px-40 h-auto rounded-circle" />
-                                            </div>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <span class="fw-semibold d-block">{{ app.user.lastname }} {{ app.user.firstname }}</span>
-                                            <small class="text-muted">
-                                                {% for role in app.user.role  %}
-                                                    {{ role }}
-                                                {% endfor %}
-                                            </small>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <div class="dropdown-divider"></div>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <i class="bx bx-user me-2"></i>
-                                    <span class="align-middle">My Profile</span>
-                                </a>
-                            </li>
-                            <li>
-                                <div class="dropdown-divider"></div>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ path("logout") }}">
-                                    <i class="bx bx-power-off me-2"></i>
-                                    <span class="align-middle">Log Out</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!--/ User -->
-                </ul>
-            </div>
-        </nav>
+            .icons-inner {
+                text-align: center;
+            }
 
-        <!-- / Navbar -->
+            .icons-inner td {
+                margin: 0 auto;
+            }
 
-        <!-- Content wrapper -->
-        <div class="content-wrapper">
-            <!-- Content -->
+            .row-content {
+                width: 100% !important;
+            }
 
-            <div class="container-xxl flex-grow-1 container-p-y">
-                <div class="row">
-                    <div class="col-lg-8 mb-4 order-0">
-                        <div class="card">
-                            <div class="d-flex align-items-end row">
-                                <div class="col-sm-7">
-                                    <div class="card-body">
-                                        <h5 class="card-title text-primary">Congratulations {{ app.user.lastname }} {{ app.user.firstname }}! 🎉</h5>
-                                        <p class="mb-4">
-                                            You have done <span class="fw-bold">72%</span> more sales today. Check your new badge in
-                                            your profile.
-                                        </p>
+            .column .border,
+            .mobile_hide {
+                display: none;
+            }
 
-                                        <a href="javascript:;" class="btn btn-sm btn-outline-primary">View Badges</a>
-                                    </div>
-                                </div>
-                                <div class="col-sm-5 text-center text-sm-left">
-                                    <div class="card-body pb-0 px-0 px-md-4">
-                                        <img
-                                                src="{{ asset ('bundles/assets/img/illustrations/man-with-laptop-light.png') }}"
-                                                height="140"
-                                                alt="View Badge User"
-                                                data-app-dark-img="illustrations/man-with-laptop-dark.png"
-                                                data-app-light-img="illustrations/man-with-laptop-light.png"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            table {
+                table-layout: fixed !important;
+            }
 
-                    <!-- Total Revenue -->
-                    <div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
-                        <div class="card">
-                            <div class="row row-bordered g-0">
-                                <div class="col-md-8">
-                                    <h5 class="card-header m-0 me-2 pb-3">Total Revenue</h5>
-                                    <div id="totalRevenueChart" class="px-2"></div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card-body">
-                                        <div class="text-center">
-                                            <div class="dropdown">
-                                                <button
-                                                        class="btn btn-sm btn-outline-primary dropdown-toggle"
-                                                        type="button"
-                                                        id="growthReportId"
-                                                        data-bs-toggle="dropdown"
-                                                        aria-haspopup="true"
-                                                        aria-expanded="false"
-                                                >
-                                                    2022
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="growthReportId">
-                                                    <a class="dropdown-item" href="javascript:void(0);">2021</a>
-                                                    <a class="dropdown-item" href="javascript:void(0);">2020</a>
-                                                    <a class="dropdown-item" href="javascript:void(0);">2019</a>
+            .stack .column {
+                width: 100%;
+                display: block;
+            }
+
+            .mobile_hide {
+                min-height: 0;
+                max-height: 0;
+                max-width: 0;
+                overflow: hidden;
+                font-size: 0px;
+            }
+
+            .desktop_hide,
+            .desktop_hide table {
+                display: table !important;
+                max-height: none !important;
+            }
+        }
+    </style>
+</head>
+<body style="background-color: #000000; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
+<table border="0" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #000000;" width="100%">
+    <tbody>
+    <tr>
+        <td>
+            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #f3e6f8;" width="100%">
+                <tbody>
+                <tr>
+                    <td>
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000000; width: 650px;" width="650">
+                            <tbody>
+                            <tr>
+                                <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                    <table border="0" cellpadding="0" cellspacing="0" class="empty_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                        <tr>
+                                            <td>
+                                                <div></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #f3e6f8;" width="100%">
+                <tbody>
+                <tr>
+                    <td>
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; background-image: url('images/ResetPassword_BG_2.png'); background-position: center top; background-repeat: no-repeat; color: #000000; width: 650px;" width="650">
+                            <tbody>
+                            <tr>
+                                <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 45px; padding-bottom: 0px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                    <table border="0" cellpadding="20" cellspacing="0" class="divider_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                        <tr>
+                                            <td>
+                                                <div align="center">
+                                                    <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                                        <tr>
+                                                            <td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 0px solid #BBBBBB;"><span> </span></td>
+                                                        </tr>
+                                                    </table>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="growthChart"></div>
-                                    <div class="text-center fw-semibold pt-3 mb-2">62% Company Growth</div>
-
-                                    <div class="d-flex px-xxl-4 px-lg-2 p-4 gap-xxl-3 gap-lg-1 gap-3 justify-content-between">
-                                        <div class="d-flex">
-                                            <div class="me-2">
-                                                <span class="badge bg-label-primary p-2"><i class="bx bx-dollar text-primary"></i></span>
-                                            </div>
-                                            <div class="d-flex flex-column">
-                                                <small>2022</small>
-                                                <h6 class="mb-0">$32.5k</h6>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex">
-                                            <div class="me-2">
-                                                <span class="badge bg-label-info p-2"><i class="bx bx-wallet text-info"></i></span>
-                                            </div>
-                                            <div class="d-flex flex-column">
-                                                <small>2021</small>
-                                                <h6 class="mb-0">$41.2k</h6>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--/ Total Revenue -->
-                </div>
-            </div>
-            <!-- / Content -->
-
-            <!-- Footer -->
-
-            <!-- / Footer -->
-
-            <div class="content-backdrop fade"></div>
-        </div>
-        <!-- Content wrapper -->
-    </div>
-    <!-- / Layout page -->
-
-    <!-- /.content-wrapper -->
-    {% include'vues/footer.html.twig' %}
-</div>
-{% include'vues/js.html.twig' %}
-
-{% block js %}
-
-{% endblock %}
-
-{% block stylesheets %}
-{% endblock %}
-
-
-
-{#---------------------------------------template jdiiida --------------------------------------------------#}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="20" cellspacing="0" class="image_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                        <tr>
+                                            <td>
+                                                <div align="center" style="line-height:10px"><img alt="Forgot your password?" src="{{ https://127.0.0.1:8000/ }}/images/lock5.png" style="display: block; height: auto; border: 0; width: 358px; max-width: 100%;" title="Forgot your password?" width="358"/></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="0" cellspacing="0" class="heading_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                        <tr>
+                                            <td style="padding-top:35px;text-align:center;width:100%;">
+                                                <h1 style="margin: 0; color: #8412c0; direction: ltr; font-family: 'Cabin', Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 28px; font-weight: 400; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0;"><strong>Forgot your password?</strong></h1>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="0" cellspacing="0" class="text_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                        <tr>
+                                            <td style="padding-left:45px;padding-right:45px;padding-top:10px;">
+                                                <div style="font-family: Arial, sans-serif">
+                                                    <div class="txtTinyMce-wrapper" style="font-size: 12px; font-family: 'Cabin', Arial, 'Helvetica Neue', Helvetica, sans-serif; mso-line-height-alt: 18px; color: #393d47; line-height: 1.5;">
+                                                        <p style="margin: 0; text-align: center; mso-line-height-alt: 27px;"><span style="font-size:18px;color:#aa67cf;">We received a request to reset your password.</span></p>
+                                                        <p style="margin: 0; text-align: center; mso-line-height-alt: 27px;"><span style="font-size:18px;color:#aa67cf;">If you didn't make this request, simply ignore this email.</span></p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="20" cellspacing="0" class="divider_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                        <tr>
+                                            <td>
+                                                <div align="center">
+                                                    <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="80%">
+                                                        <tr>
+                                                            <td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 1px solid #E1B4FC;"><span> </span></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="0" cellspacing="0" class="text_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                        <tr>
+                                            <td style="padding-bottom:10px;padding-left:45px;padding-right:45px;padding-top:10px;">
+                                                <div style="font-family: Arial, sans-serif">
+                                                    <div class="txtTinyMce-wrapper" style="font-size: 12px; font-family: 'Cabin', Arial, 'Helvetica Neue', Helvetica, sans-serif; text-align: center; mso-line-height-alt: 18px; color: #393d47; line-height: 1.5;">
+                                                        <p style="margin: 0; mso-line-height-alt: 19.5px;"><span style="font-size:13px;color:#8412c0;">If you did make this request just click the button below:</span></p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="10" cellspacing="0" class="button_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                        <tr>
+                                            <td>
+                                                <div align="center">
+                                                    <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://www.example.com" style="height:54px;width:239px;v-text-anchor:middle;" arcsize="0%" strokeweight="0.75pt" strokecolor="#8412c0" fillcolor="#8412c0"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#ffffff; font-family:Arial, sans-serif; font-size:14px"><![endif]-->
 
 
 
+                                                    <a  href="{{ url('app_reset_password', {token: resetToken.token}) }}" style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#8412c0;border-radius:0px;width:auto;border-top:1px solid #8412c0;font-weight:400;border-right:1px solid #8412c0;border-bottom:1px solid #8412c0;border-left:1px solid #8412c0;padding-top:10px;padding-bottom:10px;font-family:'Cabin', Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:center;mso-border-alt:none;word-break:keep-all;" target="_blank"><span style="padding-left:40px;padding-right:40px;font-size:14px;display:inline-block;letter-spacing:normal;"><span style="font-size: 16px; line-height: 2; word-break: break-word; mso-line-height-alt: 32px;"><span data-mce-style="font-size: 14px; line-height: 28px;" style="font-size: 14px; line-height: 28px;">RESET MY PASSWORD</span></span></span></a>
+                                                    <!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
+                                                    <p>This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="0" cellspacing="0" class="text_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                        <tr>
+                                            <td style="padding-bottom:15px;padding-left:10px;padding-right:10px;padding-top:10px;">
+                                                <div style="font-family: Arial, sans-serif">
+                                                    <div class="txtTinyMce-wrapper" style="font-size: 12px; font-family: 'Cabin', Arial, 'Helvetica Neue', Helvetica, sans-serif; mso-line-height-alt: 14.399999999999999px; color: #393d47; line-height: 1.2;">
+                                                        <p style="margin: 0; font-size: 14px; text-align: center;"><span style="font-size:10px;color:#aa67cf;"><span style="">If you didn't request to change your brand password, </span><span style="">you don't have to do anything. So that's easy.</span></span></p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="0" cellspacing="0" class="text_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                        <tr>
+                                            <td style="padding-bottom:20px;padding-left:10px;padding-right:10px;padding-top:10px;">
+                                                <div style="font-family: sans-serif">
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #f3e6f8;" width="100%">
+                <tbody>
+                <tr>
+                    <td>
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000000; width: 650px;" width="650">
+                            <tbody>
+                            <tr>
+                                <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 10px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                    <table border="0" cellpadding="5" cellspacing="0" class="divider_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                        <tr>
+                                            <td>
+                                                <div align="center">
+                                                    <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                                        <tr>
+                                                            <td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 0px solid #BBBBBB;"><span> </span></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="0" cellspacing="0" class="text_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                        <tr>
+                                            <td>
+                                                <div style="font-family: sans-serif">
+                                                    <div class="txtTinyMce-wrapper" style="font-size: 12px; mso-line-height-alt: 14.399999999999999px; color: #8412c0; line-height: 1.2; font-family: Arial, Helvetica Neue, Helvetica, sans-serif;">
+                                                        <p style="margin: 0; text-align: center; mso-line-height-alt: 14.399999999999999px;"> </p>
+                                                        <p style="margin: 0; text-align: center;"><span style="font-size:11px;"><span style="color:#8a3b8f;">Adresse :  Borj Cedria, 1164 Hammam-Chatt - Tunis  /  dev@dream-tek.co / +216 23 48 98 33</span><a href="http://www.example.com" style="color: #8412c0;"></a></span></p>
+                                                        <p style="margin: 0; mso-line-height-alt: 14.399999999999999px;"> </p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </td>
+    </tr>
+    </tbody>
+</table><!-- End -->
+</body>
+</html>
 
 
+
+
+
+
+
+
+
+
+
+
+
+{#hefhe en bleu illii 3jebnii #}
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+    <title></title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
+    <!--[if !mso]><!-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet" type="text/css"/>
+    <!--<![endif]-->
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: inherit !important;
+        }
+
+        #MessageViewBody a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        p {
+            line-height: inherit
+        }
+
+        .desktop_hide,
+        .desktop_hide table {
+            mso-hide: all;
+            display: none;
+            max-height: 0px;
+            overflow: hidden;
+        }
+
+        @media (max-width:620px) {
+            .desktop_hide table.icons-inner {
+                display: inline-block !important;
+            }
+
+            .icons-inner {
+                text-align: center;
+            }
+
+            .icons-inner td {
+                margin: 0 auto;
+            }
+
+            .row-content {
+                width: 100% !important;
+            }
+
+            .image_block img.big {
+                width: auto !important;
+            }
+
+            .column .border,
+            .mobile_hide {
+                display: none;
+            }
+
+            table {
+                table-layout: fixed !important;
+            }
+
+            .stack .column {
+                width: 100%;
+                display: block;
+            }
+
+            .mobile_hide {
+                min-height: 0;
+                max-height: 0;
+                max-width: 0;
+                overflow: hidden;
+                font-size: 0px;
+            }
+
+            .desktop_hide,
+            .desktop_hide table {
+                display: table !important;
+                max-height: none !important;
+            }
+        }
+    </style>
+</head>
+<body style="background-color: #d9dffa; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
+<table border="0" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #d9dffa;" width="100%">
+    <tbody>
+    <tr>
+        <td>
+            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #cfd6f4;" width="100%">
+                <tbody>
+                <tr>
+                    <td>
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000000; width: 600px;" width="600">
+                            <tbody>
+                            <tr>
+                                <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 20px; padding-bottom: 0px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                    <table border="0" cellpadding="0" cellspacing="0" class="image_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                        <tr>
+                                            <td style="width:100%;padding-right:0px;padding-left:0px;">
+                                                <div align="center" style="line-height:10px"><img alt="Card Header with Border and Shadow Animated" class="big" src="images/animated_header.gif" style="display: block; height: auto; border: 0; width: 600px; max-width: 100%;" title="Card Header with Border and Shadow Animated" width="600"/></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #d9dffa; background-image: url({{ asset('images/body_background_2.png') }}); background-position: top center; background-repeat: repeat;" width="100%">
+                <tbody>
+                <tr>
+                    <td>
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000000; width: 600px;" width="600">
+                            <tbody>
+                            <tr>
+                                <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-left: 50px; padding-right: 50px; padding-top: 15px; padding-bottom: 15px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                    <table border="0" cellpadding="10" cellspacing="0" class="text_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                        <tr>
+                                            <td>
+                                                <div style="font-family: sans-serif">
+                                                    <div class="txtTinyMce-wrapper" style="font-size: 14px; mso-line-height-alt: 16.8px; color: #506bec; line-height: 1.2; font-family: Helvetica Neue, Helvetica, Arial, sans-serif;">
+                                                        <p style="margin: 0; font-size: 14px;"><strong><span style="font-size:38px;">Forgot your password?</span></strong></p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="10" cellspacing="0" class="text_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                        <tr>
+                                            <td>
+                                                <div style="font-family: sans-serif">
+                                                    <div class="txtTinyMce-wrapper" style="font-size: 14px; mso-line-height-alt: 16.8px; color: #40507a; line-height: 1.2; font-family: Helvetica Neue, Helvetica, Arial, sans-serif;">
+                                                        <p style="margin: 0; font-size: 14px;"><span style="font-size:16px;">Hey, we received a request to reset your password.</span></p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="10" cellspacing="0" class="text_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                        <tr>
+                                            <td>
+                                                <div style="font-family: sans-serif">
+                                                    <div class="txtTinyMce-wrapper" style="font-size: 14px; mso-line-height-alt: 16.8px; color: #40507a; line-height: 1.2; font-family: Helvetica Neue, Helvetica, Arial, sans-serif;">
+                                                        <p style="margin: 0; font-size: 14px;"><span style="font-size:16px;">Let’s get you a new one!</span></p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="0" cellspacing="0" class="button_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                        <tr>
+                                            <td style="padding-bottom:20px;padding-left:10px;padding-right:10px;padding-top:20px;text-align:left;">
+                                                <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://www.example.com/" style="height:48px;width:212px;v-text-anchor:middle;" arcsize="34%" stroke="false" fillcolor="#506bec"><w:anchorlock/><v:textbox inset="5px,0px,0px,0px"><center style="color:#ffffff; font-family:Arial, sans-serif; font-size:15px"><![endif]--><a href="http://www.example.com/" style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#506bec;border-radius:16px;width:auto;border-top:0px solid TRANSPARENT;font-weight:undefined;border-right:0px solid TRANSPARENT;border-bottom:0px solid TRANSPARENT;border-left:0px solid TRANSPARENT;padding-top:8px;padding-bottom:8px;font-family:Helvetica Neue, Helvetica, Arial, sans-serif;text-align:center;mso-border-alt:none;word-break:keep-all;" target="_blank"><span style="padding-left:25px;padding-right:20px;font-size:15px;display:inline-block;letter-spacing:normal;"><span style="font-size: 16px; line-height: 2; word-break: break-word; mso-line-height-alt: 32px;"><span data-mce-style="font-size: 15px; line-height: 30px;" style="font-size: 15px; line-height: 30px;"><strong>RESET MY PASSWORD</strong></span></span></span></a>
+                                                <!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="10" cellspacing="0" class="text_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                        <tr>
+                                            <td>
+                                                <div style="font-family: sans-serif">
+                                                    <div class="txtTinyMce-wrapper" style="font-size: 14px; mso-line-height-alt: 16.8px; color: #40507a; line-height: 1.2; font-family: Helvetica Neue, Helvetica, Arial, sans-serif;">
+                                                        <p style="margin: 0; font-size: 14px;"><span style="font-size:14px;">Having trouble? <a href="http://www.example.com/" rel="noopener" style="text-decoration: none; color: #40507a;" target="_blank" title="@socialaccount"><strong>@socialaccount</strong></a></span></p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="10" cellspacing="0" class="text_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                        <tr>
+                                            <td>
+                                                <div style="font-family: sans-serif">
+                                                    <div class="txtTinyMce-wrapper" style="font-size: 14px; mso-line-height-alt: 16.8px; color: #40507a; line-height: 1.2; font-family: Helvetica Neue, Helvetica, Arial, sans-serif;">
+                                                        <p style="margin: 0; font-size: 14px;">Didn’t request a password reset? You can ignore this message.</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                <tbody>
+                <tr>
+                    <td>
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000000; width: 600px;" width="600">
+                            <tbody>
+                            <tr>
+                                <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 0px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                    <table border="0" cellpadding="0" cellspacing="0" class="image_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                        <tr>
+                                            <td style="width:100%;padding-right:0px;padding-left:0px;">
+                                                <div align="center" style="line-height:10px"><img alt="Card Bottom with Border and Shadow Image" class="big" src="images/bottom_img.png" style="display: block; height: auto; border: 0; width: 600px; max-width: 100%;" title="Card Bottom with Border and Shadow Image" width="600"/></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-4" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                <tbody>
+                <tr>
+                    <td>
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000000; width: 600px;" width="600">
+                            <tbody>
+                            <tr>
+                                <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 20px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                    <table border="0" cellpadding="10" cellspacing="0" class="image_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                        <tr>
+                                            <td>
+                                                <div align="center" style="line-height:10px"><a href="http://www.example.com/" style="outline:none" tabindex="-1" target="_blank"><img alt="Your Logo" src="images/logo.png" style="display: block; height: auto; border: 0; width: 145px; max-width: 100%;" title="Your Logo" width="145"/></a></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="10" cellspacing="0" class="social_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                        <tr>
+                                            <td>
+                                                <table align="center" border="0" cellpadding="0" cellspacing="0" class="social-table" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="72px">
+                                                    <tr>
+                                                        <td style="padding:0 2px 0 2px;"><a href="https://www.instagram.com/" target="_blank"><img alt="Instagram" height="32" src="images/instagram2x.png" style="display: block; height: auto; border: 0;" title="instagram" width="32"/></a></td>
+                                                        <td style="padding:0 2px 0 2px;"><a href="https://www.twitter.com/" target="_blank"><img alt="Twitter" height="32" src="images/twitter2x.png" style="display: block; height: auto; border: 0;" title="twitter" width="32"/></a></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="10" cellspacing="0" class="text_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                        <tr>
+                                            <td>
+                                                <div style="font-family: sans-serif">
+                                                    <div class="txtTinyMce-wrapper" style="font-size: 14px; mso-line-height-alt: 16.8px; color: #97a2da; line-height: 1.2; font-family: Helvetica Neue, Helvetica, Arial, sans-serif;">
+                                                        <p style="margin: 0; font-size: 14px; text-align: center;">+(123) 456–7890</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="10" cellspacing="0" class="text_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                        <tr>
+                                            <td>
+                                                <div style="font-family: sans-serif">
+                                                    <div class="txtTinyMce-wrapper" style="font-size: 14px; mso-line-height-alt: 16.8px; color: #97a2da; line-height: 1.2; font-family: Helvetica Neue, Helvetica, Arial, sans-serif;">
+                                                        <p style="margin: 0; font-size: 14px; text-align: center;">This link will expire in the next 24 hours.<br/>Please feel free to contact us at email@yourbrand.com. </p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table border="0" cellpadding="10" cellspacing="0" class="text_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                                        <tr>
+                                            <td>
+                                                <div style="font-family: sans-serif">
+                                                    <div class="txtTinyMce-wrapper" style="font-size: 14px; mso-line-height-alt: 16.8px; color: #97a2da; line-height: 1.2; font-family: Helvetica Neue, Helvetica, Arial, sans-serif;">
+                                                        <p style="margin: 0; text-align: center; font-size: 12px;"><span style="font-size:12px;">Copyright© 2021 Your Brand.</span></p>
+                                                        <p id="m_8010100107078456808text01" style="margin: 0; text-align: center; font-size: 12px;"><span style="font-size:12px;"><a href="http://www.example.com/" rel="noopener" style="text-decoration: underline; color: #97a2da;" target="_blank" title="Unsubscribe ">Unsubscribe</a> | <a href="http://www.example.com/" rel="noopener" style="text-decoration: underline; color: #97a2da;" target="_blank" title="Manage your preferences">Manage your preferences</a> | <a href="http://www.example.com/" rel="noopener" style="text-decoration: underline; color: #97a2da;" target="_blank" title="Privacy Policy">Privacy Policy</a></span></p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-5" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                <tbody>
+                <tr>
+                    <td>
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000000; width: 600px;" width="600">
+                            <tbody>
+                            <tr>
+                                <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+                                    <table border="0" cellpadding="0" cellspacing="0" class="icons_block" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                        <tr>
+                                            <td style="vertical-align: middle; color: #9d9d9d; font-family: inherit; font-size: 15px; padding-bottom: 5px; padding-top: 5px; text-align: center;">
+                                                <table cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                                                    <tr>
+                                                        <td style="vertical-align: middle; text-align: center;">
+                                                            <!--[if vml]><table align="left" cellpadding="0" cellspacing="0" role="presentation" style="display:inline-block;padding-left:0px;padding-right:0px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;"><![endif]-->
+                                                            <!--[if !vml]><!-->
+                                                            <table cellpadding="0" cellspacing="0" class="icons-inner" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block; margin-right: -4px; padding-left: 0px; padding-right: 0px;">
+                                                                <!--<![endif]-->
+                                                                <tr>
+                                                                    <td style="vertical-align: middle; text-align: center; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 6px;"><a href="https://www.designedwithbee.com/" style="text-decoration: none;" target="_blank"><img align="center" alt="Designed with BEE" class="icon" height="32" src="images/bee.png" style="display: block; height: auto; margin: 0 auto; border: 0;" width="34"/></a></td>
+                                                                    <td style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 15px; color: #9d9d9d; vertical-align: middle; letter-spacing: undefined; text-align: center;"><a href="https://www.designedwithbee.com/" style="color: #9d9d9d; text-decoration: none;" target="_blank">Designed with BEE</a></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table><!-- End -->
 </body>
 </html>

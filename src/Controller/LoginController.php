@@ -21,6 +21,7 @@ class LoginController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
         $this->addFlash('error', 'mot de passe incorrecte');
+
         return $this->render('pages/login.html.twig' , [
             'last_Username' => $lastUsername,
             'error' => $error

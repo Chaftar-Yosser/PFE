@@ -37,13 +37,14 @@ class UserController extends AbstractController
 
     /**
      * @Route("/" , name="user_index")
-     *
      * @return Response
      */
 
-    //@IsGranted("ROLE_ADMIN")
     public function index(  PaginatorInterface $paginator , Request $request): Response
     {
+        if (!$this->isGranted("ROLE_ADMIN")){
+            return $this->render('pages/404.html.twig');
+        }
         //Filter
         $search = new Search();
         $form = $this->createForm(SearchType::class,$search);
@@ -66,7 +67,6 @@ class UserController extends AbstractController
      * @param SluggerInterface $slugger
      * @param UserPasswordHasherInterface $passwordHasher
      * @return Response
-     * @IsGranted("ROLE_ADMIN")
      * @package App\Controller
      * @Route("/create" ,name="create_user")
      */
@@ -124,7 +124,6 @@ class UserController extends AbstractController
      * @param Request $request
      * @param SluggerInterface $slugger
      * @return Response
-     * @IsGranted("ROLE_ADMIN")
      * @package App\Controller
      * @Route("/edit/{id}" ,name="edit_user")
      */
@@ -180,11 +179,16 @@ class UserController extends AbstractController
     /**
      * @Route("/delete/{id}", name="delete_user")
      * @param User $user
-     * @IsGranted("ROLE_ADMIN")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function delete(User $user)
     {
+        //controle d'acces
+        if (!$this->isGranted("ROLE_ADMIN")){
+            return $this->render('pages/404.html.twig');
+        }
+
+
         $this->em->remove($user);
         $this->em->flush();
         $this->addFlash('success' , 'user supprimé avec succés');

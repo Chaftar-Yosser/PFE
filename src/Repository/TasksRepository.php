@@ -33,6 +33,20 @@ class TasksRepository extends ServiceEntityRepository
     }
 
 
+    public function getTasksByUserAndStatus($user, $status)
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb->select('count(t)')
+            ->join("t.users", "users")
+            ->andWhere($qb->expr()->eq("users", ":user"))
+            ->setParameter("user", $user)
+            ->andWhere($qb->expr()->eq('t.status', ':status'))
+            ->setParameter("status", $status)
+        ;
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+
     public function getTasks(Search $search = null)
     {
         $qb = $this->createQueryBuilder('t');

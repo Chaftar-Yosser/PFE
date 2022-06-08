@@ -1,72 +1,76 @@
-{% extends 'template.html.twig' %}
-{% block title %} Formulaire d'update {% endblock %}
 {% block body %}
 <div class="container-xxl flex-grow-1 container-p-y">
-        <!-- Basic Layout & Basic with Icons -->
+    <!-- Basic Layout & Basic with Icons -->
     <div class="row">
         <!-- Basic with Icons -->
         <div class="col-xxl">
             <div class="card mb-4">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="mb-0"> De demande de congés</h5>
+                    <h5 class="mb-0">Des Utilisateurs </h5>
                 </div>
                 <div class="card-body">
                     {{ form_start(form) }}
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">user</label>
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Nom</label>
                         <div class="col-sm-10">
                             <div class="form-group">
-                                <input value="{{ leave.userFrom.lastname }}" class="form-control" disabled>
+                                <input value="{{ user.lastname }}" class="form-control" disabled>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">user</label>
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Prénom</label>
                         <div class="col-sm-10">
                             <div class="form-group">
-                                <input value="{{ leave.userTo.lastname }}" class="form-control" disabled>
+                                <input value="{{ user.firstname }}" class="form-control" disabled>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Type de congés</label>
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">email</label>
                         <div class="col-sm-10">
                             <div class="form-group">
-                                <input value="{{ leave.leaveType.name }}" class="form-control" disabled>
+                                <input value="{{ user.email }}" class="form-control" disabled>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Date début</label>
-                        <div class="col-sm-10">
-                            <div class="input-group">
-                                <input value="{{ leave.startDate.format('d-m-Y') }}" class="form-control" disabled>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Date fin</label>
+                        <label class="col-sm-2 form-label" for="basic-icon-default-message"> {{ form_label(form.role) }}</label>
                         <div class="col-sm-10">
                             <div class="input-group input-group-merge">
-                                <input  value="{{ leave.endDate.format('d-m-Y') }}" class="form-control" disabled>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">{{ form_label(form.status) }}</label>
-                        <div class="col-sm-10">
-                            <div class="input-group input-group-merge">
-{#                                <span class="input-group-text"><i class="bx bx-"></i></span>#}
-                                {{ form_widget(form.status, {'attr' : {'class' : 'form-select'}}) }}
+                                {{ form_widget(form.role) }}
                                 <div class="form-error">
-                                    {{ form_errors(form.status) }}
+                                    {{ form_errors(form.role) }}
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 form-label" for="basic-icon-default-message">{{ form_label(form.skills) }}</label>
+                        <div class="col-sm-10">
+                            <div class="input-group input-group-merge">
+                                {{ form_widget(form.skills) }}
+                                <div class="form-error">
+                                    {{ form_errors(form.skills) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="basic-icon-default-email">image</label>
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <img src="{{ asset('images/'~oldImage) }}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-3" hidden>
+                        {{ form_rest(form) }}
+                    </div>
                     <div class="row justify-content-end">
                         <div class="col-sm-10">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" class="btn btn-primary">{{ button }}</button>
                         </div>
                     </div>
                     {{ form_end(form) }}
@@ -76,4 +80,3 @@
     </div>
 </div>
 {% endblock %}
-

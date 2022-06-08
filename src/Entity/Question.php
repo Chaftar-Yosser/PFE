@@ -29,7 +29,6 @@ class Question
     private $score;
 
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: Reponse::class, cascade:["remove"])]
-
     private $reponses;
 
     #[ORM\ManyToMany(targetEntity: Quiz::class, mappedBy: 'questions')]

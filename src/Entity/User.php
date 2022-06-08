@@ -53,20 +53,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Image( maxWidth: 4000, maxHeight: 4000,
-         allowLandscape: true , allowPortrait: true)]
+//    #[Assert\Image( maxWidth: 4000, maxHeight: 4000,
+//         allowLandscape: true , allowPortrait: true)]
     private $image;
 
     #[ORM\ManyToMany(targetEntity: Tasks::class, inversedBy: 'users')]
     private $Tasks;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Contrat::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Contrat::class ,  cascade:["remove"])]
     private $contrats;
 
     #[ORM\OneToMany(mappedBy: 'userTo', targetEntity: Leave::class)]
     private $leaves;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: SuiviLeave::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: SuiviLeave::class ,  cascade:["remove"])]
     private $suiviLeaves;
 
     #[ORM\ManyToMany(targetEntity: Skills::class, inversedBy: 'users')]

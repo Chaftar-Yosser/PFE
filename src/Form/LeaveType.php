@@ -20,6 +20,7 @@ class LeaveType extends AbstractType
             $builder
                 ->add('startDate', DateType::class, [
                     'widget' => 'single_text',
+                    'label' => 'date début',
                     'attr' => [
                         'class' => "form-control ",
 //                        'disabled' => $options['update'] ? 'disabled' : false // pour que les champs soit non modifiable
@@ -28,6 +29,7 @@ class LeaveType extends AbstractType
                 ])
                 ->add('endDate', DateType::class, [
                     'widget' => 'single_text',
+                    'label' => 'date fin',
                     'attr' => [
                         'class' => "form-control ",
 
@@ -36,6 +38,7 @@ class LeaveType extends AbstractType
                 ->add('Leave_type', EntityType::class, [
                     'class' => \App\Entity\LeaveType::class,
                     'choice_label' => 'name',
+                    'label' => 'type congé',
                     'attr' => [
                         'class' => "form-control ",
                     ]
@@ -43,6 +46,7 @@ class LeaveType extends AbstractType
                 ->add('userTo', EntityType::class, [
                     'class' => User::class,
                     'choice_label' => 'lastname',
+                    'label' => 'à',
                     'attr' => [
                         'class' => "form-control ",
                     ]
@@ -50,6 +54,7 @@ class LeaveType extends AbstractType
                 ->add('userFrom', EntityType::class, [
                     'class' => User::class,
                     'choice_label' => 'lastname',
+                    'label' => 'de',
                     'attr' => [
                         'class' => "form-control ",
                     ]
@@ -57,6 +62,7 @@ class LeaveType extends AbstractType
         }
         $builder
             ->add('status',ChoiceType::class,[
+                'label' => 'statut',
                 'choices' =>[
                     '' => '' ,
                     'En cours' => 'En cours',
@@ -67,11 +73,6 @@ class LeaveType extends AbstractType
                     'class' => "form-control ",
                 ]
             ])
-//            ->add('save',SubmitType::class,[
-//                'attr' => [
-//                    'class' => "btn btn-success ",
-//                ]
-//            ])
         ;
     }
 

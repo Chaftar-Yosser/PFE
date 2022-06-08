@@ -18,7 +18,7 @@
         <div class="box-header">
             <h5 class="card-header">Liste des contrats
                 {% if is_granted('ROLE_RH') or is_granted('ROLE_ADMIN') %}
-                    <a  class="btn btn-success" href={{ path("create_contrat") }}>Ajouter</a>
+                    <a  class="btn btn-sm btn-outline-success" href={{ path("create_contrat") }}>Ajouter</a>
                 {% endif %}
             </h5>
             <div class="row justify-content-end my-4">

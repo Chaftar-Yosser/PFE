@@ -4,19 +4,20 @@
           #timer {
               font-weight: bold;
           }
+          .strike {
+              text-decoration: line-through !important;
+              text-decoration-color: red;
+          }
       </style>
   {% endblock %}
 
 {% block body %}
-{#<div class="container mt-4">#}
-{#    <h1>helllllllo {{ app.user.lastname }}</h1>#}
-{#</div>#}
 
-        <section class="content">
+     <section class="content">
             <div class="row">
                 <div class="col-md-3">
                         <!-- TO DO List -->
-                    <div class="box box-primary">
+                    <div class="card box box-primary">
                             <div class="box-header">
                                 <i class="ion ion-clipboard"></i>
                                 <h3 class="box-title">To Do List</h3>
@@ -47,7 +48,7 @@
                                                 <!-- todo text -->
                                                 <span class="text" data-id="{{ task.id }}">{{ task.taskName }}</span>
                                                 <!-- Emphasis label -->
-                                                <small class="label label-default" data-toggle-id="{{ task.id }}" ><i class="fa fa-clock-o"></i>{{ task.duree }}</small>
+                                                <small class="badge bg-label-warning" data-toggle-id="{{ task.id }}" ><i class=""></i>{{ task.duree }}</small>
                                             </li>
                                         {% endfor %}
                                     {% endif %}
@@ -57,7 +58,7 @@
                 </div>
                 <!-- CALENDAR -->
                 <div class="col-md-9">
-                    <div class="box box-primary">
+                    <div class="card">
                         <h2>Calendrier</h2>
                         <div class="box-body no-padding">
                             <!-- THE CALENDAR -->
@@ -86,76 +87,103 @@
                     </div>
                 </div>
 
-
-                <div id="schedule-calendar"></div>
-                <!-- Add Modal -->
-                <div class="modal fade" id="schedule-add">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Remplire le formulaire</h4>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="col-lg-4 col-md-3">
+                    <div class="mt-3">
+                        <!-- Modal -->
+                        <div class="modal fade" id="schedule-add" data-bs-backdrop="static" tabindex="-1">
+                            <div class="modal-dialog">
+                                <form class="modal-content">
+                                    {{ form_start(form) }}
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="backDropModalTitle">Remplire le formulaire</h5>
+                                            <button
+                                                    type="button"
+                                                    class="btn-close"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"
+                                            ></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col mb-3">
+                                                    <label for="nameBackdrop" class="form-label">{{ form_label(form.userFrom) }}</label>
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.userFrom) }}
+                                                        <div class="form-error">
+                                                            {{ form_errors(form.userFrom) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col mb-3">
+                                                    <label for="nameBackdrop" class="form-label">{{ form_label(form.userTo) }}</label>
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.userTo) }}
+                                                        <div class="form-error">
+                                                            {{ form_errors(form.userTo) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row g-2">
+                                                <div class="col mb-3">
+                                                    <label for="nameBackdrop" class="form-label">{{ form_label(form.startDate) }}</label>
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.startDate) }}
+                                                        <div class="form-error">
+                                                            {{ form_errors(form.startDate) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col mb-3">
+                                                    <label for="nameBackdrop" class="form-label">{{ form_label(form.endDate) }}</label>
+                                                    <div class="form-group">
+                                                        {{ form_widget(form.endDate) }}
+                                                        <div class="form-error">
+                                                            {{ form_errors(form.endDate) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row g-2">
+                                            <div class="col mb-3">
+                                                <label for="nameBackdrop" class="form-label">{{ form_label(form.Leave_type) }}</label>
+                                                <div class="form-group">
+                                                    {{ form_widget(form.Leave_type) }}
+                                                    <div class="form-error">
+                                                        {{ form_errors(form.Leave_type) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col mb-0">
+                                                <label for="nameBackdrop" class="form-label"> {{ form_label(form.status) }}</label>
+                                                <div class="form-group">
+                                                    {{ form_widget(form.status) }}
+                                                    <div class="form-error">
+                                                        {{ form_errors(form.status) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                        <input type="submit" class="btn btn-primary" id="eventUrl"/>
+                                    </div>
+                                    {{ form_end(form) }}
+                                </form>
                             </div>
-                            <div class="modal-body"></div>
-                            {{ form_start(form) }}
-                            <div class="box-body">
-                                <div class="form-group">
-                                    {{ form_label(form.userFrom) }}
-                                    {{ form_widget(form.userFrom) }}
-                                    <div class="form-error">
-                                        {{ form_errors(form.userFrom) }}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    {{ form_label(form.userTo) }}
-                                    {{ form_widget(form.userTo) }}
-                                    <div class="form-error">
-                                        {{ form_errors(form.userTo) }}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    {{ form_label(form.Leave_type) }}
-                                    {{ form_widget(form.Leave_type) }}
-                                    <div class="form-error">
-                                        {{ form_errors(form.Leave_type) }}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    {{ form_label(form.startDate) }}
-                                    {{ form_widget(form.startDate) }}
-                                    <div class="form-error">
-                                        {{ form_errors(form.startDate) }}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    {{ form_label(form.endDate) }}
-                                    {{ form_widget(form.endDate) }}
-                                    <div class="form-error">
-                                        {{ form_errors(form.endDate) }}
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    {{ form_label(form.status) }}
-                                    {{ form_widget(form.status) }}
-                                    <div class="form-error">
-                                        {{ form_errors(form.status) }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <input type="submit" class="btn btn-info" id="eventUrl"/>
-                            </div>
-                            {{ form_end(form) }}
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+    </section>
 
         {% endblock %}
         {% block js %}
-    <script src="{{ asset('bundles/bower_components/jquery-ui/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('bundles/dist/js/pages/dashboard.js') }}"></script>
+            <script src="{{ asset('bundles/assets/bower_components/jquery-ui/jquery-ui.min.js') }}"></script>
+            <script src="{{ asset('bundles/assets/dist/js/pages/dashboard.js') }}"></script>
 
     <script>
 

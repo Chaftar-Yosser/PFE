@@ -20,34 +20,23 @@ class ProjectsRepository extends ServiceEntityRepository
     }
 
 
-//    public function getProjectAdvancement($projects)
-//    {
-//        $qb = $this->createQueryBuilder('p');
-//        $qb->join("p.sprint", "s")
-//            ->join("p.sprint", "s")
-//            ->select()
-//            ->where()
-//            ->setParameter('project', $projects);
-//        return $qb->getQuery()->getSingleScalarResult()
-//            ;
-//    }
-
-    // /**
-    //  * @return Projects[] Returns an array of Projects objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getProjectsCount()
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('count(p)');
+        return $qb->getQuery()->getSingleScalarResult();
     }
-    */
+
+    public function getProjectsByUser($user)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('count(p)')
+            ->join("p.users", "users")
+            ->andWhere($qb->expr()->eq("users", ":user"))
+            ->setParameter("user", $user)
+        ;
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 
     /*
     public function findOneBySomeField($value): ?Projects

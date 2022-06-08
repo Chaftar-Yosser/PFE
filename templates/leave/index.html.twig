@@ -19,7 +19,7 @@
         <div class="box-header">
             <h5 class="card-header">Liste des Congés
                 {% if is_granted('ROLE_RH') or is_granted('ROLE_ADMIN') %}
-                    <a  class="btn btn-success" href={{ path("create_leave") }}>Ajouter</a>
+                    <a  class="btn btn-sm btn-outline-success" href={{ path("create_leave") }}>Ajouter</a>
                 {% endif %}
             </h5>
 
@@ -89,14 +89,15 @@
                             </span>
                         </td>
                         <td>
-                            <a  class="btn btn-sm btn-outline-info" href="{{ path("edit_leave", {"id": leave.id}) }}"
+{#                            or (leave.userFrom != leave.userTo)#}
+                            <a  class="btn btn-sm btn-outline-info {% if (leave.status == "Accepter")  %}disabled{% endif %} " href="{{ path("edit_leave", {"id": leave.id}) }}"
                                 data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Edit"
                             > <i class="bx bx-edit-alt me-1 "></i></a>
-                            <a  class="btn btn-sm btn-outline-danger" onclick="return confirm('Etes vous sur ???');" href="{{ path("delete_leave", {"id": leave.id}) }}"
+                            <a  class="btn btn-sm btn-outline-danger {% if (leave.status == "Accepter") %}disabled{% endif %}" onclick="return confirm('Etes vous sur ???');" href="{{ path("delete_leave", {"id": leave.id}) }}"
                                 data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
                             ><i class="bx bx-trash me-1"></i></a>
                             {% if is_granted('ROLE_ADMIN') %}
-                                <a class="btn btn-sm btn-outline-secondary" href="{{ path("update_leave", {"id": leave.id}) }}"
+                                <a class="btn btn-sm btn-outline-secondary {% if (leave.status == "Accepter") %}disabled{% endif %}" href="{{ path("update_leave", {"id": leave.id}) }}"
                                    data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Update"
                                 ><i class="bx bx-edit-alt me-1"></i></a>
                             {% endif %}

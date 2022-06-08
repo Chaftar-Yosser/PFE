@@ -72,16 +72,28 @@ class LeaveRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-
-    /*
-    public function findOneBySomeField($value): ?Leave
+    public function getCongesByUserAndStatus($user)
     {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
+        $qb = $this->createQueryBuilder('l');
+        $qb->select('(l)')
+            ->andWhere($qb->expr()->eq("l.userFrom", ":userFrom"))
+            ->setParameter("userFrom", $user)
+            ->andWhere($qb->expr()->eq('l.status', ':status'))
+            ->setParameter("status", Leave::STATUS_ACCEPTER)
         ;
+        return $qb->getQuery()->getResult();
     }
-    */
+
+    public function findByYear($user)
+    {
+        $qb = $this->createQueryBuilder('l');
+        $qb->select('(l)')
+            ->andWhere($qb->expr()->eq("l.userFrom", ":userFrom"))
+            ->setParameter("userFrom", $user)
+            ->andWhere('l.dateStart =< :now')
+            ->setParameter("now",new \DateTime());
+//        dd(new \DateTime());
+        ;
+        return $qb->getQuery()->getResult();
+    }
 }

@@ -87,7 +87,10 @@ class Contrat
      */
     public function getDateFin()
     {
-        return clone ($this->date_fin) ;
+        if ($this->date_fin)
+            return clone ($this->date_fin);
+
+        return null;
     }
 
     /**

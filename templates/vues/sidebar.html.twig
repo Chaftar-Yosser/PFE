@@ -1,193 +1,3 @@
-{#<aside class="main-sidebar">#}
-{#    <!-- sidebar: style can be found in sidebar.less -->#}
-{#    <section class="sidebar">#}
-{#        <!-- Sidebar user panel -->#}
-{#        <div class="user-panel">#}
-{#            <div class="pull-left image">#}
-{#                <img src="{{ asset ('images/' ~ app.user.image) }}" class="img-circle" alt="User Image">#}
-{#            </div>#}
-{#            <div class="pull-left info">#}
-{#                <p>{{ app.user.lastname }} {{ app.user.firstname }}</p>#}
-{#                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>#}
-{#                #}{#   just ena n7ab naaref chkoun connectée#}
-{#                {% for role in app.user.role  %}#}
-{#                    {{ role }}#}
-{#                {% endfor %}#}
-{#            </div>#}
-{#        </div>#}
-{#        <!-- search form -->#}
-{#        <form action="#" method="get" class="sidebar-form">#}
-{#            <div class="input-group">#}
-{#                <input type="text" name="q" class="form-control" placeholder="Search...">#}
-{#                <span class="input-group-btn">#}
-{#                        <button type="submit" name="search" id="search-btn" class="btn btn-flat">#}
-{#                          <i class="fa fa-search"></i>#}
-{#                        </button>#}
-{#                      </span>#}
-{#            </div>#}
-{#        </form>#}
-{#        <!-- /.search form -->#}
-
-
-{#        <!-- sidebar menu: : style can be found in sidebar.less -->#}
-{#        <ul class="sidebar-menu" data-widget="tree">#}
-{#            <li class="header">MAIN NAVIGATION</li>#}
-{#            <li class="treeview menu-open">#}
-{#                <a href="#">#}
-{#                    <i class="fa fa-dashboard"></i> <span>Dashboard</span>#}
-{#                    <span class="pull-right-container">#}
-{#                                  <i class="fa fa-angle-left pull-right"></i>#}
-{#                                </span>#}
-{#                </a>#}
-{#                <ul class="treeview-menu">#}
-{#                    <li><a href="{{ path ('home_index') }}"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>#}
-{#                    <li class="active"><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>#}
-{#                </ul>#}
-{#            </li>#}
-{#        </ul>#}
-{#        {% if is_granted('ROLE_ADMIN') %}#}
-{#            <ul class="sidebar-menu" data-widget="tree">#}
-{#                <li class="treeview active">#}
-{#                    <a href="#">#}
-{#                        <i class="fa fa-edit"></i> <span>Users</span>#}
-{#                        <span class="pull-right-container">#}
-{#                                    <i class="fa fa-angle-left pull-right"></i>#}
-{#                                </span>#}
-{#                    </a>#}
-{#                    <ul class="treeview-menu">#}
-{#                        <li><a href="{{ path("user_index") }}"><i class="fa fa-circle-o"></i> Consulter Users</a></li>#}
-{#                    </ul>#}
-{#                </li>#}
-{#            </ul>#}
-{#        {% endif %}#}
-{#        {% if is_granted('ROLE_RH') %}#}
-{#            <ul class="sidebar-menu" data-widget="tree">#}
-{#                <li class="treeview active">#}
-{#                    <a href="#">#}
-{#                        <i class="fa fa-edit"></i> <span>Contrats</span>#}
-{#                        <span class="pull-right-container">#}
-{#                                        <i class="fa fa-angle-left pull-right"></i>#}
-{#                                    </span>#}
-{#                    </a>#}
-{#                    <ul class="treeview-menu">#}
-{#                        <li><a href="{{ path("contrat_index") }}"><i class="fa fa-circle-o"></i> Consulter Contrats</a></li>#}
-{#                    </ul>#}
-{#                </li>#}
-{#            </ul>#}
-{#        {% endif %}#}
-{#        <ul class="sidebar-menu" data-widget="tree">#}
-{#            <li class="treeview active">#}
-{#                <a href="#">#}
-{#                    <i class="fa fa-edit"></i> <span>Projets</span>#}
-{#                    <span class="pull-right-container">#}
-{#                                    <i class="fa fa-angle-left pull-right"></i>#}
-{#                                </span>#}
-{#                </a>#}
-{#                <ul class="treeview-menu">#}
-{#                    <li><a href="{{ path("project_index") }}"><i class="fa fa-circle-o"></i> Consulter Projets</a></li>#}
-{#                </ul>#}
-{#            </li>#}
-{#        </ul>#}
-{#        {% if is_granted('ROLE_ADMIN') %}#}
-{#            <ul class="sidebar-menu" data-widget="tree">#}
-{#                <li class="treeview active">#}
-{#                    <a href="#">#}
-{#                        <i class="fa fa-edit"></i> <span>Skills</span>#}
-{#                        <span class="pull-right-container">#}
-{#                            <i class="fa fa-angle-left pull-right"></i>#}
-{#                        </span>#}
-{#                    </a>#}
-{#                    <ul class="treeview-menu">#}
-{#                        <li><a href="{{ path("skills_index") }}"><i class="fa fa-circle-o"></i> Consulter Skills</a></li>#}
-{#                    </ul>#}
-{#                </li>#}
-{#            </ul>#}
-{#        {% endif %}#}
-{#        <ul class="sidebar-menu" data-widget="tree">#}
-{#            <li class="treeview active">#}
-{#                <a href="#">#}
-{#                    <i class="fa fa-edit"></i> <span>Sprint</span>#}
-{#                    <span class="pull-right-container">#}
-{#                                    <i class="fa fa-angle-left pull-right"></i>#}
-{#                                </span>#}
-{#                </a>#}
-{#                <ul class="treeview-menu">#}
-{#                    <li><a href="{{ path("sprint_index") }}"><i class="fa fa-circle-o"></i> Consulter Sprint</a></li>#}
-{#                </ul>#}
-{#            </li>#}
-{#        </ul>#}
-{#        <ul class="sidebar-menu" data-widget="tree">#}
-{#            <li class="treeview active">#}
-{#                <a href="#">#}
-{#                    <i class="fa fa-edit"></i> <span>Tâches</span>#}
-{#                    <span class="pull-right-container">#}
-{#                                <i class="fa fa-angle-left pull-right"></i>#}
-{#                            </span>#}
-{#                </a>#}
-{#                <ul class="treeview-menu">#}
-{#                    <li><a href="{{ path("task_index") }}"><i class="fa fa-circle-o"></i> Consulter Tâches</a></li>#}
-{#                </ul>#}
-{#            </li>#}
-{#        </ul>#}
-{#        <ul class="sidebar-menu" data-widget="tree">#}
-{#            <li class="treeview active">#}
-{#                <a href="#">#}
-{#                    <i class="fa fa-calendar"></i> <span>Calendrier</span>#}
-{#                    <span class="pull-right-container">#}
-{#                                    <i class="fa fa-angle-left pull-right"></i>#}
-{#                                </span>#}
-{#                </a>#}
-{#                <ul class="treeview-menu">#}
-{#                    <li><a href="{{ path("home_index") }}"><i class="fa fa-circle-o"></i> Consulter </a></li>#}
-{#                </ul>#}
-{#            </li>#}
-{#        </ul>#}
-{#        <ul class="sidebar-menu" data-widget="tree">#}
-{#            <li class="treeview active">#}
-{#                <a href="#">#}
-{#                    <i class="fa fa-edit"></i> <span>Congés</span>#}
-{#                    <span class="pull-right-container">#}
-{#                        <i class="fa fa-angle-left pull-right"></i>#}
-{#                    </span>#}
-{#                </a>#}
-{#                <ul class="treeview-menu">#}
-{#                    <li><a href="{{ path("leave_index") }}"><i class="fa fa-circle-o"></i> Consulter les congés </a></li>#}
-{#                </ul>#}
-{#            </li>#}
-{#        </ul>#}
-{#        <ul class="sidebar-menu" data-widget="tree">#}
-{#            <li class="treeview active">#}
-{#                <a href="#">#}
-{#                    <i class="fa fa-edit"></i> <span>Questions de quiz </span>#}
-{#                    <span class="pull-right-container">#}
-{#                        <i class="fa fa-angle-left pull-right"></i>#}
-{#                    </span>#}
-{#                </a>#}
-{#                <ul class="treeview-menu">#}
-{#                    <li><a href="{{ path("question_index") }}"><i class="fa fa-circle-o"></i> Consulter tout les questions </a></li>#}
-{#                </ul>#}
-{#            </li>#}
-{#        </ul>#}
-{#        <ul class="sidebar-menu" data-widget="tree">#}
-{#            <li class="treeview active">#}
-{#                <a href="#">#}
-{#                    <i class="fa fa-edit"></i> <span>Quiz </span>#}
-{#                    <span class="pull-right-container">#}
-{#                        <i class="fa fa-angle-left pull-right"></i>#}
-{#                    </span>#}
-{#                </a>#}
-{#                <ul class="treeview-menu">#}
-{#                    <li><a href="{{ path("quiz_index") }}"><i class="fa fa-circle-o"></i> Consulter tout les Quiz </a></li>#}
-{#                </ul>#}
-{#            </li>#}
-{#        </ul>#}
-{#    </section>#}
-{#    <!-- /.sidebar -->#}
-{#</aside>#}
-
-
-{#---------------------------------------template jdiiida --------------------------------------------------#}
-
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
         <a href="index.html" class="app-brand-link">
@@ -259,36 +69,35 @@
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
         <li class="menu-item active">
-            <a href="{{ path ('home_index') }}" class="menu-link">
+            <a href="{{ path ('dashboard_index') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
         </li>
 
-        <!-- Layouts  na7iitha  -->
-
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Pages</span>
         </li>
-
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-user"></i>
-                <div data-i18n="Form Elements">Utilisateurs</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="{{ path("user_index") }}" class="menu-link">
-                        <div data-i18n="Basic Inputs">Liste Utilisateurs</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ path("create_user") }}" class="menu-link">
-                        <div data-i18n="Basic Inputs">Ajouter Utilisateur</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        {% if is_granted('ROLE_ADMIN') %}
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bx-user"></i>
+                    <div data-i18n="Form Elements">Utilisateurs</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="{{ path("user_index") }}" class="menu-link">
+                            <div data-i18n="Basic Inputs">Liste Utilisateurs</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{ path("create_user") }}" class="menu-link">
+                            <div data-i18n="Basic Inputs">Ajouter Utilisateur</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        {% endif %}
 
         <li class="menu-item">
             <a href="javascript:void(0)" class="menu-link menu-toggle">
@@ -347,40 +156,34 @@
             </ul>
         </li>
 
+        {% if is_granted('ROLE_ADMIN') %}
+            <li class="menu-item">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                    <div data-i18n="Account Settings">Questions de quiz</div>
+                </a>
+                <ul class="menu-sub">
+                    <li class="menu-item">
+                        <a href="{{ path("question_index") }}" class="menu-link">
+                            <div data-i18n="Notifications">Liste Questions</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{ path("create_question") }}" class="menu-link">
+                            <div data-i18n="Notifications">Ajouter question</div>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+        {% endif %}
+
         <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                <div data-i18n="Account Settings">Questions de quiz</div>
+            <a href="{{ path("home_index") }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="Basic">Calendrier</div>
             </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="{{ path("question_index") }}" class="menu-link">
-                        <div data-i18n="Notifications">Liste Questions</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ path("create_question") }}" class="menu-link">
-                        <div data-i18n="Notifications">Ajouter question</div>
-                    </a>
-                </li>
-
-            </ul>
         </li>
-
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
-                <div data-i18n="Authentications">Home</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="{{ path("home_index") }}" class="menu-link" target="_blank">
-                        <div data-i18n="Basic">Calendrier</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
         <!-- User interface -->
         <li class="menu-item">
             <a href="javascript:void(0)" class="menu-link menu-toggle">
@@ -392,6 +195,7 @@
                     <a href="{{ path("project_index") }}" class="menu-link">
                         <div data-i18n="Accordion">Liste Projets</div>
                     </a>
+                </li>
                 </li>
                 <li class="menu-item">
                     <a href="{{ path("create_project") }}" class="menu-link">
@@ -407,21 +211,14 @@
         </li>
 
         <!-- Extended components -->
+        {% if is_granted('ROLE_ADMIN') %}
+            <li class="menu-item">
+                <a href="{{ path("skills_index") }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-collection"></i>
+                    <div data-i18n="Basic">Les Technologies</div>
+                </a>
+            </li>
+        {% endif %}
 
-
-        <!-- Forms & Tables -->
-        <li class="menu-header small text-uppercase"><span class="menu-header-text">Forms &amp; Tables</span></li>
-        <!-- Forms -->
-
-        <li class="menu-item">
-            <a href="{{ path("skills_index") }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">Les Technologies</div>
-            </a>
-        </li>
-        <!-- Tables -->
-
-        <!-- Misc -->
-        <li class="menu-header small text-uppercase"><span class="menu-header-text">Misc</span></li>
     </ul>
 </aside>

@@ -1,0 +1,99 @@
+
+{% block body %}
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <!-- Basic Layout & Basic with Icons -->
+        <div class="row">
+            <!-- Basic with Icons -->
+            <div class="col-xxl">
+                <div class="card mb-4">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">Des Congés</h5>
+                    </div>
+                    <div class="card-body">
+                        {{ form_start(form) }}
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-icon-default-email">DE</label>
+                            <div class="col-sm-10">
+                                <div class="form-group">
+                                    <input value="{{ leave.userFrom.lastname }}" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-icon-default-email">À</label>
+                            <div class="col-sm-10">
+                                <div class="form-group">
+                                    <input value="{{ leave.userTo.lastname }}" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-icon-default-email">{{ form_label(form.Leave_type) }}</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                                    {{ form_widget(form.Leave_type , {'attr' : {'class' : 'form-select'}}) }}
+                                    <div class="form-error">
+                                        {{ form_errors(form.Leave_type) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-icon-default-email">{{ form_label(form.startDate) }}</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                                    {{ form_widget(form.startDate) }}
+                                    <div class="form-error">
+                                        {{ form_errors(form.startDate) }}
+                                    </div>
+                                    <span id="basic-icon-default-email2" class="input-group-text"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-icon-default-email">{{ form_label(form.endDate) }}</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                                    {{ form_widget(form.endDate) }}
+                                    <div class="form-error">
+                                        {{ form_errors(form.endDate) }}
+                                    </div>
+                                    <span id="basic-icon-default-email2" class="input-group-text"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-icon-default-email">{{ form_label(form.status) }}</label>
+                            <div class="col-sm-10">
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text"><i></i>Options</span>
+                                    {{ form_widget(form.status , {'attr' : {'class' : 'form-select'}}) }}
+                                    <div class="form-error">
+                                        {{ form_errors(form.status) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-3" hidden>
+                            {{ form_rest(form) }}
+                        </div>
+                        <div class="row justify-content-end">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-primary">{{ button }}</button>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

@@ -76,7 +76,6 @@ class ContratController extends AbstractController
     {
         //controle d'acces
         if (!$this->isGranted("ROLE_RH")){
-//            throw new AccessDeniedException('Need ROLE_RH!');
             return $this->render('pages/404.html.twig');
         }
 
@@ -134,7 +133,7 @@ class ContratController extends AbstractController
     /**
      * @Route("/delete/{id}", name="delete_contrat")
      * @param Contrat $contrat
-     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function delete(Contrat $contrat)
     {
@@ -142,6 +141,7 @@ class ContratController extends AbstractController
         if (!$this->isGranted("ROLE_RH")){
             return $this->render('pages/404.html.twig');
         }
+
 
         $this->em->remove($contrat);
         $this->em->flush();

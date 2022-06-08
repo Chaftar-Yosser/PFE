@@ -27,8 +27,7 @@ class HomeController extends AbstractController
 
 
     /**
-     * @Route("/" , name="home_index")
-     * @IsGranted("ROLE_USER")
+     * @Route("/home" , name="home_index")
      * @return Response
      */
 
@@ -67,7 +66,7 @@ class HomeController extends AbstractController
                 'title' => $event->getTaskName(),
                 'status' => $event->getStatus(),
                 'backgroundColor' => $color,
-                'editUrl' => $this->generateUrl('edit_task', ['taskId' => $event->getId()])
+                'editUrl' => $this->generateUrl('edit_task', ['taskId' => $event->getId(), 'projectId' => $event->getProjects()->getId()])
             ];
         }
         $users = $this->repository->findAll();
@@ -120,16 +119,10 @@ class HomeController extends AbstractController
         return $this->render('pages/home.html.twig', [
             'data' => json_encode($tasks),
             'events' => $events,
-            'users' => $user,
+            'users' => $users,
             'form' => $form->createView()
         ]);
     }
-
-//    #[Route('/dashbord', name: 'dashbord_index')]
-//    public function index2(): Response
-//    {
-//        return $this->render('vues/dashbord.html.twig');
-//    }
 
     public function notfound(): Response
     {
