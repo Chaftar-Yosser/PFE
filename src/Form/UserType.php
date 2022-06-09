@@ -45,23 +45,12 @@ class UserType extends AbstractType
             ->add('email',EmailType::class, [
                 'attr' => [
                     'class' => "form-control ",
-                    'placeholder' => " admin@admin.fr"
+                    'placeholder' => " admin@admin.fr",
+                    'readonly' => $options['edit']
                 ]
             ])
-            ->add('password',PasswordType::class, [
-                'attr' => [
-                    "aria-describedby" =>"basic-default-password2",
-                    'placeholder' => " .........",
-                    'class' => "form-control ",
-                ],
-                'label' => 'Mot de passe',
-            ])
-            ->add('image',FileType::class,[
-                "data" => $file,
-                'attr' => [
-                    'class' => "form-control ",
-                ]
-            ])
+
+
             ->add('role',ChoiceType::class,[
                 'attr' => [
                     'class' => "form-control select2",
@@ -84,7 +73,26 @@ class UserType extends AbstractType
                 ],
                 'expanded'  => false,
                 'multiple'  => true,
-            ])
+            ]);
+
+             if (!$options['edit']){
+                 $builder->add('password',PasswordType::class, [
+                     'attr' => [
+                         "aria-describedby" =>"basic-default-password2",
+                         'placeholder' => " .........",
+                         'class' => "form-control ",
+                     ],
+                     'label' => 'Mot de passe',
+                 ])
+                     ->add('image',FileType::class,[
+                         "data" => $file,
+                         'attr' => [
+                             'class' => "form-control ",
+                         ]
+                     ])
+                 ;
+                 //            test sur affichage de password et image dans creat ctt
+             }
         ;
     }
 
@@ -92,6 +100,7 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'edit'  => false
         ]);
     }
 }

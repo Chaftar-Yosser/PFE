@@ -17,7 +17,7 @@ class QuestionType extends AbstractType
     {
         $builder
             ->add('title' , TextType::class,[
-                'label' => 'nom',
+                'label' => 'titre',
                 'attr' => [
                     'class' => "form-control ",
                 ]
@@ -30,16 +30,12 @@ class QuestionType extends AbstractType
             ->add('skills' , EntityType::class,[
                 'class' =>  Skills::class,
                 'choice_label' => 'name',
+                'required' => false,
                 'label' => 'technologie',
                 'attr' => [
                     'class' => "form-control ",
                 ]
             ])
-//            ->add('Save',SubmitType::class,[
-//                'attr' => [
-//                    'class' => "btn btn-primary ",
-//                ]
-//            ])
         ;
     }
 

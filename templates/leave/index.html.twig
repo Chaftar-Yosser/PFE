@@ -61,8 +61,8 @@
             <table class="table table-hover table-sm">
                 <thead>
                 <tr>
-                    <th>user from</th>
-                    <th>user to</th>
+                    <th>de</th>
+                    <th>à</th>
                     <th>type</th>
                     <th>date_debut</th>
                     <th>date_fin</th>
@@ -89,10 +89,12 @@
                             </span>
                         </td>
                         <td>
-{#                            or (leave.userFrom != leave.userTo)#}
+{#                            {% if not is_granted('ROLE_ADMIN') %}#}
+                                    {# boutons edit twalii maach todhherr lill asdmin #}
                             <a  class="btn btn-sm btn-outline-info {% if (leave.status == "Accepter")  %}disabled{% endif %} " href="{{ path("edit_leave", {"id": leave.id}) }}"
                                 data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Edit"
                             > <i class="bx bx-edit-alt me-1 "></i></a>
+{#                            {% endif %}#}
                             <a  class="btn btn-sm btn-outline-danger {% if (leave.status == "Accepter") %}disabled{% endif %}" onclick="return confirm('Etes vous sur ???');" href="{{ path("delete_leave", {"id": leave.id}) }}"
                                 data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
                             ><i class="bx bx-trash me-1"></i></a>

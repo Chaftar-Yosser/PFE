@@ -38,7 +38,7 @@ class Projects
     #[ORM\OneToMany(mappedBy: 'Projects', targetEntity: Tasks::class)]
     private $tasks;
 
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Sprint::class)]
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Sprint::class,cascade:["remove"])]
     private $sprints;
 
     #[ORM\ManyToMany(targetEntity: Skills::class, inversedBy: 'projects')]

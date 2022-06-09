@@ -25,30 +25,37 @@
 <script src="{{ asset ('bundles/assets/bower_components/fullcalendar/dist/fullcalendar.min.js') }}"></script>
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- icone google meet-->
+<script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
 <script>
     $(document).ready(function () {
         $('.select2').select2();
     })
 </script>
 <script>
-    const departMinutes = $("#time").val();
-    // const departMinutes = 0.1
-    let temps = departMinutes * 60
+    if($(".quiz").length) {
+        // affichage de chrono
 
-    const timerElement = document.getElementById("timer")
 
-    const clockCheck =  setInterval(() => {
-        let minutes = parseInt(temps / 60, 10)
-        let secondes = parseInt(temps % 60, 10)
+        const departMinutes = $("#time").val();
+        // const departMinutes = 0.1
+        let temps = departMinutes * 60
 
-        minutes = minutes < 10 ? "0" + minutes : minutes
-        secondes = secondes < 10 ? "0" + secondes : secondes
+        const timerElement = document.getElementById("timer")
 
-        timerElement.innerText = `${minutes}:${secondes}`
-        temps = temps <= 0 ? 0 : temps - 1
-        if (temps === 0){
-            clearInterval(clockCheck);
-            $(".quiz").submit();
-        }
-    }, 1000)
+        const clockCheck = setInterval(() => {
+            let minutes = parseInt(temps / 60, 10)
+            let secondes = parseInt(temps % 60, 10)
+
+            minutes = minutes < 10 ? "0" + minutes : minutes
+            secondes = secondes < 10 ? "0" + secondes : secondes
+
+            timerElement.innerText = `${minutes}:${secondes}`
+            temps = temps <= 0 ? 0 : temps - 1
+            if (temps === 0) {
+                clearInterval(clockCheck);
+                $(".quiz").submit();
+            }
+        }, 1000)
+    }
 </script>

@@ -32,6 +32,7 @@ class QuizType extends AbstractType
             ->add('skills' , EntityType::class, [
                 'class' =>  Skills::class,
                 'choice_label' => 'name',
+                'required' => false,
                 'label' => 'Technologies ',
                 'attr' => [
                     'class' => "form-control select2",

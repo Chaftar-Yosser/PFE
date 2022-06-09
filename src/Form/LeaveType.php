@@ -38,6 +38,7 @@ class LeaveType extends AbstractType
                 ->add('Leave_type', EntityType::class, [
                     'class' => \App\Entity\LeaveType::class,
                     'choice_label' => 'name',
+                    'required' => false,
                     'label' => 'type congé',
                     'attr' => [
                         'class' => "form-control ",
@@ -46,17 +47,21 @@ class LeaveType extends AbstractType
                 ->add('userTo', EntityType::class, [
                     'class' => User::class,
                     'choice_label' => 'lastname',
+                    'required' => false,
                     'label' => 'à',
                     'attr' => [
                         'class' => "form-control ",
+                        'disabled' => $options['edit']
                     ]
                 ])
                 ->add('userFrom', EntityType::class, [
                     'class' => User::class,
                     'choice_label' => 'lastname',
+                    'required' => false,
                     'label' => 'de',
                     'attr' => [
                         'class' => "form-control ",
+                        'disabled' => $options['edit']
                     ]
                 ]);
         }
@@ -80,7 +85,8 @@ class LeaveType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Leave::class,
-            'update' => false
+            'update' => false,
+            'edit'  => false
         ]);
     }
 }

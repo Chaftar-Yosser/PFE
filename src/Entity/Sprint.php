@@ -38,7 +38,7 @@ class Sprint
     #[ORM\JoinColumn(nullable: false)]
     private $project;
 
-    #[ORM\OneToMany(mappedBy: 'sprint', targetEntity: Tasks::class)]
+    #[ORM\OneToMany(mappedBy: 'sprint', targetEntity: Tasks::class, cascade:["remove"])]
     private $tasks;
 
     public function __construct()

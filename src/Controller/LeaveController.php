@@ -136,7 +136,9 @@ class LeaveController extends AbstractController
      */
     public function editLeave(Request $request, Leave $leave , MailerInterface $mailer )
     {
-        $form = $this->createForm(\App\Form\LeaveType::class, $leave );
+        $form = $this->createForm(\App\Form\LeaveType::class, $leave, [
+            'edit' => true
+        ] );
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
 

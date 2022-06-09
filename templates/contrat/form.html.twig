@@ -15,11 +15,11 @@
                             <div class="col-sm-10">
                                 <div class="input-group input-group-merge">
                                     <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                                    {{ form_widget(form.user) }}
+                                    {{ form_widget(form.user , {'attr' : {'class' : 'form-select'}}) }}
                                     <div class="form-error">
-                                        {{ form_errors(form.user) }}
+                                        {{ form_errors(form.user ) }}
                                     </div>
-                                    <span class="input-group-text"></span>
+
                                 </div>
                             </div>
                         </div>
@@ -68,7 +68,6 @@
                                     <div class="form-error">
                                         {{ form_errors(form.date_debut) }}
                                     </div>
-                                    <span class="input-group-text"></span>
                                 </div>
                             </div>
                         </div>

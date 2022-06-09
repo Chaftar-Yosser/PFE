@@ -67,19 +67,17 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
+
+        {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
         <!-- Dashboard -->
-        <li class="menu-item active">
+        <li class="menu-item {% if ( currentPath ==  path ('dashboard_index') )%} active {% endif %}">
             <a href="{{ path ('dashboard_index') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
         </li>
-
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Pages</span>
-        </li>
         {% if is_granted('ROLE_ADMIN') %}
-            <li class="menu-item">
+            <li class="menu-item {% if ( currentPath ==  path("user_index")) or (currentPath == path("create_user")) %} active {% endif %}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-user"></i>
                     <div data-i18n="Form Elements">Utilisateurs</div>
@@ -99,7 +97,7 @@
             </li>
         {% endif %}
 
-        <li class="menu-item">
+        <li class="menu-item {% if ( currentPath ==  path("contrat_index") ) or (currentPath ==  path("create_contrat") ) %} active {% endif %}">
             <a href="javascript:void(0)" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-copy"></i>
                 <div data-i18n="Extended UI">Contrats </div>
@@ -118,7 +116,7 @@
             </ul>
         </li>
 
-        <li class="menu-item">
+        <li class="menu-item {% if ( currentPath ==  path("leave_index") ) or (currentPath ==  path("create_leave") ) %} active {% endif %}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cube-alt"></i>
                 <div data-i18n="Misc">Congés</div>
@@ -137,7 +135,7 @@
             </ul>
         </li>
 
-        <li class="menu-item">
+        <li class="menu-item {% if ( currentPath ==  path("quiz_index") ) or (currentPath ==  path("create_quiz") ) %} active {% endif %}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>
                 <div data-i18n="Account Settings">Quiz</div>
@@ -157,7 +155,7 @@
         </li>
 
         {% if is_granted('ROLE_ADMIN') %}
-            <li class="menu-item">
+            <li class="menu-item {% if ( currentPath ==  path("question_index") ) or (currentPath ==  path("create_question") ) %} active {% endif %}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-dock-top"></i>
                     <div data-i18n="Account Settings">Questions de quiz</div>
@@ -178,14 +176,14 @@
             </li>
         {% endif %}
 
-        <li class="menu-item">
+        <li class="menu-item {% if ( currentPath ==  path("home_index") ) %} active {% endif %}">
             <a href="{{ path("home_index") }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <i class="menu-icon tf-icons bx bx-calendar"></i>
                 <div data-i18n="Basic">Calendrier</div>
             </a>
         </li>
         <!-- User interface -->
-        <li class="menu-item">
+        <li class="menu-item {% if ( currentPath ==  path("project_index") ) or (currentPath ==  path("create_project") ) or (currentPath ==  path("task_index") ) %} active {% endif %}">
             <a href="javascript:void(0)" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-box"></i>
                 <div data-i18n="User interface">Projects</div>
@@ -212,7 +210,7 @@
 
         <!-- Extended components -->
         {% if is_granted('ROLE_ADMIN') %}
-            <li class="menu-item">
+            <li class="menu-item {% if ( currentPath ==  path("skills_index") ) %} active {% endif %}">
                 <a href="{{ path("skills_index") }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-collection"></i>
                     <div data-i18n="Basic">Les Technologies</div>

@@ -58,6 +58,7 @@ class ProjectType extends AbstractType
             ->add('skills' , EntityType::class,[
                 'class' => Skills::class,
                 'choice_label' => 'name',
+                'required' => false,
                 'label' => 'technologies',
                 'attr' => [
                     'class' => "form-control select2 ",

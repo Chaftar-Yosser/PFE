@@ -42,6 +42,7 @@ class ContratType extends AbstractType
             ->add('typeContrat', EntityType::class, [
                 'class' =>  TypeContrat::class,
                 'choice_label' => 'name',
+                'required' => false,
                     'attr' => [
                         'class' => "form-control ",
                     ]
@@ -50,14 +51,17 @@ class ContratType extends AbstractType
                 'class' =>  User::class,
                 'label' => 'Nom utilisateur',
                 'choice_label' => 'lastname',
+                'required' => false,
                 'attr' => [
                     'class' => "form-control ",
+                    'disabled' => !$options['create']
                 ]
             ])
             ->add('date_debut',DateType::class,[
                 'widget' => 'single_text',
                 'attr' => [
                     'class' => "form-control ",
+                    'disabled' => !$options['create']
                 ],
 
             ]);
