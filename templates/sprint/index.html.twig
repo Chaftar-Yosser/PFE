@@ -3,16 +3,6 @@
 {% block title %} Les Sprints {% endblock %}
 
 {% block body %}
-
-    <section class="content">
-        <div class="container">
-            {% for message in app.flashes('success') %}
-                <div class="alert alert-success">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </div>
-    </section>
     <div class="card">
         <div class="box-header">
             <h5 class="card-header">Liste des Sprints de projet : {{ project.name }}
@@ -25,7 +15,7 @@
             <div class="row justify-content-end">
                 <div class="box-tools col-3">
                     <div class="input-group input-group-sm" style="width: 150px;">
-                        <input id="myInput" type="text" placeholder="Search..">
+                        <input id="search" type="text" placeholder="Search..">
                     </div>
                 </div>
 
@@ -91,9 +81,29 @@
                             <a  class="btn btn-sm btn-outline-info" href="{{ path("edit_sprint", {"id": sprint.id}) }}"
                                 data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Edit"
                             ><i class="bx bx-edit-alt me-1 "></i></a>
-                            <a  class="btn btn-sm btn-outline-danger" onclick="return confirm('Etes vous sur ???');" href="{{ path("delete_sprint", {"id": sprint.id}) }}"
-                                data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
-                            ><i class="bx bx-trash me-1"></i></a>
+
+
+                            <button  class="btn btn-sm btn-outline-danger "
+                                     data-bs-toggle="modal" data-bs-target="#modalToggle{{ sprint.id }}" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
+                            ><i class="bx bx-trash me-1"></i></button>
+                            <!-- Modal de confirmation de suppression -->
+                            <div class="modal fade" id="modalToggle{{ sprint.id }}" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            Êtes-vous sûr de pour supprimer ce sprint ???
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a   class="btn btn-sm btn-danger" href="{{ path("delete_sprint", {"id": sprint.id}) }}">Confirmer
+                                            </a>
+                                            <a class="btn btn-sm btn-outline-secondary" data-bs-target="#modalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">
+                                                Annuller
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <a  class="btn btn-sm btn-outline-secondary" href="{{ path("sprint_tasks", {"id": sprint.id}) }}"
                                 data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Tâches"
                             ><i class="bx bx-edit-alt me-1"></i></a>
@@ -130,8 +140,9 @@
 
     <script>
         $(document).ready(function(){
-            $("#myInput").on("keyup", function() {
+            $("#search").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
+
                 $("#myTable tr").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });

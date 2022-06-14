@@ -3,17 +3,6 @@
 {% block title %}Les Quiz{% endblock %}
 
 {% block body %}
-
-    <section class="content">
-        <div class="container">
-            {% for message in app.flashes('success') %}
-                <div class="alert alert-success">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </div>
-    </section>
-
     <div class="card">
         <div class="box-header">
             <h5 class="card-header">Liste des Quiz
@@ -24,7 +13,7 @@
             <div class="row justify-content-end my-4">
                 <div class="box-tools col-3">
                     <div class="input-group input-group-sm" style="width: 150px;">
-                        <input id="myInput" type="text" placeholder="Search..">
+                        <input id="search" type="text" placeholder="Search..">
                     </div>
                 </div>
             </div>
@@ -83,17 +72,36 @@
                                         > <i class="bx bx-edit-alt me-1 "></i></a>
                                         <a class="btn m-1 col-3 btn-sm btn-outline-warning" href="{{ path("details", {"id": quiz.id}) }}"
                                            data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Affecter User"
-                                        ><i class="bx bx-edit-alt me-1"></i></a>
+                                        ><i class="bx bx-user-plus me-1"></i></a>
 {#                                carbon:add-alt#}
                             </div>
                             <div class="row  d-flex justify-content-center">
-                                        <a  class="btn col-3 m-1 btn-sm btn-outline-danger" onclick="return confirm('Etes vous sur ???');" href="{{ path("delete_quiz", {"id": quiz.id}) }}"
-                                            data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
-                                        ><i class="bx bx-trash me-1"></i></a>
+
+                                <button  class="btn col-3 m-1 btn-sm btn-outline-danger "
+                                         data-bs-toggle="modal" data-bs-target="#modalToggle{{ quiz.id }}" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
+                                ><i class="bx bx-trash me-1"></i></button>
                                 {% endif %}
-                                        <a class="btn col-3 m-1 btn-sm btn-outline-secondary" href="{{ path("quiz_participate", {"id": quiz.id}) }}"
-                                           data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Participer"
-                                        ><i class="bx bx-edit-alt me-1"></i></a>
+                                <!-- Modal de confirmation de suppression -->
+                                <div class="modal fade" id="modalToggle{{ quiz.id }}" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <strong>Etes vous sur pour supprimer ce quiz ???</strong>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a   class="btn btn-sm btn-danger" href="{{ path("delete_quiz", {"id": quiz.id}) }}">Confirmer
+                                                </a>
+                                                <a class="btn btn-sm btn-outline-secondary" data-bs-target="#modalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">
+                                                    Annuller
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <a class="btn col-3 m-1 btn-sm btn-outline-secondary" href="{{ path("quiz_participate", {"id": quiz.id}) }}"
+                                   data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Participer"
+                                ><i class="bx bx-question-mark"></i></a>
                             </div>
 
                         </td>
@@ -115,6 +123,16 @@
         </div>
     </div>
 
+    <script>
+        $(document).ready(function(){
+            $("#search").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
 
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
 
 {% endblock %}

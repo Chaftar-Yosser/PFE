@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href="index.html" class="app-brand-link">
+        <a href="{{ path ('dashboard_index') }}" class="app-brand-link">
               <span class="app-brand-logo demo">
                 <svg
                         width="25"
@@ -67,7 +67,7 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
-
+        <!-- get current route active  -->
         {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
         <!-- Dashboard -->
         <li class="menu-item {% if ( currentPath ==  path ('dashboard_index') )%} active {% endif %}">
@@ -77,18 +77,18 @@
             </a>
         </li>
         {% if is_granted('ROLE_ADMIN') %}
-            <li class="menu-item {% if ( currentPath ==  path("user_index")) or (currentPath == path("create_user")) %} active {% endif %}">
+            <li class="menu-item {% if ( currentPath ==  path("user_index")) or (currentPath == path("create_user")) %} active open{% endif %}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-user"></i>
                     <div data-i18n="Form Elements">Utilisateurs</div>
                 </a>
                 <ul class="menu-sub">
-                    <li class="menu-item">
+                    <li class="menu-item {% if ( currentPath ==  path("user_index"))  %} active {% endif %}">
                         <a href="{{ path("user_index") }}" class="menu-link">
                             <div data-i18n="Basic Inputs">Liste Utilisateurs</div>
                         </a>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item {% if (currentPath == path("create_user")) %} active {% endif %}">
                         <a href="{{ path("create_user") }}" class="menu-link">
                             <div data-i18n="Basic Inputs">Ajouter Utilisateur</div>
                         </a>
@@ -97,18 +97,18 @@
             </li>
         {% endif %}
 
-        <li class="menu-item {% if ( currentPath ==  path("contrat_index") ) or (currentPath ==  path("create_contrat") ) %} active {% endif %}">
+        <li class="menu-item {% if ( currentPath ==  path("contrat_index") ) or (currentPath ==  path("create_contrat") ) %} active open {% endif %}">
             <a href="javascript:void(0)" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-copy"></i>
                 <div data-i18n="Extended UI">Contrats </div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item  {% if ( currentPath ==  path("contrat_index")) %} active  {% endif %}">
                     <a href="{{ path("contrat_index") }}" class="menu-link">
                         <div data-i18n="Perfect Scrollbar">Liste Contrats</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item  {% if (currentPath ==  path("create_contrat") ) %} active {% endif %}">
                     <a href="{{ path("create_contrat") }}" class="menu-link">
                         <div data-i18n="Perfect Scrollbar">Ajouter Contrat</div>
                     </a>
@@ -116,18 +116,18 @@
             </ul>
         </li>
 
-        <li class="menu-item {% if ( currentPath ==  path("leave_index") ) or (currentPath ==  path("create_leave") ) %} active {% endif %}">
+        <li class="menu-item {% if ( currentPath ==  path("leave_index") ) or (currentPath ==  path("create_leave") ) %} active open {% endif %}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cube-alt"></i>
                 <div data-i18n="Misc">Congés</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {% if ( currentPath ==  path("leave_index")) %} active  {% endif %}">
                     <a href="{{ path("leave_index") }}" class="menu-link">
                         <div data-i18n="Connections">Liste Congés</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {% if (currentPath ==  path("create_leave") ) %} active {% endif %}">
                     <a href="{{ path("create_leave") }}" class="menu-link">
                         <div data-i18n="Connections">Ajouter Congés</div>
                     </a>
@@ -135,18 +135,19 @@
             </ul>
         </li>
 
-        <li class="menu-item {% if ( currentPath ==  path("quiz_index") ) or (currentPath ==  path("create_quiz") ) %} active {% endif %}">
+        <li class="menu-item {% if ( currentPath ==  path("quiz_index") ) or (currentPath ==  path("create_quiz") ) %} active open {% endif %}">
+{#            or (currentPath ==  path("quiz_participate", {"id": quiz.id}) )#}
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>
                 <div data-i18n="Account Settings">Quiz</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {% if ( currentPath ==  path("quiz_index") ) %} active  {% endif %}">
                     <a href="{{ path("quiz_index") }}" class="menu-link">
                         <div data-i18n="Account">Liste Quiz</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {% if (currentPath ==  path("create_quiz") ) %} active {% endif %}">
                     <a href="{{ path("create_quiz") }}" class="menu-link">
                         <div data-i18n="Notifications">Ajouter quiz</div>
                     </a>
@@ -155,18 +156,18 @@
         </li>
 
         {% if is_granted('ROLE_ADMIN') %}
-            <li class="menu-item {% if ( currentPath ==  path("question_index") ) or (currentPath ==  path("create_question") ) %} active {% endif %}">
+            <li class="menu-item {% if ( currentPath ==  path("question_index") ) or (currentPath ==  path("create_question") ) %} active open {% endif %}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-dock-top"></i>
                     <div data-i18n="Account Settings">Questions de quiz</div>
                 </a>
                 <ul class="menu-sub">
-                    <li class="menu-item">
+                    <li class="menu-item {% if ( currentPath ==  path("question_index") ) %} active {% endif %}">
                         <a href="{{ path("question_index") }}" class="menu-link">
                             <div data-i18n="Notifications">Liste Questions</div>
                         </a>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item {% if (currentPath ==  path("create_question") ) %} active {% endif %}">
                         <a href="{{ path("create_question") }}" class="menu-link">
                             <div data-i18n="Notifications">Ajouter question</div>
                         </a>
@@ -183,24 +184,25 @@
             </a>
         </li>
         <!-- User interface -->
-        <li class="menu-item {% if ( currentPath ==  path("project_index") ) or (currentPath ==  path("create_project") ) or (currentPath ==  path("task_index") ) %} active {% endif %}">
+        <li class="menu-item {% if ( currentPath ==  path("project_index") ) or (currentPath ==  path("create_project") ) or (currentPath ==  path("task_index") ) %} active open {% endif %}">
+{#            or ( currentPath ==   path("show_details", {"id": project.id}) )#}
             <a href="javascript:void(0)" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-box"></i>
                 <div data-i18n="User interface">Projects</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {% if ( currentPath ==  path("project_index") ) %} active {% endif %}">
                     <a href="{{ path("project_index") }}" class="menu-link">
                         <div data-i18n="Accordion">Liste Projets</div>
                     </a>
                 </li>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {% if ( currentPath ==  path("create_project") ) %} active {% endif %}">
                     <a href="{{ path("create_project") }}" class="menu-link">
                         <div data-i18n="Accordion">Ajouter Projet</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {% if ( currentPath ==  path("task_index") ) %} active {% endif %}">
                     <a href="{{ path("task_index") }}" class="menu-link">
                         <div data-i18n="Perfect Scrollbar">Tâches</div>
                     </a>

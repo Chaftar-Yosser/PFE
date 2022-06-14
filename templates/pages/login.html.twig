@@ -61,6 +61,13 @@
             <!-- Register -->
             <div class="card">
                 <div class="card-body">
+                    {% if error %}
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            {#{{ dump(error) }}#}
+                            Veuillez vérifier votre adresse et votre mot de passe
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
                     <!-- Logo -->
                     <div class="app-brand justify-content-center">
                         <a href="index.html" class="app-brand-link gap-2">
@@ -166,6 +173,9 @@
                         <div class="mb-3">
                             <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
                         </div>
+
+
+
                     </form>
                 </div>
             </div>
@@ -181,7 +191,7 @@
             href="https://meet.google.com/uio-mkpn-ioi"
             target="_blank"
             class="btn btn-danger btn-buy-now"
-    >Meet</a>
+    > <span class="iconify" data-icon="logos:google-meet"></span>   Meet</a>
 </div>
 
 <!-- Core JS -->
@@ -203,6 +213,9 @@
 
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<!-- icone google meet-->
+<script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
 </body>
 </html>
 

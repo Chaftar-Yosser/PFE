@@ -119,7 +119,17 @@
                 <div class="container-xxl flex-grow-1 container-p-y">
                     <h4 class="fw-bold py-3 mb-4">
                         <span class="text-muted fw-light">{% block title %}
-                            {% endblock %}</span> </h4>
+                            {% endblock %}
+                        </span>
+                    </h4>
+
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-primary alert-dismissible" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+
 
                     {% block body %}
                     {% endblock %}
@@ -140,7 +150,7 @@
                     href="https://meet.google.com/uio-mkpn-ioi"
                     target="_blank"
                     class="btn btn-danger btn-buy-now"
-            >Meet  <span class="iconify" data-icon="logos:google-meet"></span> </a>
+            > <span class="iconify" data-icon="logos:google-meet"></span>   Meet</a>
         </div>
         {% include 'vues/js.html.twig' %}
         {% block js %}

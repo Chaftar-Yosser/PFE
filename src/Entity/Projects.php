@@ -26,7 +26,7 @@ class Projects
     #[ORM\Column(type: 'datetime')]
     private $date_debut;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime' , nullable: true)]
     private $date_fin;
 
     #[ORM\Column(type: 'string', length: 255)]

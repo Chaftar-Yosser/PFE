@@ -131,6 +131,7 @@ class ContratController extends AbstractController
     }
 
     /**
+     * Archive contart
      * @Route("/delete/{id}", name="delete_contrat")
      * @param Contrat $contrat
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
@@ -142,8 +143,8 @@ class ContratController extends AbstractController
             return $this->render('pages/404.html.twig');
         }
 
-
-        $this->em->remove($contrat);
+        $contrat->setStatus(Contrat::STATUS_ARCHIVE);
+        $this->em->persist($contrat);
         $this->em->flush();
         $this->addFlash('success' , 'contrat supprimé avec succés');
         return $this->redirectToRoute('contrat_index');

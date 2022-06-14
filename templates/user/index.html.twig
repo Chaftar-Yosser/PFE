@@ -29,7 +29,7 @@
             </div>
             <div class="box-tools col-3">
                 <div class="input-group input-group-sm" style="width: 150px;">
-                    <input id="myInput" type="text" placeholder="Search..">
+                    <input id="search" type="text" placeholder="Search..">
                 </div>
             </div>
 
@@ -37,7 +37,7 @@
         </div>
 
         <div class="table-responsive text-nowrap m-2">
-            <table class="table table-hover table-sm">
+            <table class="table table-hover table-sm" >
                 <thead>
                 <tr>
                     <th>Prénom</th>
@@ -49,7 +49,7 @@
                     <th>Actions</th>
                 </tr>
                 </thead>
-                <tbody class="table-border-bottom-0">
+                <tbody class="table-border-bottom-0" id="myTable">
                 {% for user in users %}
                     <tr>
                         <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{ user.firstname}}</strong></td>
@@ -77,9 +77,28 @@
                             <a  class="btn btn-sm btn-outline-info" href="{{ path("edit_user", {"id": user.id}) }}"
                                 data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Edit"
                             ><i class="bx bx-edit-alt me-1 "></i></a>
-                            <a  class="btn btn-sm btn-outline-danger" onclick="return confirm('Etes vous sur ???');" href="{{ path("delete_user", {"id": user.id}) }}"
-                                data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
-                            ><i class="bx bx-trash me-1"></i></a>
+
+                            <button  class="btn btn-sm btn-outline-danger "
+                                     data-bs-toggle="modal" data-bs-target="#modalToggle{{ user.id }}" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
+                            ><i class="bx bx-trash me-1"></i></button>
+                            <!-- Modal de confirmation de suppression -->
+                            <div class="modal fade" id="modalToggle{{ user.id }}" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <strong>Êtes-vous sûr de pour supprimer cet utilisateur ???</strong>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a   class="btn btn-sm btn-danger" href="{{ path("delete_user", {"id": user.id}) }}">Confirmer
+                                            </a>
+                                            <a class="btn btn-sm btn-outline-secondary" data-bs-target="#modalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">
+                                                Annuller
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </td>
                     </tr>
                 {% endfor %}
@@ -99,34 +118,17 @@
         </div>
     </div>
 
-
-
-
-    <section class="content">
-{#        <div class="container">#}
-{#            {% for message in app.flashes('success') %}#}
-{#                <div class="alert alert-success">#}
-{#                    {{ message }}#}
-{#                </div>#}
-{#            {% endfor %}#}
-{#            {% for message in app.flashes('error') %}#}
-{#                <div class="alert alert-danger">#}
-{#                    {{ message }}#}
-{#                </div>#}
-{#            {% endfor %}#}
-{#        </div>#}
-
-    </section>
-
     <script>
         $(document).ready(function(){
-            $("#myInput").on("keyup", function() {
+            $("#search").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
+
                 $("#myTable tr").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
         });
     </script>
+
 
 {% endblock %}

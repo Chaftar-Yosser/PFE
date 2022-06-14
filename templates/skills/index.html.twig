@@ -4,29 +4,21 @@
 
 {% block body %}
 
-    <section class="content">
-        <div class="container">
-            {% for message in app.flashes('success') %}
-                <div class="alert alert-success">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </div>
-    </section>
-
-    <div class="card col-lg-6">
-        <div class="box-header">
+{#    <div class="row justify-content-center ">#}
+        <div class="card col-lg-4">
+            <div class="box-header">
             <h5 class="card-header">Liste des technologies  <a  class="btn btn-sm btn-outline-success" href={{ path("create_skills") }}>Créer</a></h5>
-            <div class="row justify-content-end my-2">
-                <div class="box-tools col-lg-5">
+            <div class="row justify-content-center">
+                <div class="box-tools col-3">
                     <div class="input-group input-group-sm" style="width: 150px;">
-                        <input id="myInput" type="text" placeholder="Search..">
+                        <input id="search" type="text" placeholder="Search..">
                     </div>
                 </div>
+
             </div>
         </div>
 
-        <div class="table-responsive text-nowrap m-2">
+            <div class="table-responsive text-nowrap m-2">
             <table class="table table-hover table-sm">
                 <thead>
                 <tr>
@@ -34,7 +26,7 @@
                     <th>Actions</th>
                 </tr>
                 </thead>
-                <tbody class="table-border-bottom-0">
+                <tbody class="table-border-bottom-0"  id="myTable">
                 {% for skills in skills %}
                     <tr>
                         <td>
@@ -45,16 +37,34 @@
                             <a  class="btn btn-sm btn-outline-info" href="{{ path("edit_skills", {"id": skills.id}) }}"
                                 data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Edit"
                             ><i class="bx bx-edit-alt me-1 "></i></a>
-                            <a  class="btn btn-sm btn-outline-danger" onclick="return confirm('Etes vous sur ???');" href="{{ path("delete_skills", {"id": skills.id}) }}"
-                                data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
-                            ><i class="bx bx-trash me-1"></i></a>
+
+
+                            <button  class="btn btn-sm btn-outline-danger "
+                                     data-bs-toggle="modal" data-bs-target="#modalToggle{{ skills.id }}" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
+                            ><i class="bx bx-trash me-1"></i></button>
+                            <!-- Modal de confirmation de suppression -->
+                            <div class="modal fade" id="modalToggle {{ skills.id }}" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-body">Etes vous sur ???</div>
+                                        <div class="modal-footer">
+                                            <a   class="btn btn-sm btn-danger" href="{{ path("delete_skills", {"id": skills.id}) }}">Confirmer
+                                            </a>
+                                            <a class="btn btn-sm btn-outline-secondary" data-bs-target="#modalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">
+                                                Annuller
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
-        <div class="content-wrapper">
+         <div class="content-wrapper">
             <div class="demo-inline-spacing">
                 <!-- Basic Pagination -->
                 <nav aria-label="Page navigation">
@@ -65,6 +75,19 @@
             </div>
             <div class="content-backdrop fade"></div>
         </div>
-    </div>
+        </div>
+{#    </div>#}
+
+    <script>
+        $(document).ready(function(){
+            $("#search").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
 
 {% endblock %}

@@ -192,7 +192,7 @@ class ProjectController extends AbstractController
             $this->em->persist($Project);
             $this->em->flush();
             $this->addFlash('success' , 'Projet crée avec succés!');
-            return $this->redirectToRoute('show_details' , ["id" => $Project->getId()]);
+            return $this->redirectToRoute('project_index' , ["id" => $Project->getId()]);
         }
 
         return $this->render('project/create.html.twig', [

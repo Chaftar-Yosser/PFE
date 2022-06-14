@@ -92,7 +92,7 @@
                         <!-- Modal -->
                         <div class="modal fade" id="schedule-add" data-bs-backdrop="static" tabindex="-1">
                             <div class="modal-dialog">
-                                <form class="modal-content">
+                                <div class="modal-content">
                                     {{ form_start(form) }}
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="backDropModalTitle">Remplire le formulaire</h5>
@@ -169,10 +169,12 @@
                                         </div>
                                         <div class="modal-footer">
                                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                                        <input type="submit" class="btn btn-primary" id="eventUrl"/>
-                                    </div>
+{#                                        <input type="submit" class="btn btn-primary" id="eventUrl"/>#}
+                                            <button type="submit" class="btn btn-primary">valider</button>
+
+                                        </div>
                                     {{ form_end(form) }}
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -72,8 +72,9 @@
                                 </div>
                             </div>
                         </div>
+                        {% if form.date_fin is defined %}
                         <div class="row mb-3">
-                            {% if form.date_fin is defined %}
+{#                            {% if form.date_fin is defined %}#}
                                 <label class="col-sm-2 form-label" for="basic-icon-default-message">{{ form_label(form.date_fin) }}</label>
                                 <div class="col-sm-10">
                                     <div class="input-group input-group-merge">
@@ -85,8 +86,9 @@
                                         <span class="input-group-text"></span>
                                     </div>
                                 </div>
-                            {% endif %}
+
                         </div>
+                        {% endif %}
                         <div class="row justify-content-end">
                             <div class="col-sm-10">
                                 <button type="submit" class="btn btn-primary">{{ button }}</button>

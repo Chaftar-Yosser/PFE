@@ -33,7 +33,6 @@ class HomeController extends AbstractController
 
     public function index(TasksRepository $tasksRepository, Request $request): Response
     {
-        $this->addFlash('success', 'demande crée avec succés!');
         $user = $this->getUser();
         if ($this->isGranted('ROLE_ADMIN')) {
             $events = $tasksRepository->getTaskByDate();
@@ -109,7 +108,6 @@ class HomeController extends AbstractController
         $form = $this->createForm(\App\Form\LeaveType::class, $newLeave);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             $this->em->persist($newLeave);
             $this->em->flush();
             $this->addFlash('success', 'demande crée avec succés!');

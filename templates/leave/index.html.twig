@@ -3,18 +3,6 @@
 {% block title %} Les Congés {% endblock %}
 
 {% block body %}
-    <section class="content">
-        <div class="container">
-            {% for message in app.flashes('success') %}
-                <div class="alert alert-success">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </div>
-
-    </section>
-
-
     <div class="card">
         <div class="box-header">
             <h5 class="card-header">Liste des Congés
@@ -50,7 +38,7 @@
                 </div>
                 <div class="box-tools col-3">
                     <div class="input-group input-group-sm" style="width: 150px;">
-                        <input id="myInput" type="text" placeholder="Search..">
+                        <input id="search" type="text" placeholder="Search..">
                     </div>
                 </div>
 
@@ -95,9 +83,29 @@
                                 data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Edit"
                             > <i class="bx bx-edit-alt me-1 "></i></a>
 {#                            {% endif %}#}
-                            <a  class="btn btn-sm btn-outline-danger {% if (leave.status == "Accepter") %}disabled{% endif %}" onclick="return confirm('Etes vous sur ???');" href="{{ path("delete_leave", {"id": leave.id}) }}"
-                                data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
-                            ><i class="bx bx-trash me-1"></i></a>
+
+                            <button  class="btn btn-sm btn-outline-danger {% if (leave.status == "Accepter") %}disabled{% endif %}"
+                                     data-bs-toggle="modal" data-bs-target="#modalToggle {{ leave.id }} " data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
+                            ><i class="bx bx-trash me-1"></i></button>
+                            <!-- Modal de confirmation de suppression -->
+                            <div class="modal fade" id="modalToggle{{ leave.id }}" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            Êtes-vous sûr de pour supprimer ce congé ???
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a   class="btn btn-sm btn-danger" href="{{ path("delete_leave", {"id": leave.id}) }}">Confirmer
+                                            </a>
+                                            <a class="btn btn-sm btn-outline-secondary" data-bs-target="#modalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">
+                                                Annuller
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                             {% if is_granted('ROLE_ADMIN') %}
                                 <a class="btn btn-sm btn-outline-secondary {% if (leave.status == "Accepter") %}disabled{% endif %}" href="{{ path("update_leave", {"id": leave.id}) }}"
                                    data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Update"
@@ -124,18 +132,12 @@
 
     <script>
         $(document).ready(function(){
-            $("#myInput").on("keyup", function() {
+            $("#search").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
+
                 $("#myTable tr").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
-            });
-        });
-
-        $(document).ready( function () {
-            $('#table_id').DataTable({
-                paging: false ,
-                searching: false
             });
         });
     </script>

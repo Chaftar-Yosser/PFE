@@ -54,7 +54,7 @@ class ReponseController extends AbstractController
      * @package App\Controller
      * @Route("/question/{id}/create" ,name="create_reponse")
      */
-    public function createQuestion(Request $request , Question $question): Response
+    public function create(Request $request , Question $question): Response
     {
         $reponse = new Reponse();
         $reponse->setQuestion($question);

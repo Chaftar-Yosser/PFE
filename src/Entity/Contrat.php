@@ -10,6 +10,7 @@ class Contrat
 {
     const STATUS_EN_COURS="En Cours";
     const STATUS_RESILIE="Résilié";
+    const STATUS_ARCHIVE="Archivé";
 
 
     #[ORM\Id]

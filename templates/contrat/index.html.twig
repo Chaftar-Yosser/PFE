@@ -3,17 +3,6 @@
 {% block title %} Les Contrats {% endblock %}
 
 {% block body %}
-
-    <section class="content">
-        <div class="container">
-            {% for message in app.flashes('success') %}
-                <div class="alert alert-success">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </div>
-    </section>
-
     <div class="card">
         <div class="box-header">
             <h5 class="card-header">Liste des contrats
@@ -46,7 +35,7 @@
                 </div>
                 <div class="box-tools col-3">
                     <div class="input-group input-group-sm" style="width: 150px;">
-                        <input id="myInput" type="text" placeholder="Search..">
+                        <input id="search" type="text" placeholder="Search..">
                     </div>
                 </div>
 
@@ -81,7 +70,9 @@
                         </td>
                         <td>
                             <span class="badge {% if (contrat.status == "En Cours") %} bg-label-warning
-                                    {% else %} bg-label-danger  {% endif %} me-1">{{ contrat.status}}
+                                    {% elseif( contrat.status == "Résilié") %} bg-label-danger
+                                    {% else %} bg-label-primary  {% endif %} me-1">
+                                {{ contrat.status}}
                             </span>
                         </td>
                         <td>{{ contrat.duree}}</td>
@@ -90,12 +81,31 @@
                         <td>{{ contrat.datefin|date('d/m/Y')}}</td>
                         <td >
                             {% if is_granted('ROLE_RH') or is_granted('ROLE_ADMIN') %}
-                                <a  class="btn btn-sm btn-outline-info" href="{{ path("edit_contrat", {"id": contrat.id}) }}"
+                                <a  class="btn btn-sm btn-outline-info {% if (contrat.status == "Résilié") or (contrat.status == "Archivé") %}disabled{% endif %}"
+                                    href="{{ path("edit_contrat", {"id": contrat.id}) }}"
                                     data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Edit"
                                 > <i class="bx bx-edit-alt me-1 "></i></a>
-                                <a  class="btn btn-sm btn-outline-danger" onclick="return confirm('Etes vous sur ???');" href="{{ path("delete_contrat", {"id": contrat.id}) }}"
-                                    data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
-                                ><i class="bx bx-trash me-1"></i></a>
+
+                                <button  class="btn btn-sm btn-outline-danger "
+                                         title="dddd" data-bs-toggle="modal" data-bs-target="#modalToggle{{ contrat.id }}" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
+                                ><i class="bx bx-trash me-1"></i></button>
+
+                                <div class="modal fade" id="modalToggle{{ contrat.id }}" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                Êtes-vous sûr de pour supprimer ce contrat ???
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a   class="btn btn-sm btn-danger" href="{{ path("delete_contrat", {"id": contrat.id}) }}">Confirmer
+                                                </a>
+                                                <a class="btn btn-sm btn-outline-secondary" data-bs-target="#modalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">
+                                                    Annuller
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             {% endif %}
                         </td>
                     </tr>
@@ -103,6 +113,7 @@
                 </tbody>
             </table>
         </div>
+
         <div class="content-wrapper">
             <div class="demo-inline-spacing">
                 <!-- Basic Pagination -->
@@ -120,8 +131,9 @@
 
     <script>
         $(document).ready(function(){
-            $("#myInput").on("keyup", function() {
+            $("#search").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
+
                 $("#myTable tr").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });

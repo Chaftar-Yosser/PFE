@@ -22,7 +22,8 @@ class ContratType extends AbstractType
                 'choices' =>[
                     '' => '' ,
                     'En Cours' => 'En Cours',
-                    'Résilié' => 'Résilié'
+                    'Résilié' => 'Résilié',
+//                    'Archivé' => 'Archivé',
                 ],
                     'attr' => [
                         'class' => "form-control ",
