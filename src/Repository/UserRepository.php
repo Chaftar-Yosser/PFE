@@ -8,6 +8,7 @@ use App\Entity\Search;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Security;
 use function Doctrine\ORM\QueryBuilder;
 
 /**
@@ -84,7 +85,6 @@ class UserRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
-
 
     /*
     public function findOneBySomeField($value): ?User

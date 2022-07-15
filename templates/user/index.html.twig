@@ -52,8 +52,8 @@
                 <tbody class="table-border-bottom-0" id="myTable">
                 {% for user in users %}
                     <tr>
-                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{ user.firstname}}</strong></td>
-                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{ user.lastname}}</strong></td>
+                        <td style="text-transform: capitalize;"><strong>{{ user.firstname}}</strong></td>
+                        <td style="text-transform: capitalize;"><strong>{{ user.lastname}}</strong></td>
                         <td>
                             {% for skills in user.skills  %}
                                 {{ skills.name }}

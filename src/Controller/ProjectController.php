@@ -46,8 +46,8 @@ class ProjectController extends AbstractController
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
         $user = $this->getUser();
+        $projects = [];
         if ($this->isGranted('ROLE_ADMIN')){
-            $projects = [];
             foreach ($this->repository->findAll() as $project){
                 // calcul de percentage d'avancement de chaque projet
                 $total = 0;

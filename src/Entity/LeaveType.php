@@ -18,7 +18,7 @@ class LeaveType
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\OneToMany(mappedBy: 'Leave_type', targetEntity: Leave::class)]
+    #[ORM\OneToMany(mappedBy: 'Leave_type', targetEntity: Leave::class,cascade:["remove"])]
     private $leaves;
 
     public function __construct()

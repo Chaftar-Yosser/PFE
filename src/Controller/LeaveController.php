@@ -71,11 +71,12 @@ class LeaveController extends AbstractController
      */
     public function createLeave(Request $request)
     {
+        $user = $this->getUser();
         $leave = new Leave();
-        $form = $this->createForm(\App\Form\LeaveType::class, $leave);
+        $form = $this->createForm(\App\Form\LeaveType::class, $leave , ['currentUser' => $user]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-
+            $leave->setStatus(Leave::STATUS_ENCOURS);
             $this->em->persist($leave);
             $this->em->flush();
             $this->addFlash('success' , 'demande crée avec succés!');
@@ -99,7 +100,7 @@ class LeaveController extends AbstractController
      */
     public function UpdateLeave(Request $request, Leave $leave, MailerInterface $mailer )
     {
-        $form = $this->createForm(\App\Form\LeaveType::class, $leave, ['update'=>true]);
+        $form = $this->createForm(\App\Form\LeaveType::class, $leave, ['update'=>true, "create" => false]);
 //        $form->remove(startDate);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
@@ -111,8 +112,13 @@ class LeaveController extends AbstractController
                     ->from($leave->getUserTo()->getEmail())
                     ->to($leave->getUserFrom()->getEmail())
                     ->subject('Réponse à la demande ')
-                    ->text('Sending emails is fun again!')
-                    ->html('Votre demande a été' . $leave->getStatus())
+                    ->text('Sending emails is fun again!', )
+//                    ->html('Votre demande a été' . $leave->getStatus())
+                    ->html(
+                        $this->renderView('pages/email2.html.twig', ['leave' => $leave]),
+                        "utf-8"
+                    );
+//                dd($leave->getStatus());
                 ;
                 $mailer->send($email);
             }
@@ -135,13 +141,18 @@ class LeaveController extends AbstractController
      * @Route("/edit/{id}" ,name="edit_leave")
      */
     public function editLeave(Request $request, Leave $leave , MailerInterface $mailer )
-    {
+    {   $user = $this->getUser();
+        $userTo = $leave->getUserTo();
+        $userFrom = $leave->getUserFrom();
+
         $form = $this->createForm(\App\Form\LeaveType::class, $leave, [
-            'edit' => true
+            'edit' => true,
+            "create" => false
         ] );
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-
+            $leave->setUserTo($userTo);
+            $leave->setUserFrom($userFrom);
             $this->em->persist($leave);
             $this->em->flush();
 

@@ -2,9 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\Question;
+use App\Entity\Quiz;
 use App\Entity\Reponse;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Reponse|null find($id, $lockMode = null, $lockVersion = null)
@@ -28,6 +31,15 @@ class ReponseRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function getCorrectAnswer(Question $question){
+        $qb = $this->createQueryBuilder('r');
+        $qb->andWhere($qb->expr()->eq("r.question", ":question"))
+            ->andWhere($qb->expr()->eq("r.isCorrect", ":isCorrect"))
+            ->setParameter("question", $question)
+            ->setParameter("isCorrect", true);
+        return $qb->getQuery()->getResult();
     }
 
 

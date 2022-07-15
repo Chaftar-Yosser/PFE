@@ -55,14 +55,14 @@ class ContratType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'class' => "form-control ",
-                    'disabled' => !$options['create']
+                    'readonly' => !$options['create'] ? 'readonly' : false,
                 ]
             ])
             ->add('date_debut',DateType::class,[
                 'widget' => 'single_text',
                 'attr' => [
                     'class' => "form-control ",
-                    'disabled' => !$options['create']
+                    'readonly' => !$options['create'] ? 'readonly' : false
                 ],
 
             ]);

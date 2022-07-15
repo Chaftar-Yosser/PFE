@@ -85,9 +85,9 @@
 {#                            {% endif %}#}
 
                             <button  class="btn btn-sm btn-outline-danger {% if (leave.status == "Accepter") %}disabled{% endif %}"
-                                     data-bs-toggle="modal" data-bs-target="#modalToggle {{ leave.id }} " data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
+                                     title="dddd" data-bs-toggle="modal" data-bs-target="#modalToggle{{ leave.id }}" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Delete"
                             ><i class="bx bx-trash me-1"></i></button>
-                            <!-- Modal de confirmation de suppression -->
+
                             <div class="modal fade" id="modalToggle{{ leave.id }}" aria-labelledby="modalToggleLabel" tabindex="-1" style="display: none" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">

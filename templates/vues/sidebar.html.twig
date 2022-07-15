@@ -77,7 +77,9 @@
             </a>
         </li>
         {% if is_granted('ROLE_ADMIN') %}
-            <li class="menu-item {% if ( currentPath ==  path("user_index")) or (currentPath == path("create_user")) %} active open{% endif %}">
+            <li class="menu-item {% if ( currentPath ==  path("user_index"))
+                or (currentPath == path("create_user")) %} active open
+                {% elseif ( "/user/edit" in currentPath) %} active{% endif %}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-user"></i>
                     <div data-i18n="Form Elements">Utilisateurs</div>
@@ -97,7 +99,9 @@
             </li>
         {% endif %}
 
-        <li class="menu-item {% if ( currentPath ==  path("contrat_index") ) or (currentPath ==  path("create_contrat") ) %} active open {% endif %}">
+        <li class="menu-item {% if ( currentPath ==  path("contrat_index") )
+            or (currentPath ==  path("create_contrat") ) %} active open
+            {% elseif ( "/contrat/edit" in currentPath) %} active{% endif %}">
             <a href="javascript:void(0)" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-copy"></i>
                 <div data-i18n="Extended UI">Contrats </div>
@@ -116,7 +120,9 @@
             </ul>
         </li>
 
-        <li class="menu-item {% if ( currentPath ==  path("leave_index") ) or (currentPath ==  path("create_leave") ) %} active open {% endif %}">
+        <li class="menu-item {% if ( currentPath ==  path("leave_index") )
+            or (currentPath ==  path("create_leave") ) %} active open
+            {% elseif ( "/leave/edit" in currentPath) or ( "/leave/update" in currentPath) %} active{% endif %}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-cube-alt"></i>
                 <div data-i18n="Misc">Congés</div>
@@ -135,8 +141,11 @@
             </ul>
         </li>
 
-        <li class="menu-item {% if ( currentPath ==  path("quiz_index") ) or (currentPath ==  path("create_quiz") ) %} active open {% endif %}">
-{#            or (currentPath ==  path("quiz_participate", {"id": quiz.id}) )#}
+        <li class="menu-item {% if ( currentPath ==  path("quiz_index") )
+            or (currentPath ==  path("create_quiz") ) %} active open
+            {% elseif ( "/quiz/moreInf" in currentPath) or ( "/quiz/edit" in currentPath)
+            or ( "/quiz/quiz-details" in currentPath) or ( "/quiz/quiz-participate" in currentPath) %} active{% endif %}">
+
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>
                 <div data-i18n="Account Settings">Quiz</div>
@@ -156,7 +165,9 @@
         </li>
 
         {% if is_granted('ROLE_ADMIN') %}
-            <li class="menu-item {% if ( currentPath ==  path("question_index") ) or (currentPath ==  path("create_question") ) %} active open {% endif %}">
+            <li class="menu-item {% if ( currentPath ==  path("question_index") )
+                or (currentPath ==  path("create_question") ) %} active open
+                {% elseif ( "/question/edit" in currentPath) or ( "/reponse/question-reponse" in currentPath) %} active{% endif %}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-dock-top"></i>
                     <div data-i18n="Account Settings">Questions de quiz</div>
@@ -183,9 +194,14 @@
                 <div data-i18n="Basic">Calendrier</div>
             </a>
         </li>
-        <!-- User interface -->
-        <li class="menu-item {% if ( currentPath ==  path("project_index") ) or (currentPath ==  path("create_project") ) or (currentPath ==  path("task_index") ) %} active open {% endif %}">
-{#            or ( currentPath ==   path("show_details", {"id": project.id}) )#}
+        <!-- project interface -->
+        <li class="menu-item {% if ( currentPath ==  path("project_index"))
+            or (currentPath ==  path("create_project"))
+            or (currentPath ==  path("task_index")) %} active open
+            {% elseif ( "/sprint" in currentPath) or ( "/project/edit" in currentPath)
+            or ( "/project/project-details" in currentPath) or ( "/task/sprint-tasks" in currentPath)
+            or ( "/task/sprint-tasks" in currentPath) %} active {% endif %}">
+
             <a href="javascript:void(0)" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-box"></i>
                 <div data-i18n="User interface">Projects</div>
@@ -212,7 +228,8 @@
 
         <!-- Extended components -->
         {% if is_granted('ROLE_ADMIN') %}
-            <li class="menu-item {% if ( currentPath ==  path("skills_index") ) %} active {% endif %}">
+            <li class="menu-item {% if ( currentPath ==  path("skills_index") )
+                or ( currentPath ==  path("create_skills") ) %} active {% elseif ( "/skills/edit" in currentPath) %} active {% endif %}">
                 <a href="{{ path("skills_index") }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-collection"></i>
                     <div data-i18n="Basic">Les Technologies</div>

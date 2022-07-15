@@ -13,9 +13,10 @@
                             <div class="d-flex align-items-end row">
                                 <div class="col-sm-7">
                                     <div class="card-body">
-                                        <h5 class="card-title text-primary">Bienvenue {{ app.user.lastname }}! 🎉</h5>
+                                        <h5 class="card-title text-primary"  style="text-transform: capitalize;" >Bienvenue {{ app.user.lastname }}! 🎉</h5>
                                         <p class="mb-4">
-                                            Vous avez fait <span class="fw-bold">{{ percentTask }}%</span> de votre tâches
+                                            Vous avez fait <span class="fw-bold">{{ percentTask }}%</span> de votre
+                                            tâches
                                         </p>
                                     </div>
                                 </div>
@@ -42,7 +43,7 @@
                                         <div class="card-title d-flex align-items-start justify-content-between">
                                             <div class="avatar flex-shrink-0">
                                                 <img
-                                                        src="{{ asset ('bundles/assets/img/icons/unicons/wallet-info.png') }}"
+                                                        src="{{ asset ('bundles/assets/img/icons/unicons/chart-success.png') }}"
                                                         alt="chart success"
                                                         class="rounded"
                                                 />
@@ -59,7 +60,7 @@
                                         <div class="card-title d-flex align-items-start justify-content-between">
                                             <div class="avatar flex-shrink-0">
                                                 <img
-                                                        src="{{ asset ('bundles/assets/img/icons/unicons/wallet-info.png') }}"
+                                                        src="{{ asset ('bundles/assets/img/icons/unicons/chart.png') }}"
                                                         alt="Credit Card"
                                                         class="rounded"
                                                 />
@@ -86,7 +87,6 @@
                     </div>
 
 
-
                     <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
                         <div class="row">
                             <div class="col-6 mb-4">
@@ -95,8 +95,8 @@
                                         <div class="card-title d-flex align-items-start justify-content-between">
                                             <div class="avatar flex-shrink-0">
                                                 <img
-                                                        src="{{ asset ('bundles/assets/img/icons/unicons/wallet-info.png') }}"
-                                                        alt="Credit Card"
+                                                        src="{{ asset ('bundles/assets/img/icons/unicons/cc-success.png') }}"
+                                                        alt="-"
                                                         class="rounded"
                                                 />
                                             </div>
@@ -106,7 +106,7 @@
                                     </div>
                                 </div>
                             </div>
-                            {% if is_granted('ROLE_ADMIN')  %}
+                            {% if is_granted('ROLE_ADMIN') %}
                                 <div class="col-6 mb-4">
                                     <div class="card">
                                         <div class="card-body">
@@ -129,27 +129,36 @@
                     </div>
 
                     <!-- Total Revenue -->
+
+                    <!---->
                     <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
                         <div class="row">
                             <h5 class="pb-1 mb-4">Notre équipe </h5>
                             <div class=" row col-lg-12 col-lg-offset-2 col-4">
                                 {% for user in users %}
                                     <div class="col-md-4">
-                                        <div class="card mb-3">
+                                        <div class="card mb-3"  height="150">
                                             <div class="row g-0">
                                                 <div class="col-md-5">
-                                                    <img class="card-img card-img-left" height="100%" src="{{ asset('images/'~user.image) }}" alt="Card image" />
+                                                    <img class="card-img card-img-left"
+                                                         height="200"
+                                                         src="{{ asset('images/'~user.image) }}" alt="Card image"/>
                                                 </div>
                                                 <div class="col-md-7">
                                                     <div class="card-body">
-                                                        <h5 class="card-title"> <strong> {{ user.lastname }} {{ user.firstname }} </strong></h5>
+                                                        <h5 class="card-title">
+                                                            <strong style="text-transform: capitalize;"> {{ user.lastname }} {{ user.firstname }} </strong>
+                                                        </h5>
                                                         <p class="card-text">
-                                                            {% for role in user.role  %}
-                                                                {{ role }}
+                                                            {% for role in user.role %}
+                                                                {# {{ role }} #}
+                                                                <span class="badge {% if( role == "ROLE_ADMIN") %} bg-label-danger"> Administrateur</span>
+                                                                <span class="badge {%  elseif(role == "ROLE_RH") %} bg-label-warning">Ressource Humain </span>
+                                                                <span class="badge {% elseif( role == "ROLE_DEV") %} bg-label-info" {% endif %}> Développeur</span></svg></span>
                                                             {% endfor %}
                                                         </p>
                                                         <p class="card-text">
-                                                            <small class="text-muted">{% for skills in user.skills  %}
+                                                            <small class="text-muted">{% for skills in user.skills %}
                                                                     {{ skills.name }}
                                                                     {% if not loop.last %} , {% endif %}
                                                                 {% endfor %}
@@ -164,6 +173,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <!---->
                 </div>
             </div>
         </div>
@@ -193,18 +204,18 @@
                 series: [
                     {
                         name: '2021',
-                        data:  Object.values(x)
+                        data: Object.values(x)
                     },
                     {
                         name: '2022',
-                        data:  Object.values(y)
+                        data: Object.values(y)
                     }
                 ],
                 chart: {
                     height: 300,
                     stacked: true,
                     type: 'bar',
-                    toolbar: { show: false }
+                    toolbar: {show: false}
                 },
                 plotOptions: {
                     bar: {

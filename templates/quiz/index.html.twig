@@ -35,6 +35,7 @@
                 <tbody class="table-border-bottom-0" id="myTable">
                 {% for quiz in quiz %}
                     <tr>
+                        <td>{{ quiz.id }}</td>
                         <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>{{ quiz.name}}</strong></td>
                         <td>
                             <ol>
@@ -101,7 +102,7 @@
 
                                 <a class="btn col-3 m-1 btn-sm btn-outline-secondary" href="{{ path("quiz_participate", {"id": quiz.id}) }}"
                                    data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"  title="" data-bs-original-title="Participer"
-                                ><i class="bx bx-question-mark"></i></a>
+                                ><i class="bx bx-link-external"></i></a>
                             </div>
 
                         </td>

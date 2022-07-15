@@ -32,8 +32,8 @@ class ContratRepository extends ServiceEntityRepository
                 ->setParameter('user', $search->getUser() )
             ;
         }
-        $qb->join('c.type_contrat', 'type_contrat');
         if ($search && $search->getTypeContrat()){
+            $qb->join('c.type_contrat', 'type_contrat');
             //filter by type contrat
             $qb->andWhere($qb->expr()->eq("type_contrat", ':type_contrat'))
                 ->setParameter('type_contrat', $search->getTypeContrat() )

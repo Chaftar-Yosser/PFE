@@ -20,6 +20,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 
 
+    const ROLE_RH="Ressource Humain";
+    const ROLE_DEV="toskiyer formatique";
+    const ROLE_ADMIN="MOULA SABA";
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -54,7 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 255)]
 //    #[Assert\Image( maxWidth: 4000, maxHeight: 4000,
-//         allowLandscape: true , allowPortrait: true)]
+//         allowLandscape: false , allowPortrait: true)]
     private $image;
 
     #[ORM\ManyToMany(targetEntity: Tasks::class, inversedBy: 'users')]
@@ -63,7 +68,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Contrat::class ,  cascade:["remove"])]
     private $contrats;
 
-    #[ORM\OneToMany(mappedBy: 'userTo', targetEntity: Leave::class)]
+    #[ORM\OneToMany(mappedBy: 'userTo', targetEntity: Leave::class,cascade:["remove"])]
     private $leaves;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: SuiviLeave::class ,  cascade:["remove"])]

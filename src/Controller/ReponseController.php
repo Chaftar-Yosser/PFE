@@ -100,6 +100,7 @@ class ReponseController extends AbstractController
         }
         return $this->render('reponse/edit.html.twig', [
             'reponse' =>$reponse,
+            'question' => $reponse->getQuestion(),
             'form' => $form->createView(),
         ]);
     }

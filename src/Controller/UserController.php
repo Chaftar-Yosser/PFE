@@ -137,14 +137,34 @@ class UserController extends AbstractController
         }
 
         $originalImage = $user->getImage();
-        $form = $this->createForm(UserType::class, $user, [
-            'edit' => true
-        ]);
-//        $form->remove("password")->remove("image");
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         $oldImage = $user->getImage();
         if($form->isSubmitted() && $form->isValid())
         {
+            $hashedPassword = $passwordHasher->hashPassword($user,$user->getPassword());
+            $user->setPassword($hashedPassword);
+
+            $image = $form->get('image')->getData();
+            if ($image) {
+                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $image->guessExtension();
+
+                try {
+                    $image->move(
+                        $this->getParameter('image_directory'),
+                        $newFilename
+                    );
+                    //delete old image
+                    if($originalImage && file_exists($this->getParameter('image_directory')."/".$originalImage))
+                        unlink($this->getParameter('image_directory')."/".$originalImage);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Image cannot be saved.');
+                }
+                $user->setImage($newFilename);
+            }
+
             $this->em->persist($user);
             $this->em->flush();
             $this->addFlash('success' , 'User modifié avec succés');

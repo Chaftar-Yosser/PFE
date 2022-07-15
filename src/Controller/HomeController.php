@@ -34,6 +34,7 @@ class HomeController extends AbstractController
     public function index(TasksRepository $tasksRepository, Request $request): Response
     {
         $user = $this->getUser();
+//        dd($user);
         if ($this->isGranted('ROLE_ADMIN')) {
             $events = $tasksRepository->getTaskByDate();
         } else {
@@ -45,16 +46,20 @@ class HomeController extends AbstractController
         foreach ($events as $event) {
             switch ($event->getPriorite()) {
                 case "Elevée":
-                    $color = "#B61702";
+                    $color = "#F32424";
+                    $Textcolor ="#FFFFFF";
                     break;
                 case "Normal":
-                    $color = "#91E302";
+                    $color = "#06283D";
+                    $Textcolor ="#FFFFFF";
                     break;
                 case "Moyenne":
-                    $color = "#FEC68B";
+                    $color = "#FFA500";
+                    $Textcolor ="#FFFFFF";
                     break;
                 default:
-                    $color = "#02BEF2";
+                    $color = "#08D9D6";
+                    $Textcolor ="#FFFFFF";
                     break;
             }
             $tasks[] = [
@@ -65,6 +70,7 @@ class HomeController extends AbstractController
                 'title' => $event->getTaskName(),
                 'status' => $event->getStatus(),
                 'backgroundColor' => $color,
+                'textColor' => $Textcolor,
                 'editUrl' => $this->generateUrl('edit_task', ['taskId' => $event->getId(), 'projectId' => $event->getProjects()->getId()])
             ];
         }
@@ -74,6 +80,18 @@ class HomeController extends AbstractController
         $leaves = $this->em->getRepository(Leave::class)->getLeaveByDateAndUser($user);
         /** @var Leave $event */
         foreach ($leaves as $leave) {
+
+
+            switch ($leave->getStatus()) {
+
+                default:
+                    $color = "#9A86A4";
+                    $Textcolor ="#FFFFFF";
+                    break;
+            }
+
+
+
             if ($leave->getStatus() == Leave::STATUS_ACCEPTER) {
                 $tasks[] = [
                     'type' => "LEAVE",
@@ -82,6 +100,8 @@ class HomeController extends AbstractController
                     'end' => $leave->getEndDate()->format('Y-m-d'),
                     'status' => $leave->getStatus(),
                     'title' => $leave->getLeaveType()->getName(),
+                    'backgroundColor' => $color,
+                    'textColor' => $Textcolor,
                 ];
             }
         }
@@ -105,9 +125,10 @@ class HomeController extends AbstractController
 
         // formulaire d'ajout de congés
         $newLeave = new Leave();
-        $form = $this->createForm(\App\Form\LeaveType::class, $newLeave);
+        $form = $this->createForm(\App\Form\LeaveType::class, $newLeave, ['currentUser' => $user, "create" => true]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $newLeave->setStatus(Leave::STATUS_ENCOURS);
             $this->em->persist($newLeave);
             $this->em->flush();
             $this->addFlash('success', 'demande crée avec succés!');

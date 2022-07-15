@@ -76,6 +76,12 @@ class QuizController extends AbstractController
         $suggestedQuestions = $quiz->getQuestions();
         $user = $this->getUser();
         $score=0;
+        $quizReponses = [];
+        foreach ($suggestedQuestions as $question){
+            $quizReponses[$question->getId()] = $this->em->getRepository(Reponse::class)->getCorrectAnswer($question);
+        }
+//        dd($quizReponses);
+
         if ($request->request->has('reponse')){
 
             foreach ($_POST["question"] as $questionId){ // jebli les questions ta3 quiz hekii
@@ -96,14 +102,22 @@ class QuizController extends AbstractController
                             }
                         }
                     }
+
                     $email = (new Email())
                         ->from($this->getParameter("mailer_sender")) // toujours l'envoie avec le mail déclarer dans le service yaml
                         ->to($user->getEmail())
                         ->subject('Score de quiz ')
-                        ->html('Votre score de quiz  ' . $quiz->getName() . ' est : ' . $score .' points ')
+//                        ->html('Votre score de quiz  ' . $quiz->getName() . ' est : ' . $score .' points ')
+                        ->html(
+                            $this->renderView('quiz/quiz_email.html.twig', ['quiz' => $quiz,
+                                'score' => $score , 'reponses'=>$quizReponses]),
+                            "utf-8"
+                        );
                     ;
                     $mailer->send($email);
 
+
+                    //$quizReponses => for => response.question.title => response.title
                     return $this->redirectToRoute('quiz_index');
                 }
             }

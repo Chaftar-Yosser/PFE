@@ -64,6 +64,12 @@ class UserType extends AbstractType
                 'multiple' => true,
                 'label' => 'Rôle'
             ])
+            ->add('image',FileType::class,[
+                "data" => $file,
+                'attr' => [
+                    'class' => "form-control ",
+                ]
+            ])
 
             ->add('skills' , EntityType::class,[
                 'class' => Skills::class,
@@ -84,12 +90,12 @@ class UserType extends AbstractType
                      ],
                      'label' => 'Mot de passe',
                  ])
-                     ->add('image',FileType::class,[
-                         "data" => $file,
-                         'attr' => [
-                             'class' => "form-control ",
-                         ]
-                     ])
+//                     ->add('image',FileType::class,[
+//                         "data" => $file,
+//                         'attr' => [
+//                             'class' => "form-control ",
+//                         ]
+//                     ])
                  ;
                  //            test sur affichage de password et image dans creat ctt
              }

@@ -13,331 +13,320 @@
 
 {% block body %}
 
-     <section class="content">
-            <div class="row">
-                <div class="col-md-3">
-                        <!-- TO DO List -->
-                    <div class="card box box-primary">
-                            <div class="box-header">
-                                <i class="ion ion-clipboard"></i>
-                                <h3 class="box-title">To Do List</h3>
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    <select id="user" class="form-control user">
-                                        {% for user in users %}
-                                            <option value="{{ user.id }}"  selected="selected" >{{ user.lastname }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <div class="box-body">
-                                        <ul class="todo-list" id="user-tasks"></ul>
-                                    </div>
-                                {% endif %}
+    <section class="content">
+        <div class="row">
+            <div class="col-md-3">
+                <!-- TO DO List -->
+                <div class="card box box-primary px-4 pt-3 mb-3">
+                    <div class="box-header">
+                        <i class="ion ion-clipboard"></i>
+                        <h3 class="box-header">To Do List</h3>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <select id="user" class="form-control user">
+                                {% for user in users %}
+                                    <option value="{{ user.id }}"  selected="selected" >{{ user.lastname }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="box-body mt-2">
+                                <ul class="todo-list" id="user-tasks"></ul>
                             </div>
-                            <!-- /.box-header -->
-                            <div class="box-body">
-                                <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
-                                <ul class="todo-list">
-                                    {% if is_granted('ROLE_DEV') %}
-                                        {% for task in events %}
-                                            <li>
+                        {% endif %}
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
+                        <ul class="todo-list">
+                            {% if is_granted('ROLE_DEV') %}
+                                {% for task in events %}
+                                    {% if not (task.status == "Terminé") %}
+                                    <li>
                                                  <span class="handle">
                                                     <i class="fa fa-ellipsis-v"></i>
                                                     <i class="fa fa-ellipsis-v"></i>
                                                  </span>
-                                                <!-- checkbox -->
-                                                <input type="checkbox" class="task-checkbox" value="" id="{{ task.id }}">
-                                                <!-- todo text -->
-                                                <span class="text" data-id="{{ task.id }}">{{ task.taskName }}</span>
-                                                <!-- Emphasis label -->
-                                                <small class="badge bg-label-warning" data-toggle-id="{{ task.id }}" ><i class=""></i>{{ task.duree }}</small>
-                                            </li>
-                                        {% endfor %}
+                                        <!-- checkbox -->
+                                        <input type="checkbox" class="task-checkbox" value="" id="{{ task.id }}">
+                                        <!-- todo text -->
+                                        <span class="text" data-id="{{ task.id }}">{{ task.taskName }}</span>
+                                        <!-- Emphasis label -->
+                                        <small class="badge bg-label-warning" data-toggle-id="{{ task.id }}" ><i class=""></i>{{ task.duree }}</small>
+                                    </li>
                                     {% endif %}
-                                </ul>
-                            </div>
-                        </div>
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                    </div>
                 </div>
-                <!-- CALENDAR -->
-                <div class="col-md-9">
-                    <div class="card">
-                        <h2>Calendrier</h2>
-                        <div class="box-body no-padding">
-                            <!-- THE CALENDAR -->
-                            <div id="calendar"></div>
-                        </div>
+            </div>
+            <!-- CALENDAR -->
+            <div class="col-md-9">
+
+
+                <div class="card">
+                    <h2 class="px-4 pt-3">Calendrier</h2>
+
+                    <div class="box-body px-4 pb-4">
+                        <!-- THE CALENDAR -->
+                        <div id="calendar"></div>
                     </div>
                 </div>
 
-                <!--popup-->
-                <div id="calendarModal" class="modal fade">
-                    <div class="modal-dialog">
-                        <div class="modal-content ">
-                            <div class="modal-header box box-primary">
-                                <button type="button" class="close" data-dismiss="modal">
-                                    <span aria-hidden="true">×</span>
-                                    <span class="sr-only">close</span>
-                                </button>
-                                <h3  id="modalTitle" class="modal-title"></h3>
-                            </div>
-                            <div id="modalBody" class="modal-body"></div>
-                            <div class="modal-footer">
-                                <a  class="btn btn-info" id="eventUrl">edit</a>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            </div>
 
-                <div class="col-lg-4 col-md-3">
-                    <div class="mt-3">
-                        <!-- Modal -->
-                        <div class="modal fade" id="schedule-add" data-bs-backdrop="static" tabindex="-1">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    {{ form_start(form) }}
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="backDropModalTitle">Remplire le formulaire</h5>
-                                            <button
-                                                    type="button"
-                                                    class="btn-close"
-                                                    data-bs-dismiss="modal"
-                                                    aria-label="Close"
-                                            ></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="col mb-3">
-                                                    <label for="nameBackdrop" class="form-label">{{ form_label(form.userFrom) }}</label>
-                                                    <div class="form-group">
-                                                        {{ form_widget(form.userFrom) }}
-                                                        <div class="form-error">
-                                                            {{ form_errors(form.userFrom) }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col mb-3">
-                                                    <label for="nameBackdrop" class="form-label">{{ form_label(form.userTo) }}</label>
-                                                    <div class="form-group">
-                                                        {{ form_widget(form.userTo) }}
-                                                        <div class="form-error">
-                                                            {{ form_errors(form.userTo) }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row g-2">
-                                                <div class="col mb-3">
-                                                    <label for="nameBackdrop" class="form-label">{{ form_label(form.startDate) }}</label>
-                                                    <div class="form-group">
-                                                        {{ form_widget(form.startDate) }}
-                                                        <div class="form-error">
-                                                            {{ form_errors(form.startDate) }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col mb-3">
-                                                    <label for="nameBackdrop" class="form-label">{{ form_label(form.endDate) }}</label>
-                                                    <div class="form-group">
-                                                        {{ form_widget(form.endDate) }}
-                                                        <div class="form-error">
-                                                            {{ form_errors(form.endDate) }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row g-2">
-                                            <div class="col mb-3">
-                                                <label for="nameBackdrop" class="form-label">{{ form_label(form.Leave_type) }}</label>
-                                                <div class="form-group">
-                                                    {{ form_widget(form.Leave_type) }}
-                                                    <div class="form-error">
-                                                        {{ form_errors(form.Leave_type) }}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col mb-0">
-                                                <label for="nameBackdrop" class="form-label"> {{ form_label(form.status) }}</label>
-                                                <div class="form-group">
-                                                    {{ form_widget(form.status) }}
-                                                    <div class="form-error">
-                                                        {{ form_errors(form.status) }}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-{#                                        <input type="submit" class="btn btn-primary" id="eventUrl"/>#}
-                                            <button type="submit" class="btn btn-primary">valider</button>
+            <!--popup-->
 
-                                        </div>
-                                    {{ form_end(form) }}
+
+            <div class="col-lg-4 col-md-3">
+                <div class="mt-3">
+                    <!-- Modal -->
+                    <div class="modal fade" id="schedule-add" data-bs-backdrop="static" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                {{ form_start(form) }}
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="backDropModalTitle">Remplire le formulaire</h5>
+                                    <button
+                                            type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="modal"
+                                            aria-label="Close"
+                                    ></button>
                                 </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col mb-3">
+                                            <label for="nameBackdrop" class="form-label">{{ form_label(form.userFrom) }}</label>
+                                            <div class="form-group">
+                                                {{ form_widget(form.userFrom) }}
+                                                <div class="form-error">
+                                                    {{ form_errors(form.userFrom) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col mb-3">
+                                            <label for="nameBackdrop" class="form-label">{{ form_label(form.userTo) }}</label>
+                                            <div class="form-group">
+                                                {{ form_widget(form.userTo) }}
+                                                <div class="form-error">
+                                                    {{ form_errors(form.userTo) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="col mb-3">
+                                            <label for="nameBackdrop" class="form-label">{{ form_label(form.startDate) }}</label>
+                                            <div class="form-group">
+                                                {{ form_widget(form.startDate) }}
+                                                <div class="form-error">
+                                                    {{ form_errors(form.startDate) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col mb-3">
+                                            <label for="nameBackdrop" class="form-label">{{ form_label(form.endDate) }}</label>
+                                            <div class="form-group">
+                                                {{ form_widget(form.endDate) }}
+                                                <div class="form-error">
+                                                    {{ form_errors(form.endDate) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="col mb-3">
+                                            <label for="nameBackdrop" class="form-label">{{ form_label(form.Leave_type) }}</label>
+                                            <div class="form-group">
+                                                {{ form_widget(form.Leave_type) }}
+                                                <div class="form-error">
+                                                    {{ form_errors(form.Leave_type) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col mb-0">
+                                            <label for="nameBackdrop" class="form-label"> {{ form_label(form.status) }}</label>
+                                            <div class="form-group">
+                                                {{ form_widget(form.status) }}
+                                                <div class="form-error">
+                                                    {{ form_errors(form.status) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                    {#                                        <input type="submit" class="btn btn-primary" id="eventUrl"/>#}
+                                    <button type="submit" class="btn btn-primary">valider</button>
+
+                                </div>
+                                {{ form_end(form) }}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 
-        {% endblock %}
+{% endblock %}
         {% block js %}
             <script src="{{ asset('bundles/assets/bower_components/jquery-ui/jquery-ui.min.js') }}"></script>
             <script src="{{ asset('bundles/assets/dist/js/pages/dashboard.js') }}"></script>
 
-    <script>
+            <script>
 
 
 
-        // Add a "checked" symbol when clicking on a list item
-        var events = document.querySelector('ul');
-        $(".task-checkbox").change(function () {
-            let taskId = $(this).attr("id");
-            let taskSpan = $("span[data-id="+taskId+"]");
-            taskSpan.toggleClass('strike');
-            let tasksmall = $("small[data-toggle-id="+taskId+"]") ;
-            tasksmall.toggleClass('wrap');
-            //if checked add class to span
+                // Add a "checked" symbol when clicking on a list item
+                var events = document.querySelector('ul');
+                $(".task-checkbox").change(function () {
+                    let taskId = $(this).attr("id");
+                    let taskSpan = $("span[data-id="+taskId+"]");
+                    taskSpan.toggleClass('strike');
+                    let tasksmall = $("small[data-toggle-id="+taskId+"]") ;
+                    tasksmall.toggleClass('wrap');
+                    //if checked add class to span
 
-                //en ajax modifier le statut du task
-                $.ajax({
-                    url:        '/task/ajax',
-                    type:       'POST',
-                    data:       {
-                        id: taskId,
-                        close: $(this).is(":checked") ? 1 : 0
-                    },
-                    dataType:   'json',
-                    async:      true,
+                    //en ajax modifier le statut du task
+                    $.ajax({
+                        url:        '/task/ajax',
+                        type:       'POST',
+                        data:       {
+                            id: taskId,
+                            close: $(this).is(":checked") ? 1 : 0
+                        },
+                        dataType:   'json',
+                        async:      true,
 
-                    success: function() {
+                        success: function() {
 
-                    }
+                        }
+
+                    });
 
                 });
 
-        });
 
+                $(document).ready(function () {
+                    $('.user').on('change', function() {
+                        let userId= this.value ;
+                        $.ajax({
+                            url:        '/task/ajax-user-tasks',
+                            type:       'POST',
+                            data:       {
+                                id: userId,
+                            },
+                            dataType:   'json',
+                            async:      true,
 
-        $(document).ready(function () {
-            $('.user').on('change', function() {
-                let userId= this.value ;
-                $.ajax({
-                    url:        '/task/ajax-user-tasks',
-                    type:       'POST',
-                    data:       {
-                        id: userId,
-                    },
-                    dataType:   'json',
-                    async:      true,
+                            success: function(response) {
+                                $('#user-tasks').empty();
+                                $.each(response.tasks, function (index, task) {
+                                    $('#user-tasks').append(
+                                        "<li>"+task.title+"</li>"
+                                    )
+                                })
+                            }
 
-                    success: function(response) {
-                        $('#user-tasks').empty();
-                        $.each(response.tasks, function (index, task) {
-                           $('#user-tasks').append(
-                               "<li>"+task.title+"</li>"
-                           )
+                        });
+                    });
+                });
+                $(function () {
+
+                    /* initialize the external events
+                     -----------------------------------------------------------------*/
+                    function init_events(ele) {
+                        ele.each(function () {
+
+                            // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+                            // it doesn't need to have a start or end
+                            var eventObject = {
+                                title: $.trim($(this).text()) // use the element's text as the event title
+                            }
+
+                            // store the Event Object in the DOM element so we can get to it later
+                            $(this).data('eventObject', eventObject)
+
                         })
                     }
 
-                });
-            });
-        });
-        $(function () {
+                    init_events($('#external-events div.external-event'))
 
-            /* initialize the external events
-             -----------------------------------------------------------------*/
-            function init_events(ele) {
-                ele.each(function () {
+                    /* initialize the calendar
+                     -----------------------------------------------------------------*/
+                    //Date for the calendar events (dummy data)
+                    var date = new Date()
+                    var d    = date.getDate(),
+                        m    = date.getMonth(),
+                        y    = date.getFullYear()
+                    $('#calendar').fullCalendar({
+                        header    : {
+                            left  : 'prev,next today',
+                            center: 'title',
+                            right : 'month,agendaWeek,agendaDay'
+                        },
+                        locale : 'fr',     //ne fonctionne pas
+                        timeZone : 'Tunisie',
+                        buttonText: {
+                            today: 'today',
+                            month: 'month',
+                            week : 'week',
+                            day  : 'day'
+                        },
+                        //Random default events
+                        events    :  {{ data|raw  }},
+                        editable  : false,
+                        eventResizableFromStart: true,
+                        eventColor: '#FFFFFF',
+                        eventRender: function(event, element, view) {
+                            $(element).popover({
+                                title: event.title , status: event.status , trigger: 'hover', placement: 'auto right', delay: {"hide": 300 },
+                            });
 
-                    // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-                    // it doesn't need to have a start or end
-                    var eventObject = {
-                        title: $.trim($(this).text()) // use the element's text as the event title
-                    }
+                            // si event 3andou propriété holiday , on change le background
+                            if (event.holiday === '1') {
+                                var dateString = event.start.format("YYYY-MM-DD");
 
-                    // store the Event Object in the DOM element so we can get to it later
-                    $(this).data('eventObject', eventObject)
+                                $(view.el[0]).find('.fc-day[data-date=' + dateString + ']')
+                                    .css('background-color', '#34B3F1')
+                                ;
+                            }
+                        },
 
-                })
-            }
+                        //pop-up
+                        eventClick:  function(event, jsEvent, view) {
+                            if (event.type === "TASK"){
+                                let content =   "<div >"
+                                    +"<h4>"+"Date début: "+event.start.format('DD/MM/YYYY')+"</h4>"+
+                                    "</div>"+
 
-            init_events($('#external-events div.external-event'))
+                                    "<div >"
+                                    +"<h4>"+"Date fin: "+event.end.format('DD/MM/YYYY')+"</h4>" +
+                                    "</div>"+
 
-            /* initialize the calendar
-             -----------------------------------------------------------------*/
-            //Date for the calendar events (dummy data)
-            var date = new Date()
-            var d    = date.getDate(),
-                m    = date.getMonth(),
-                y    = date.getFullYear()
-            $('#calendar').fullCalendar({
-                header    : {
-                    left  : 'prev,next today',
-                    center: 'title',
-                    right : 'month,agendaWeek,agendaDay'
-                },
-                locale : 'fr',     //ne fonctionne pas
-                timeZone : 'Tunisie',
-                buttonText: {
-                    today: 'today',
-                    month: 'month',
-                    week : 'week',
-                    day  : 'day'
-                },
-                //Random default events
-                events    :  {{ data|raw  }},
-                editable  : false,
-                eventResizableFromStart: true,
-                // eventColor: '#D47DB2',
-                eventRender: function(event, element, view) {
-                    $(element).popover({
-                        title: event.title , status: event.status , trigger: 'hover', placement: 'auto right', delay: {"hide": 300 },
+                                    "<div >"+"<h4>"+event.status+"</h4></div>"
+                                ;
+                                $('#modalTitle').html(event.title);
+                                $('#modalBody').html(content);
+                                $('#eventUrl').attr('href',event.editUrl);
+                                $('#calendarModal').modal();
+                            }
+
+                        },
+
+                        dayClick: function(date, jsEvent, view) {
+                            // récupérer la data cliquer
+                            $('#leave_startDate'). val(date.format())
+
+                            $('#schedule-add').modal('show');
+
+                        },
+
                     });
 
-                    // si event 3andou propriété holiday , on change le background
-                    if (event.holiday === '1') {
-                        var dateString = event.start.format("YYYY-MM-DD");
-
-                        $(view.el[0]).find('.fc-day[data-date=' + dateString + ']')
-                            .css('background-color', '#008000')
-                        ;
-                    }
-                },
-
-                //pop-up
-                eventClick:  function(event, jsEvent, view) {
-                    if (event.type === "TASK"){
-                        let content =   "<div >"
-                            +"<h4>"+"Date début: "+event.start.format('DD/MM/YYYY')+"</h4>"+
-                            "</div>"+
-
-                            "<div >"
-                            +"<h4>"+"Date fin: "+event.end.format('DD/MM/YYYY')+"</h4>" +
-                            "</div>"+
-
-                            "<div >"+"<h4>"+event.status+"</h4></div>"
-                        ;
-                        $('#modalTitle').html(event.title);
-                        $('#modalBody').html(content);
-                        $('#eventUrl').attr('href',event.editUrl);
-                        $('#calendarModal').modal();
-                    }
-
-                },
-
-                dayClick: function(date, jsEvent, view) {
-                    // récupérer la data cliquer
-                    $('#leave_startDate'). val(date.format())
-
-                    $('#schedule-add').modal('show');
-
-                },
-
-            });
-
-        })
-    </script>
-{% endblock %}
+                })
+            </script>
+        {% endblock %}

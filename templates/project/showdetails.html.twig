@@ -48,7 +48,7 @@
                             <td>{{ user.lastname}}</td>
                             <td>
                                 {% if is_granted('ROLE_ADMIN') %}
-                                    <a class="btn btn-sm btn-outline-primary" href="{{ path('remove_user', {'id': project.id, 'userId': user.id}) }}"><i class="bx bx-edit-alt me-1"></i>Remove</a>
+                                    <a class="btn btn-sm btn-outline-primary" href="{{ path('remove_user', {'id': project.id, 'userId': user.id}) }}"><i class="bx bx-user-minus"></i> Remove</a>
                                 {% endif %}
                             </td>
                         </tr>
@@ -89,7 +89,7 @@
                             </td>
                             <td>
                                 {% if is_granted('ROLE_ADMIN') %}
-                                    <a class="btn btn-sm btn-outline-primary {% if user in project.users %}disabled{% endif %}" href="{{ path('affect_user', {'id': project.id, 'userId': user.id}) }}"><i class="bx bx-edit-alt me-1"></i> Add</a>
+                                    <a class="btn btn-sm btn-outline-primary {% if user in project.users %}disabled{% endif %}" href="{{ path('affect_user', {'id': project.id, 'userId': user.id}) }}"><i class="bx bx-user-plus"></i> Add</a>
                                 {% endif %}
                             </td>
                         </tr>
